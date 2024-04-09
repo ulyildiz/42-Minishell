@@ -1,5 +1,5 @@
 
 typedef struct s_main
 {
-    char    *path; //?
+    char    **cmd_path; //?
 }   t_main;
