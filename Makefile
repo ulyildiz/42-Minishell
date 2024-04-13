@@ -1,7 +1,7 @@
 NAME = minishell
 SRC = initialize.c \
 		main.c \
-		path_find.c
+		utils.c
 OBJ = $(SRC:.c=.o)
 CC = cc -Wall -Wextra -Werror
 LIBFT = 42-libft
