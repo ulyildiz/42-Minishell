@@ -1,12 +1,12 @@
 #include "defines.h"
+#include "functions.h"
 
-/*get_path(t_main *shell)
+//değişken atamaları
+int initialize(t_main *shell, char **env)
 {
+    shell->paths = get_cmd(shell, env);
+	if (!shell->paths)
+		return (0);
 
-}*/
-
-int initialize(t_main *shell)
-{
-    //değişken atamaları
-    //get_path(shell) //envden path parçalama
+	return (1);
 }
