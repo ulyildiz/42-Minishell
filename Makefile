@@ -1,6 +1,7 @@
 NAME = minishell
 SRC = initialize.c \
 		main.c \
+		shell.c \
 		utils.c
 OBJ = $(SRC:.c=.o)
 CC = cc -Wall -Wextra -Werror
@@ -9,7 +10,7 @@ LIBFT = 42-libft
 
 $(NAME): $(OBJ)
 	@make -C $(LIBFT)
-	$(CC) $(OBJ) $(LIBFT)/libft.a -o $(NAME)	
+	$(CC) $(OBJ) $(LIBFT)/libft.a -lreadline -o $(NAME)	
 all: $(NAME)
 
 clean:

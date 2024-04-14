@@ -36,35 +36,22 @@ SRC = ft_atoi.c \
 		ft_tolower.c \
 		ft_toupper.c
 
-BONUS = ft_lstadd_back_bonus.c \
-		ft_lstadd_front_bonus.c \
-		ft_lstdelone_bonus.c \
-		ft_lstlast_bonus.c \
-		ft_lstnew_bonus.c \
-		ft_lstnew_bonus.c \
-		ft_lstsize_bonus.c \
-		ft_lstclear_bonus.c
-
 OBJ = $(SRC:.c=.o)
-BOBJ = $(BONUS:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	ar rc $(NAME) *.o
 
-bonus: $(BOBJ)
-	ar rc $(NAME) *.o
-
 .c.o:
 	cc 	$(FLAG) -c $< -o $@
 
 clean:
-	rm -rf $(OBJ) $(BOBJ)
+	rm -rf $(OBJ)
 
 fclean: clean
 	rm -rf $(NAME)
 
 re: fclean all
 
-.PHONY: re all bonus clean fclean
+.PHONY: re all clean fclean

@@ -2,17 +2,17 @@
 #include <string.h>
 #include "functions.h"
 
-int main (int ac, char** av, char **env)
+int	main(int ac, char** av, char **env)
 {
-    t_main  shell;
-	
+	t_main	shell;
+
 	av = (void *)av;
-    if (ac >=2)
-        return(printf("Wrong Argument"));
-    if (!initialize(&shell, env))
-        return (printf("Couldn't initialize"), 1);
-    signal_reciever();
-    //start_shell(&shell);
+	if (ac >=2)
+		return(printf("Wrong Argument"), 1);
+	if (!initialize(&shell, env))
+		return (printf("Couldn't initialize"), 1);
+	//signal_reciever();
+	start_shell(&shell);
     /*ac = 0;
     while (env[ac])
     {
