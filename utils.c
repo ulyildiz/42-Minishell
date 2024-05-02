@@ -26,9 +26,9 @@ char	**get_cmd(char **env)
 	return (ft_split((*env) += 5, ':'));
 }
 
-int	is_space(char *s) //spaceleri geçme
+size_t	is_space(char *s)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (s[i] && s[i] == ' ')
@@ -47,4 +47,20 @@ t_env	*find_env(t_env *envs, char *wanted)
 		envs = envs->next;
 	}
 	return (NULL);
+}
+
+size_t	wordcount(char *s)
+{
+	size_t	wc;
+
+	wc = 0;
+	while (*s && s)
+	{
+		while (*s && (*s == 32 || (9 <= *s && *s <= 13)))
+			s++;
+		while (*s)
+			s++;
+		wc++;
+	}
+	return (wc);
 }

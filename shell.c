@@ -37,8 +37,7 @@ static int	line_read(t_main *shell)
 	if (!shell->cmd_line)
 	{
 		rl_clear_history();
-	//	free_env(shell);
-		/*freele programı kapat programı kapat*/
+		free_env(shell);
 		exit(1);
 	}
 	else if (!is_space(shell->cmd_line))
@@ -53,7 +52,7 @@ void	start_shell(t_main *shell)
 	{
 		if (!line_read(shell))
 			continue ;
-		//lexer
+		lexer(shell);
 		//expender
 		//parser
 		//executor
