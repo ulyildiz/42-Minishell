@@ -1,5 +1,6 @@
 #include "functions.h"
 #include "42-libft/libft.h"
+#include <stdio.h>
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <stdlib.h>
@@ -9,7 +10,7 @@ static void	prompt(t_main *shell) // user + : + pwd + ->
 {
 	char	*tmp;
 
-	shell->prompt = ft_strdup(find_env(shell->envs, "LOGNAME")->value);
+	shell->prompt = ft_strdup(find_env(shell->envs, "LOGNAME")->value); //LOGNAME standart bir env mi?
 	if (!shell->prompt)
 		return ;
 	tmp = ft_strjoin(shell->prompt, ":");
@@ -35,8 +36,8 @@ static int	line_read(t_main *shell)
 	shell->cmd_line = readline(shell->prompt);
 	if (!shell->cmd_line)
 	{
+		rl_clear_history();
 	//	free_env(shell);
-		clear_history();
 		/*freele programı kapat programı kapat*/
 		exit(1);
 	}
@@ -55,7 +56,7 @@ void	start_shell(t_main *shell)
 		//lexer
 		//expender
 		//parser
-		//executer
+		//executor
 		//update veya free?
 	}
 }

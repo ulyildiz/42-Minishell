@@ -4,16 +4,16 @@ SRC = initialize.c \
 		shell.c \
 		utils.c
 OBJ = $(SRC:.c=.o)
-CC = cc -Wall -Wextra -Werror
+CC = gcc -Wall -Wextra -Werror
 LIBFT = 42-libft
 
 
 $(NAME): $(OBJ)
 	@make -C $(LIBFT)
-	$(CC) $(OBJ) $(LIBFT)/libft.a -lreadline -o $(NAME)	
+	$(CC) $(LIBFT)/libft.a $(OBJ) -lreadline -o $(NAME)
 all: $(NAME)
 
-clean:
+clean: 
 	@rm -rf *.o
 	@make -C $(LIBFT) clean
 fclean: clean
