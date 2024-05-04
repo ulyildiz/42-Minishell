@@ -20,7 +20,8 @@ size_t		wordcount(char *s);
 //lexer
 void		lexer(t_main *shell);
 t_tokens	*create_token(char	*arr);
-void		token_add_back(t_tokens *list, t_tokens *new);
+t_tokens	*tlist(char **arr);
+void		token_add_back(t_tokens **list, t_tokens *new);
 
 //free
 void		free_env(t_main *shell);

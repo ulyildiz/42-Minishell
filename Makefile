@@ -1,5 +1,8 @@
 NAME = minishell
-SRC = initialize.c \
+SRC =	free.c \
+		initialize.c \
+		lexer_utils.c \
+		lexer.c \
 		main.c \
 		shell.c \
 		utils.c

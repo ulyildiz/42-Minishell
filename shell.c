@@ -23,7 +23,7 @@ static void	prompt(t_main *shell) // user + : + pwd + ->
 		return /*mesaj free*/;
 	free(shell->prompt);
 	shell->prompt = tmp;
-	tmp = ft_strjoin(shell->prompt, "->");
+	tmp = ft_strjoin(shell->prompt, "-> ");
 	if (!tmp)
 		return /*mesaj free*/;
 	free(shell->prompt);
@@ -53,7 +53,7 @@ void	start_shell(t_main *shell)
 		if (!line_read(shell))
 			continue ;
 		lexer(shell);
-		//expender
+		//expender //syntax kontrolu? "expanderın sonunda da olabilir"
 		//parser
 		//executor
 		//update veya free?

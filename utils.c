@@ -56,11 +56,12 @@ size_t	wordcount(char *s)
 	wc = 0;
 	while (*s && s)
 	{
-		while (*s && (*s == 32 || (9 <= *s && *s <= 13)))
+		while (*s != '\0' && (*s == 32 || (9 <= *s && *s <= 13)))
 			s++;
-		while (*s)
+		if (*s != '\0' && !(*s == 32 || (9 <= *s && *s <= 13)))
+			wc++;
+		while (*s != '\0' && !(*s == 32 || (9 <= *s && *s <= 13)))
 			s++;
-		wc++;
 	}
 	return (wc);
 }
