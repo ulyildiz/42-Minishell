@@ -25,7 +25,7 @@ void	free_env(t_main *shell)
 	}
 }
 
-void	free_tokens(t_tokens *tokens)
+void	free_tokens(t_tokens *tokens) // dene
 {
 	t_tokens	*tmp;
 

@@ -3,16 +3,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static size_t	wordlen(const char *str)
-{
-	size_t	len;
-
-	len = 0;
-	while (str[len] && !(str[len] == 32 || (9 <= str[len] && str[len] <= 13)))
-		len++;
-	return (len);
-}
-
 static char	**lex_split(char *ipt)
 {
 	char	**arr;
@@ -26,7 +16,7 @@ static char	**lex_split(char *ipt)
 	wc = wordcount(ipt);
 	arr = (char **)ft_calloc(1 + wc, sizeof(char *));
 	if (!arr)
-		return (NULL);
+		return (free(ipt), NULL);
 	while (i < wc)
 	{
 		while ((*ipt == 32 || (9 <= *ipt && *ipt <= 13)) && *ipt != '\0')
@@ -55,6 +45,8 @@ size_t	find_spacelen(char	*s)
 		else if (s[i] == '<' && s[i + 1] != '<')
 			len += 2;
 		else if (s[i] == '>' && s[i + 1] != '>')
+			len += 2;
+		else if (s[i] == '\"' || s[i] == '\'')
 			len += 2;
 		len++;
 	}
@@ -89,26 +81,34 @@ char	*handover_spaces(char *str)
 				new_one[len++] = *str++;
 			new_one[len++] = ' ';
 		}
+		else if (*str == '\"' || *str == '\'')
+		{
+			new_one[len++] = ' ';
+			new_one[len++] = *str++;
+			new_one[len++] = ' ';
+
+		}
 		new_one[len++] = *str++;
 	}
 	return (new_one);
 }
+#include <errno.h> //?
 
 void	lexer(t_main *shell)
 {
 	char	**arr;
 
 	arr = lex_split(handover_spaces(shell->cmd_line));
-	if (!arr)
-		;//perror?
 	free(shell->cmd_line);
+	if (!arr)
+		exit(ENOMEM);//perror? // gerekli freeler okeymi kontrol et
 	shell->token = tlist(arr);
 	if (!shell->token)
-		;//perror?
-	//quate handle?
+		exit(ENOMEM);//perror?
+	is_quoted(shell->token);
 	/*while (shell->token != NULL)
 	{
-		printf("%s\n", shell->token->value);
+		printf("%s - quote = %d - type = %d\n", shell->token->value, shell->token->is_quoted, shell->token->type);
 		shell->token = shell->token->next;
 	}*/
 }

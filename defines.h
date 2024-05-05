@@ -6,12 +6,22 @@ typedef enum	e_token_types
 	CMD, // komut kısım
 	CTRL, // kontrol tokenleri
 	PIPE, // pipe
-	RDR // redirection tokenleri
+	RDR, // redirection tokenleri
+	D_QUOTE,//çift tırnak içerisinde expand olucak
+	QUOTE // tek tırnak içerisinde expand olmayacak
 }	t_token_types;
+
+typedef enum	e_quote_value
+{
+	NONE,
+	WITHIN_D_Q,
+	WITHIN_Q
+}	t_quote_value;
 
 typedef struct	s_tokens
 {
 	t_token_types	type;
+	t_quote_value	is_quoted;
 	char			*value;
 	struct s_tokens	*next;
 }	t_tokens;

@@ -7,13 +7,13 @@ SRC =	free.c \
 		shell.c \
 		utils.c
 OBJ = $(SRC:.c=.o)
-CC = gcc -Wall -Wextra -Werror
+CC = cc -Wall -Wextra -Werror
 LIBFT = 42-libft
 
 
 $(NAME): $(OBJ)
 	@make -C $(LIBFT)
-	$(CC) $(LIBFT)/libft.a $(OBJ) -lreadline -o $(NAME)
+	$(CC) $(OBJ) -lreadline $(LIBFT)/libft.a -o $(NAME)
 all: $(NAME)
 
 clean: 

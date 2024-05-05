@@ -19,6 +19,16 @@ void	list_add_back(t_env **lst, t_env *tmp)
 	}
 }
 
+size_t	wordlen(const char *str)
+{
+	size_t	len;
+
+	len = 0;
+	while (str[len] && !(str[len] == 32 || (9 <= str[len] && str[len] <= 13)))
+		len++;
+	return (len);
+}
+
 char	**get_cmd(char **env)
 {
 	while (*env && ft_strncmp(*env, "PATH=", 5))
