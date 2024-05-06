@@ -99,16 +99,16 @@ void	lexer(t_main *shell)
 	char	**arr;
 
 	arr = lex_split(handover_spaces(shell->cmd_line));
-	free(shell->cmd_line);
+	//free(shell->cmd_line);
 	if (!arr)
 		exit(ENOMEM);//perror? // gerekli freeler okeymi kontrol et
 	shell->token = tlist(arr);
 	if (!shell->token)
 		exit(ENOMEM);//perror?
 	is_quoted(shell->token);
-	/*while (shell->token != NULL)
+	while (shell->token != NULL)
 	{
 		printf("%s - quote = %d - type = %d\n", shell->token->value, shell->token->is_quoted, shell->token->type);
 		shell->token = shell->token->next;
-	}*/
+	}
 }

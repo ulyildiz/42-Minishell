@@ -11,7 +11,7 @@ void		start_shell(t_main *shell);
 //lexer
 void		lexer(t_main *shell);
 t_tokens	*tlist(char **arr);
-void		is_quoted(t_tokens *lst);
+void		is_expendable(t_tokens *lst);
 	//_tokens	*create_token(char	*arr);
 	//int			token_add_back(t_tokens **list, t_tokens *new);
 

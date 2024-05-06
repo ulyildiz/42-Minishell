@@ -26,6 +26,17 @@ typedef struct	s_tokens
 	struct s_tokens	*next;
 }	t_tokens;
 
+typedef struct s_expended
+{
+	char				*value;
+	struct s_expended	*next;
+}	t_expended;
+
+/*typedef struct s_command
+{
+	struct s_command	*next;
+}	t_command;*/
+
 typedef struct	s_env
 {
 	char			*name;
@@ -36,8 +47,10 @@ typedef struct	s_env
 typedef struct s_main
 {
 	t_env		*envs; //envler için
-	t_tokens	*token;
-    char		**paths; // komutlar için parçalanmış pathler
+	t_tokens	*token; //token listesi (whitespacelere ve tokenlere göre splitli
+    t_expended	*expd; // expendlenmiş liste
+//	t_command	*cmd;
+	char		**paths; // komutlar için parçalanmış pathler
 	char		*prompt;
 	char		*cmd_line; // komut satırından okunan satır
 }   t_main;
