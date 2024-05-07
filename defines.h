@@ -15,7 +15,8 @@ typedef enum	e_quote_value
 {
 	NONE,
 	WITHIN_D_Q,
-	WITHIN_Q
+	WITHIN_Q,
+	NONE_TILDE
 }	t_quote_value;
 
 typedef struct	s_tokens

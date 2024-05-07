@@ -75,3 +75,10 @@ size_t	wordcount(char *s)
 	}
 	return (wc);
 }
+
+int	is_whitespace(char	c)
+{
+	if (!(c == ' ' || (9 <= c && c <= 13)))
+		return (1);
+	return (0);
+}

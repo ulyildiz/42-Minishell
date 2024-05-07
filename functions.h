@@ -11,7 +11,7 @@ void		start_shell(t_main *shell);
 //lexer
 void		lexer(t_main *shell);
 t_tokens	*tlist(char **arr);
-void		is_expendable(t_tokens *lst);
+void		is_quoted(t_tokens *lst);
 	//_tokens	*create_token(char	*arr);
 	//int			token_add_back(t_tokens **list, t_tokens *new);
 
@@ -27,5 +27,6 @@ size_t		is_space(char *s);
 t_env		*find_env(t_env *envs, char *wanted);
 size_t		wordcount(char *s);
 size_t		wordlen(const char *str);
+int			is_whitespace(char c);
 
 #endif

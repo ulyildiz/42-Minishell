@@ -93,22 +93,66 @@ char	*handover_spaces(char *str)
 	return (new_one);
 }
 #include <errno.h> //?
+#include <string.h>
+void	tilde_expendable(t_tokens *token, char *cmd_line)
+{
+	size_t		i;
+	t_tokens	*tmp;
+
+	tmp = token;
+	i = 0;
+	while (1)
+	{
+		while (cmd_line[i] != '\0' && cmd_line[i] != '~')
+			i++;
+		while (tmp && !ft_strnstr(tmp->value, "~", ft_strlen(tmp->value)))
+			tmp = tmp->next;
+		if (cmd_line[i] != '\0' && is_whitespace(cmd_line[i - 1]) == 1)
+			tmp->is_quoted = NONE_TILDE;
+		if (cmd_line[i] != '\0' && is_whitespace(cmd_line[i + 1]) && cmd_line[i + 1] != '/')
+			tmp->is_quoted = NONE_TILDE;
+		if (cmd_line[i] == '\0' || !tmp)
+			break;
+		i++;
+		tmp = tmp->next;
+	}
+}
 
 void	lexer(t_main *shell)
 {
 	char	**arr;
 
 	arr = lex_split(handover_spaces(shell->cmd_line));
-	//free(shell->cmd_line);
 	if (!arr)
 		exit(ENOMEM);//perror? // gerekli freeler okeymi kontrol et
 	shell->token = tlist(arr);
 	if (!shell->token)
 		exit(ENOMEM);//perror?
 	is_quoted(shell->token);
+	tilde_expendable(shell->token, shell->cmd_line);
+	free(shell->cmd_line);
 	while (shell->token != NULL)
 	{
 		printf("%s - quote = %d - type = %d\n", shell->token->value, shell->token->is_quoted, shell->token->type);
 		shell->token = shell->token->next;
 	}
 }
+/*		if (tmp && ft_strlen(tmp->value) == 1)
+		{
+			printf("a\n");
+			if (cmd_line[i] != '\0' && is_whitespace(cmd_line[i - 1]))
+				tmp->is_quoted = NONE_TILDE;
+			if (cmd_line[i] != '\0' && is_whitespace(cmd_line[i + 1]) && cmd_line[i + 1] != '/')
+				tmp->is_quoted = NONE_TILDE;
+			if (cmd_line[i] == '\0' || !tmp)
+				break;
+		}
+		else
+		{
+			while(tmp->value[j] != '~')
+				j++;
+			if (j != 0)
+				tmp->is_quoted = NONE_TILDE;
+			if (tmp->value[j + 1] != '\0' && tmp->value[j + 1] != '/')
+				tmp->is_quoted = NONE_TILDE;
+		}*/
