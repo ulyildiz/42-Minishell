@@ -138,22 +138,3 @@ void	lexer(t_main *shell)
 		shell->token = shell->token->next;
 	}
 }
-/*		if (tmp && ft_strlen(tmp->value) == 1)
-		{
-			printf("a\n");
-			if (cmd_line[i] != '\0' && is_whitespace(cmd_line[i - 1]))
-				tmp->is_quoted = NONE_TILDE;
-			if (cmd_line[i] != '\0' && is_whitespace(cmd_line[i + 1]) && cmd_line[i + 1] != '/')
-				tmp->is_quoted = NONE_TILDE;
-			if (cmd_line[i] == '\0' || !tmp)
-				break;
-		}
-		else
-		{
-			while(tmp->value[j] != '~')
-				j++;
-			if (j != 0)
-				tmp->is_quoted = NONE_TILDE;
-			if (tmp->value[j + 1] != '\0' && tmp->value[j + 1] != '/')
-				tmp->is_quoted = NONE_TILDE;
-		}*/
