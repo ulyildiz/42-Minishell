@@ -7,8 +7,8 @@ typedef enum	e_token_types
 	CTRL, // kontrol tokenleri
 	PIPE, // pipe
 	RDR, // redirection tokenleri
-	D_QUOTE,//çift tırnak içerisinde expand olucak
-	QUOTE // tek tırnak içerisinde expand olmayacak
+	D_QUOTE,//çift tırnak 
+	QUOTE // tek tırnak
 }	t_token_types;
 
 typedef enum	e_quote_value

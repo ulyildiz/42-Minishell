@@ -88,7 +88,8 @@ char	*handover_spaces(char *str)
 			new_one[len++] = ' ';
 
 		}
-		new_one[len++] = *str++;
+		else
+			new_one[len++] = *str++;
 	}
 	return (new_one);
 }
