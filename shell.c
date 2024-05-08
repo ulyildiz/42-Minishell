@@ -53,7 +53,7 @@ void	start_shell(t_main *shell)
 		if (!line_read(shell))
 			continue ;
 		lexer(shell);
-		//expender //syntax kontrolu? "expanderın sonunda da olabilir"
+		expender(shell); //syntax kontrolu? "expanderın sonunda da olabilir"
 		//parser
 		//executor
 		//update veya free?

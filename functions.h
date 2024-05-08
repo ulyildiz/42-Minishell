@@ -27,4 +27,6 @@ size_t		wordcount(char *s);
 size_t		wordlen(const char *str);
 int			is_whitespace(char c);
 
+//expender
+void	expender(t_main *shell);
 #endif

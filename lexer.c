@@ -94,7 +94,7 @@ static char	*handover_spaces(char *str)
 	return (new_one);
 }
 #include <errno.h> //?
-#include <string.h>
+
 static void	tilde_expendable(t_tokens *token, char *cmd_line)
 {
 	size_t		i;
@@ -102,15 +102,16 @@ static void	tilde_expendable(t_tokens *token, char *cmd_line)
 
 	tmp = token;
 	i = 0;
-	while (1)
+	while (tmp)
 	{
 		while (cmd_line[i] != '\0' && cmd_line[i] != '~')
 			i++;
 		while (tmp && !ft_strnstr(tmp->value, "~", ft_strlen(tmp->value)))
 			tmp = tmp->next;
-		if (cmd_line[i] != '\0' && is_whitespace(cmd_line[i - 1]) == 1)
+		if (i != 0 && cmd_line[i] != '\0' && is_whitespace(cmd_line[i - 1]) == 1)
 			tmp->is_expend = NONE_TILDE;
-		if (cmd_line[i] != '\0' && is_whitespace(cmd_line[i + 1]) && cmd_line[i + 1] != '/')
+		if (cmd_line[i] != '\0' && is_whitespace(cmd_line[i + 1])
+			&& cmd_line[i + 1] != '\0' && cmd_line[i + 1] != '/')
 			tmp->is_expend = NONE_TILDE;
 		if (cmd_line[i] == '\0' || !tmp)
 			break;
@@ -134,7 +135,7 @@ void	lexer(t_main *shell)
 	free(shell->cmd_line); //?
 	/*while (shell->token != NULL)
 	{
-		printf("%s - quote = %d - type = %d\n", shell->token->value, shell->token->is_expend, shell->token->type);
+		printf("lexer = %s - quote = %d - type = %d\n", shell->token->value, shell->token->is_expend, shell->token->type);
 		shell->token = shell->token->next;
 	}*/
 }

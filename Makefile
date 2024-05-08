@@ -5,7 +5,8 @@ SRC =	free.c \
 		lexer.c \
 		main.c \
 		shell.c \
-		utils.c
+		utils.c \
+		expender.c
 OBJ = $(SRC:.c=.o)
 CC = cc -Wall -Wextra -Werror
 LIBFT = 42-libft
