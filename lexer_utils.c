@@ -35,7 +35,7 @@ static int	token_add_back(t_tokens **list, t_tokens *new)
 	return (1);
 }
 
-void	is_quoted(t_tokens *lst)
+void	is_expendable(t_tokens *lst)
 {
 	t_tokens	*tmp;
 
@@ -44,7 +44,7 @@ void	is_quoted(t_tokens *lst)
 	{
 		while (tmp && (tmp->type != D_QUOTE && tmp->type != QUOTE))
 			tmp = tmp->next;
-		if (tmp && tmp->type == D_QUOTE && tmp->is_quoted == NONE)
+		if (tmp && tmp->type == D_QUOTE && tmp->is_expend == NONE)
 		{
 			lst = tmp->next;
 			tmp = tmp->next;
@@ -52,11 +52,11 @@ void	is_quoted(t_tokens *lst)
 				tmp = tmp->next;
 			while (tmp && lst && lst != tmp)
 			{
-				lst->is_quoted = WITHIN_D_Q;
+				lst->is_expend = WITHIN_D_Q;
 				lst = lst->next;
 			}
 		}
-		else if (tmp && tmp->type == QUOTE && tmp->is_quoted == NONE)
+		else if (tmp && tmp->type == QUOTE && tmp->is_expend == NONE)
 		{
 			lst = tmp->next;
 			tmp = tmp->next;
@@ -64,7 +64,7 @@ void	is_quoted(t_tokens *lst)
 				tmp = tmp->next;
 			while (tmp && lst && lst != tmp)
 			{
-				lst->is_quoted = WITHIN_Q;
+				lst->is_expend = WITHIN_Q;
 				lst = lst->next;
 			}
 		}
@@ -81,7 +81,7 @@ static t_tokens	*create_token(char	*arr)
 	if (!new)
 		return (NULL);
 	new->value = arr;
-	new->is_quoted = NONE;
+	new->is_expend = NONE;
 	new->type = identify_t(arr);
 	return (new);
 }

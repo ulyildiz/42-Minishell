@@ -31,7 +31,7 @@ static char	**lex_split(char *ipt)
 	return (arr);
 }
 
-size_t	find_spacelen(char	*s)
+static size_t	find_spacelen(char	*s)
 {
 	size_t	i;
 	size_t	len;
@@ -53,7 +53,7 @@ size_t	find_spacelen(char	*s)
 	return (len);
 }
 
-char	*handover_spaces(char *str)
+static char	*handover_spaces(char *str)
 {
 	char	*new_one;
 	size_t	len;
@@ -95,7 +95,7 @@ char	*handover_spaces(char *str)
 }
 #include <errno.h> //?
 #include <string.h>
-void	tilde_expendable(t_tokens *token, char *cmd_line)
+static void	tilde_expendable(t_tokens *token, char *cmd_line)
 {
 	size_t		i;
 	t_tokens	*tmp;
@@ -109,9 +109,9 @@ void	tilde_expendable(t_tokens *token, char *cmd_line)
 		while (tmp && !ft_strnstr(tmp->value, "~", ft_strlen(tmp->value)))
 			tmp = tmp->next;
 		if (cmd_line[i] != '\0' && is_whitespace(cmd_line[i - 1]) == 1)
-			tmp->is_quoted = NONE_TILDE;
+			tmp->is_expend = NONE_TILDE;
 		if (cmd_line[i] != '\0' && is_whitespace(cmd_line[i + 1]) && cmd_line[i + 1] != '/')
-			tmp->is_quoted = NONE_TILDE;
+			tmp->is_expend = NONE_TILDE;
 		if (cmd_line[i] == '\0' || !tmp)
 			break;
 		i++;
@@ -129,12 +129,12 @@ void	lexer(t_main *shell)
 	shell->token = tlist(arr);
 	if (!shell->token)
 		exit(ENOMEM);//perror?
-	is_quoted(shell->token);
+	is_expendable(shell->token);
 	tilde_expendable(shell->token, shell->cmd_line);
-	free(shell->cmd_line);
-	while (shell->token != NULL)
+	free(shell->cmd_line); //?
+	/*while (shell->token != NULL)
 	{
-		printf("%s - quote = %d - type = %d\n", shell->token->value, shell->token->is_quoted, shell->token->type);
+		printf("%s - quote = %d - type = %d\n", shell->token->value, shell->token->is_expend, shell->token->type);
 		shell->token = shell->token->next;
-	}
+	}*/
 }

@@ -9,7 +9,11 @@ static void	dollar_expend(t_main *shell)
 
 static void	homedir_expend(t_tokens *token)
 {
-	if ()	
+	char	*expnd_value;
+
+	if (token->is_expend != NONE)
+		return ;
+	expnd_value = find_env();
 }
 
 void	expender(t_main *shell)
@@ -20,11 +24,10 @@ void	expender(t_main *shell)
 	while (t != NULL)
 	{
 		if (ft_strnstr(t->value, "$", ft_strlen(t->value)))
-			dollar_expend(shell);
-		else if (ft_strnstr(t->value, "~", ft_strlen(t->value)))
-			home_expend(shell);
-		else if (ft_strnstr(t->value, "~/", ft_strlen(t->value)))
-			homedir_expend(shell);
+			dollar_expend(t);
+		else if (ft_strnstr(t->value, "~", ft_strlen(t->value))
+			|| ft_strnstr(t->value, "~/", ft_strlen(t->value)))
+			homedir_expend(t);
 		t = t->next;
 	}
 }

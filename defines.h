@@ -11,18 +11,18 @@ typedef enum	e_token_types
 	QUOTE // tek tırnak
 }	t_token_types;
 
-typedef enum	e_quote_value
+typedef enum	e_is_expendable
 {
 	NONE,
 	WITHIN_D_Q,
 	WITHIN_Q,
 	NONE_TILDE
-}	t_quote_value;
+}	t_is_expendable;
 
 typedef struct	s_tokens
 {
 	t_token_types	type;
-	t_quote_value	is_quoted;
+	t_is_expendable	is_expend;
 	char			*value;
 	struct s_tokens	*next;
 }	t_tokens;
