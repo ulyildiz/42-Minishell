@@ -7,19 +7,13 @@ static void	dollar_expend(t_main *shell)
 
 }
 
-static void	homedir_expend(t_main *shell)
+static void	homedir_expend(t_tokens *token)
 {
-	
-}
-
-static void	home_expend(t_main *shell)
-{
-
+	if ()	
 }
 
 void	expender(t_main *shell)
 {
-	t_expended	*exp;
 	t_tokens	*t;
 
 	t = shell->token;
@@ -31,8 +25,6 @@ void	expender(t_main *shell)
 			home_expend(shell);
 		else if (ft_strnstr(t->value, "~/", ft_strlen(t->value)))
 			homedir_expend(shell);
-		else
-			/*oluştur ekle*/;
 		t = t->next;
 	}
 }
