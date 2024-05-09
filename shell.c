@@ -18,7 +18,7 @@ static void	prompt(t_main *shell) // user + : + pwd + ->
 		return /*mesaj free*/;
 	free(shell->prompt);
 	shell->prompt = tmp;
-	tmp = ft_strjoin(shell->prompt, getcwd(NULL, 0));// yada direkt envden çekmek?
+	tmp = ft_strjoin(shell->prompt, find_env(shell->envs, "HOME")->value);// yada direkt envden çekmek?
 	if (!tmp)
 		return /*mesaj free*/;
 	free(shell->prompt);
@@ -54,7 +54,7 @@ void	start_shell(t_main *shell)
 			continue ;
 		lexer(shell);
 		expender(shell); //syntax kontrolu? "expanderın sonunda da olabilir"
-		//parser
+		//parser(shell);
 		//executor
 		//update veya free?
 	}

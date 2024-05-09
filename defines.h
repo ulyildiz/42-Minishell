@@ -6,7 +6,9 @@ typedef enum	e_token_types
 	CMD, // komut kısım
 	CTRL, // kontrol tokenleri
 	PIPE, // pipe
-	RDR, // redirection tokenleri
+	RDR_IN, // redirection tokenleri
+	RDR_OUT,
+	HEREDOC,
 	D_QUOTE,//çift tırnak 
 	QUOTE // tek tırnak
 }	t_token_types;

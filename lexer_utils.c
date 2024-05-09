@@ -6,10 +6,14 @@ static t_token_types	identify_t(const char *arr)
 {
 	if (ft_strlen(arr) == 1 && *arr == '|')
 		return (PIPE);
-	else if (ft_strlen(arr) == 1 && (*arr == '<' || *arr == '>'))
-		return (RDR);
-	else if (ft_strlen(arr) == 2 && (ft_strnstr(arr, "<<", 2) || ft_strnstr(arr, ">>", 2)))
-		return (RDR);
+	else if (ft_strlen(arr) == 1 && *arr == '<' )
+		return (RDR_OUT);
+	else if (ft_strlen(arr) == 2 && ft_strnstr(arr, "<<", 2))
+		return (HEREDOC);
+	else if (ft_strlen(arr) == 2 && ft_strnstr(arr, ">>", 2))
+		return (RDR_IN);
+	else if (ft_strlen(arr) == 1 && *arr == '>')
+		return (RDR_IN);
 	else if (*arr == '\'')
 		return (QUOTE);
 	else if (*arr == '\"')
