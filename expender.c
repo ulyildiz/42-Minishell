@@ -15,6 +15,8 @@ static int	dollar_expend(t_tokens *token, t_env *env)
 	i = 0;
 	tmp = ft_strdup("");
 	expnd_value = env;
+	char *deneme;
+	deneme = ft_strdup("");
 	while (token->value[i])
 	{
 		if(token->value[i] == '$' && token->value[i + 1] == '$')
@@ -27,27 +29,32 @@ static int	dollar_expend(t_tokens *token, t_env *env)
 			tmp = ft_strappend(tmp, "0", 1);
 			i++;
 		}
-		else
+		else if (token->value[i] == '$' && token->value[i + 1] == '\0')
 		{
-			tmp = ft_strappend(tmp,&token->value[i],1);
+			tmp = ft_strappend(tmp,"$",1);
+			i++;
+		}
+		else if (token->value[i] == '$' && ft_isalnum(token->value[i + 1]) == 1)
+		{
+			i++;
+			j = 0;
+			while (ft_isalnum(token->value[i + j]))
+				j++;
+			deneme = (char *)ft_memcpy(deneme,&token->value[i],j);
+			deneme[i + j] = '\0';
+			expnd_value = find_env(env,deneme);
+			if (expnd_value)
+			{
+				tmp = ft_strappend(tmp,expnd_value->value,ft_strlen(expnd_value->value));
+			}
+			free(deneme);
 		}
 		i++;
 	}
-	ft_memcpy(token->value,tmp,ft_strlen(tmp));
-	free(tmp);
-	i = 0;
-	j = 0;
-	while (token->value[i++] != '$')
-	
-	j = i;
-	while (token->value[j])
-	{
-		if(ft_isdigit(token->value[j]) == 1)
-				break;
-		j++;
-	}
-	// tmp = ft_strappend(tmp,&token->value[i], j - i);	hatalı kopyalama bir sonraki dolara a kadar kopyalaması lazım buna bak
-	printf("%s\n",tmp);
+	free(token->value);
+	token->value = ft_strdup("");
+	token->value = ft_strappend(token->value,tmp,ft_strlen(tmp));
+	//printf("%s\n",token->value);
 	return(1);
 }
 
@@ -107,7 +114,7 @@ void	expender(t_main *shell)
 			if (!home_expend(t, shell->envs))
 				return ;
 		}
-		//printf("%s\n",t->value);
+		printf("%s\n",t->value);
 		t = t->next;
 	}
 }
