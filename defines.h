@@ -1,10 +1,11 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
+
+
 typedef enum	e_token_types
 {
 	CMD, // komut kısım
-	CTRL, // kontrol tokenleri
 	PIPE, // pipe
 	RDR_IN, // redirection tokenleri
 	RDR_OUT,
@@ -31,9 +32,12 @@ typedef struct	s_tokens
 
 typedef struct s_command
 {
-	char				*value;
+	char				**value;
+	int					infile;
+	int					outfile;
 	struct s_command	*prev;
 	struct s_command	*next;
+	//pid_t 	*pipe_fd[2];
 }	t_command;
 
 typedef struct	s_env
@@ -47,7 +51,7 @@ typedef struct s_main
 {
 	t_env		*envs; //envler için
 	t_tokens	*token; //token listesi (whitespacelere ve tokenlere göre splitli
-//	t_command	*cmd;
+	t_command	*cmd;
 	char		**paths; // komutlar için parçalanmış pathler
 	char		*prompt;
 	char		*cmd_line; // komut satırından okunan satır
