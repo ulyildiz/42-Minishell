@@ -11,6 +11,11 @@ int	is_token(t_token_types type)
 	return (0);
 }
 
+static	void	remove_quotes(t_tokens *token)
+{
+
+}
+
 static size_t	lenght_to_token(t_tokens *lst)
 {
 	size_t	len;
@@ -50,6 +55,8 @@ void	parser(t_main *shell)
 	size_t		i;
 
 	t = shell->token;
+	//remove unprint quote
+	remove_quotes(t);
 	shell->cmd = cmd_struct_create(t);
 	if (!shell->cmd)
 		return /*hata mesajı*/;
@@ -61,8 +68,7 @@ void	parser(t_main *shell)
 		{
 			cmd->value[i] = ft_strdup(t->value);
 			if (!cmd->value[i])
-				/*freeler*/;
-			
+				/*freeler*/;	
 			i++;
 		}
 		t = t->next;
