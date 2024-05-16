@@ -29,4 +29,8 @@ int			is_whitespace(char c);
 
 //expender
 void	expender(t_main *shell);
+
+//
+void	parser(t_main *shell);
+
 #endif

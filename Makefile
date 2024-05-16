@@ -1,12 +1,13 @@
 NAME = minishell
-SRC =	free.c \
+SRC =	expender.c \
+		free.c \
 		initialize.c \
 		lexer_utils.c \
 		lexer.c \
 		main.c \
+		parser.c \
 		shell.c \
-		utils.c \
-		expender.c
+		utils.c
 OBJ = $(SRC:.c=.o)
 CC = cc -Wall -Wextra -Werror
 LIBFT = 42-libft

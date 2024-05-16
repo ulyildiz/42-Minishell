@@ -35,6 +35,8 @@ typedef struct s_command
 	char				**value;
 	int					infile;
 	int					outfile;
+	int					has_lp;
+	int					has_rp;
 	struct s_command	*prev;
 	struct s_command	*next;
 	//pid_t 	*pipe_fd[2];

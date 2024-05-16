@@ -123,6 +123,7 @@ static void	tilde_expendable(t_tokens *token, char *cmd_line)
 void	lexer(t_main *shell)
 {
 	char	**arr;
+	//t_tokens *t;
 
 	arr = lex_split(handover_spaces(shell->cmd_line));
 	if (!arr)
@@ -132,10 +133,11 @@ void	lexer(t_main *shell)
 		exit(ENOMEM);//perror?
 	is_expendable(shell->token);
 	tilde_expendable(shell->token, shell->cmd_line);
-	free(shell->cmd_line); //?
-	/*while (shell->token != NULL)
+	//free(shell->cmd_line); //?
+	//t = shell->token;
+	/*while (t != NULL)
 	{
-		printf("lexer = %s - quote = %d - type = %d\n", shell->token->value, shell->token->is_expend, shell->token->type);
-		shell->token = shell->token->next;
+		printf("lexer = %s - quote = %d - type = %d\n", t->value, t->is_expend, t->type);
+		t = t->next;
 	}*/
 }

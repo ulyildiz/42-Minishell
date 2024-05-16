@@ -114,7 +114,7 @@ void	expender(t_main *shell)
 			if (!home_expend(t, shell->envs))
 				return ;
 		}
-		printf("%s\n",t->value);
+		//printf("%s\n",t->value);
 		t = t->next;
 	}
 }
