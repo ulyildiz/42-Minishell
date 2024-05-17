@@ -22,6 +22,11 @@ typedef enum	e_is_expendable
 	NONE_TILDE
 }	t_is_expendable;
 
+/*typedef enum	e_
+{
+	
+}*/
+
 typedef struct	s_tokens
 {
 	t_token_types	type;
@@ -35,8 +40,8 @@ typedef struct s_command
 	char				**value;
 	int					infile;
 	int					outfile;
-	int					has_lp;
-	int					has_rp;
+	int					has_lp; // solunda pipe var
+	int					has_rp; // sağında pipe var
 	struct s_command	*prev;
 	struct s_command	*next;
 	//pid_t 	*pipe_fd[2];
