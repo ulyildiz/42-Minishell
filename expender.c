@@ -96,6 +96,8 @@ void	expender(t_main *shell)
 {
 	t_tokens	*t;
 
+	if (shell->control == 0)
+		return ;
 	t = shell->token;
 	while (t != NULL)
 	{

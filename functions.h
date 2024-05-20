@@ -12,6 +12,7 @@ void		start_shell(t_main *shell);
 void		lexer(t_main *shell);
 t_tokens	*tlist(char **arr);
 void		is_expendable(t_tokens *lst);
+int			token_check(t_tokens *token);
 
 //free
 void		free_env(t_main *shell);

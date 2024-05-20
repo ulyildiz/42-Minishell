@@ -29,13 +29,13 @@ void	free_tokens(t_tokens *tokens) // dene
 {
 	t_tokens	*tmp;
 
-	tmp = tokens->next;
+	tmp = tokens;
 	while (tokens)
 	{
 		free(tokens->value);
 		free(tokens);
-		tokens = tmp;
-		tmp = tokens->next;
+		tokens = tmp->next;
+		tmp = tokens;
 	}
 }
 

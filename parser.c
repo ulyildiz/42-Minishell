@@ -47,12 +47,12 @@ static size_t	lenght_to_token(t_tokens *lst)
 
 static t_command *cmd_struct_create(t_tokens *token)
 {
-	t_command	*cmd;
+	t_command	*cmd = NULL;
 	size_t		i;
 
 	if (!token || token == NULL)
 		return (NULL);
-	cmd = (t_command *)ft_calloc(1, sizeof(t_tokens));
+	cmd = (t_command *)ft_calloc(1, sizeof(t_command));
 	if (!cmd)
 		return (NULL);
 	i = lenght_to_token(token);
@@ -71,6 +71,8 @@ void	parser(t_main *shell)
 	t_tokens	*t;
 	size_t		i;
 
+	if (shell->control == 0)
+		return ;
 	t = shell->token;
 	remove_quotes(&t);
 	cmds = cmd_struct_create(t);
@@ -82,21 +84,18 @@ void	parser(t_main *shell)
 		i = 0;
 		while (t && !is_token(t->type))
 		{
-			cmds->value[i] = t->value;
-			printf("%s - %s\n", cmds->value[i], t->value);
-			i++;
+			cmds->value[i++] = t->value;
 			t = t->next;
 		}
 		if (t)
 			t = t->next;
-		printf("-%s- -%p-\n", cmds->value[0], cmds->value[0]);
 		cmds->next = cmd_struct_create(t);
-		printf("-%s- -%p-\n", cmds->value[0], cmds->value[0]);
 		if (cmds->next)
 			cmds->next->prev = cmds;
 		cmds = cmds->next;
 	}
-	printf("\n");
+}
+
 //	printf("-%s-\n", shell->cmd->value[1]);
 /* 	while (shell->cmd)
 	{
@@ -111,8 +110,6 @@ void	parser(t_main *shell)
 		shell->cmd = shell->cmd->next;
 		
 	} */
-}
-
 
 	/*while (shell->cmd)
 	{

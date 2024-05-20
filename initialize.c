@@ -31,6 +31,7 @@ int initialize(t_main *shell, char **env)
 	if (!init_env(shell, env))
 		return (/*list_free*/0);
     shell->paths = get_cmd(env);
+	shell->control = 1;
 	if (!shell->paths)
 		return (/*list_free*/0);
 

@@ -23,6 +23,7 @@ static char	**lex_split(char *ipt)
 			ipt++;
 		wl = wordlen(ipt);
 		arr[i] = ft_substr(ipt, 0, wl);
+//		printf("-%s-\n", arr[i]);
 		ipt += wl;
 		if (!arr[i])
 			return (free_double(arr), NULL);
@@ -120,10 +121,12 @@ static void	tilde_expendable(t_tokens *token, char *cmd_line)
 	}
 }
 
+#include <unistd.h>
+
 void	lexer(t_main *shell)
 {
 	char	**arr;
-	t_tokens *t;
+//	t_tokens *t;
 
 	arr = lex_split(handover_spaces(shell->cmd_line));
 	if (!arr)
@@ -133,11 +136,13 @@ void	lexer(t_main *shell)
 		exit(ENOMEM);//perror?
 	is_expendable(shell->token);
 	tilde_expendable(shell->token, shell->cmd_line);
-	//free(shell->cmd_line); //?
-	t = shell->token;
-	/*while (t != NULL)
+	if (!token_check(shell->token))
+		return (shell->control = 0, free(shell->cmd_line), free_tokens(shell->token));
+}
+
+	/* t = shell->token;
+	while (t != NULL)
 	{
 		printf("lexer = %s - quote = %d - type = %d\n", t->value, t->is_expend, t->type);
 		t = t->next;
 	}*/
-}

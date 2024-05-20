@@ -7,6 +7,7 @@ SRC =	expender.c \
 		main.c \
 		parser.c \
 		shell.c \
+		syntax_check.c \
 		utils.c
 OBJ = $(SRC:.c=.o)
 CC = cc -Wall -Wextra -Werror
