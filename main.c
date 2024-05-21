@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <string.h>
 #include "functions.h"
+#include "42-libft/libft.h"
 
 int	main(int ac, char** av, char **env)
 {
@@ -9,9 +9,9 @@ int	main(int ac, char** av, char **env)
 	//signal_reciever();
 	av = (void *)av;
 	if (ac >=2)
-		return(printf("Wrong Argument"), 1);
+		return(ft_putstr_fd("Too much argument.", 2), 1);
 	if (!initialize(&shell, env))
-		return (printf("Couldn't initialize"), 1);
+		return (perror("Initialize"), 1);
 	start_shell(&shell);
     
     return (0);

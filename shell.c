@@ -6,54 +6,31 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static void	prompt(t_main *shell) // user + : + pwd + ->
-{
-	char	*tmp;
-
-	shell->prompt = ft_strdup(find_env(shell->envs, "LOGNAME")->value); //LOGNAME standart bir env mi?
-	if (!shell->prompt)
-		return ;
-	tmp = ft_strjoin(shell->prompt, ":");
-	if (!tmp)
-		return /*mesaj free*/;
-	free(shell->prompt);
-	shell->prompt = tmp;
-	tmp = ft_strjoin(shell->prompt, find_env(shell->envs, "HOME")->value);// yada direkt envden çekmek?
-	if (!tmp)
-		return /*mesaj free*/;
-	free(shell->prompt);
-	shell->prompt = tmp;
-	tmp = ft_strjoin(shell->prompt, "-> ");
-	if (!tmp)
-		return /*mesaj free*/;
-	free(shell->prompt);
-	shell->prompt = tmp;
-}
-
 static int	line_read(t_main *shell)
 {
-	prompt(shell);
 	shell->cmd_line = readline(shell->prompt);
 	if (!shell->cmd_line)
-	{
-		rl_clear_history();
-		free_env(shell);
-		exit(1);
-	}
+		return (rl_clear_history(), perror("Readline"), 2);
 	else if (!is_space(shell->cmd_line))
-		return (free(shell->cmd_line), free(shell->prompt), 0);
+		return (free(shell->cmd_line), 0);
 	add_history(shell->cmd_line);
 	return (1);
 }
 
 void	start_shell(t_main *shell)
 {
+	int i;
 	while(1)
 	{
-		if (!line_read(shell))
+		i = line_read(shell);
+		if (!i)
 			continue ;
-		lexer(shell);
-		expender(shell); //syntax kontrolu? "expanderın sonunda da olabilir"
+		else if (i == 2)
+			break;
+		if (!lexer(shell) && !expender(shell))
+			break;
+		/* main_free(shell);
+		exit(1); */
 		parser(shell, shell->token, 0);
 		//executor
 		//update veya free?

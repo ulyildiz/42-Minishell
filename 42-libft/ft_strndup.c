@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strappend.c                                     :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/08 17:33:04 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/05/21 16:32:57 by ulyildiz         ###   ########.fr       */
+/*   Created: 2024/05/20 20:28:42 by ysarac            #+#    #+#             */
+/*   Updated: 2024/05/21 16:32:25 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strappend(char *s1, char *s2, size_t len)
+char	*ft_strndup(const char *str, size_t n)
 {
-	char	*s3;
-	int		i;
-	int		j;
+	size_t	len;
+	char	*copy;
 
-	j = len;
-	i = ft_strlen(s1);
-	s3 = (char *)malloc(i + j + 1);
-	if (s3 == NULL)
-		return (free(s1), NULL);
-	ft_memcpy(s3, s1, i);
-	ft_memcpy(s3 + i, s2, j);
-	s3[i + j] = '\0';
-	free(s1);
-	return (s3);
+	len = 0;
+	while (len < n && str[len])
+		len++;
+	copy = malloc(len + 1);
+	if (copy == NULL)
+		return (NULL);
+	ft_memcpy(copy, str, len);
+	copy[len] = '\0';
+	return (copy);
 }

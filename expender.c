@@ -1,60 +1,49 @@
-#include "functions.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expender.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
+/*   Updated: 2024/05/21 16:30:46 by ulyildiz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "42-libft/libft.h"
-#include <sys/_types/_null.h>
+#include "functions.h"
 #include <stdio.h>
+#include <string.h>
+#include <sys/_types/_null.h>
 #include <unistd.h>
 
 static int	dollar_expend(t_tokens *token, t_env *env)
 {
-	t_env	*expnd_value;
-	size_t i;
-	size_t j;
+	size_t	i;
+	size_t	start;
 	char	*tmp;
+
 	if (token->is_expend == WITHIN_Q)
 		return (1);
 	i = 0;
 	tmp = ft_strdup("");
-	expnd_value = env;
-	char *deneme;
-	deneme = ft_strdup("");
 	while (token->value[i])
 	{
-		if(token->value[i] == '$' && token->value[i + 1] == '$')
+		if (token->value[i] == '$')
+			tmp = handle_dollar_sign(tmp, token->value, &i, env);
+		else
 		{
-			tmp = ft_strappend(tmp,ft_itoa(getpid()),ft_strlen(ft_itoa(getpid())));
-			i++;
+			start = i;
+			while (token->value[i] && token->value[i] != '$')
+				i++;
+			tmp = append_literal(tmp, token->value, &start, &i);
 		}
-		else if(token->value[i] == '$' && token->value[i + 1] == '?')
-		{
-			tmp = ft_strappend(tmp, "0", 1);
-			i++;
-		}
-		else if (token->value[i] == '$' && token->value[i + 1] == '\0')
-		{
-			tmp = ft_strappend(tmp,"$",1);
-			i++;
-		}
-		else if (token->value[i] == '$' && ft_isalnum(token->value[i + 1]) == 1)
-		{
-			i++;
-			j = 0;
-			while (ft_isalnum(token->value[i + j]))
-				j++;
-			deneme = (char *)ft_memcpy(deneme,&token->value[i],j);
-			deneme[i + j] = '\0';
-			expnd_value = find_env(env,deneme);
-			if (expnd_value)
-			{
-				tmp = ft_strappend(tmp,expnd_value->value,ft_strlen(expnd_value->value));
-			}
-			free(deneme);
-		}
-		i++;
+		if (!tmp)
+			return (perror("Dollar Expend"), 0);
 	}
 	free(token->value);
-	token->value = ft_strdup("");
-	token->value = ft_strappend(token->value,tmp,ft_strlen(tmp));
-	return(1);
+	token->value = tmp;
+	return (1);
 }
 
 static int	homedir_expend(t_tokens *token, t_env *env)
@@ -66,12 +55,12 @@ static int	homedir_expend(t_tokens *token, t_env *env)
 		return (1);
 	expnd_value = find_env(env, "HOME");
 	if (!expnd_value)
-		return (/*whle(1) döngüsüne çıkart*/ 0);
+		return (0);
 	tmp = token->value;
 	token->value = ft_strjoin(expnd_value->value, token->value + 1);
 	free(tmp);
-	if(!token->value)
-		return(/*malloc hatası*/0);
+	if (!token->value)
+		return (perror("Homedir expand"), 0);
 	return (1);
 }
 
@@ -87,37 +76,37 @@ static int	home_expend(t_tokens *token, t_env *env)
 	free(token->value);
 	token->value = ft_strdup(expnd_value->value);
 	if (!token->value)
-		return (/*malloc hatası*/ 0);
+		return (perror("Home expand"), 0);
 	return (1);
 }
 
-void	expender(t_main *shell)
+int	expender(t_main *shell)
 {
 	t_tokens	*t;
 
 	if (shell->control == 0)
-		return ;
+		return (1);
 	t = shell->token;
 	while (t != NULL)
 	{
 		if (ft_strnstr(t->value, "$", ft_strlen(t->value)))
 		{
 			if (!dollar_expend(t, shell->envs))
-				return ;
+				return (0);
 		}
 		else if (ft_strnstr(t->value, "~/", ft_strlen(t->value)))
 		{
 			if (!homedir_expend(t, shell->envs))
-				return ;
+				return (0);
 		}
 		else if (ft_strnstr(t->value, "~", ft_strlen(t->value)))
 		{
 			if (!home_expend(t, shell->envs))
-				return ;
+				return (0);
 		}
 		t = t->next;
 	}
-	remove_quotes(&t);
+	return (remove_quotes(&t), 1);
 }
 
 // "" içinde olanlarda sadece $ değişkenleri expendlencek

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static char	**lex_split(char *ipt)
+static char	**lex_split(char *ipt, size_t j)
 {
 	char	**arr;
 	size_t	i;
@@ -19,15 +19,16 @@ static char	**lex_split(char *ipt)
 		return (free(ipt), NULL);
 	while (i < wc)
 	{
-		while ((*ipt == 32 || (9 <= *ipt && *ipt <= 13)) && *ipt != '\0')
-			ipt++;
-		wl = wordlen(ipt);
-		arr[i] = ft_substr(ipt, 0, wl);
-		ipt += wl;
+		while ((ipt[j] == 32 || (9 <= ipt[j] && ipt[j] <= 13)) && ipt[j] != '\0')
+			j++;
+		wl = wordlen(&ipt[j]);
+		arr[i] = ft_substr(&ipt[j], 0, wl);
+		j += wl;
 		if (!arr[i])
-			return (free_double(arr), NULL);
+			return (free_double(arr), free(ipt), NULL);
 		i++;
 	}
+	free(ipt);
 	return (arr);
 }
 
@@ -93,7 +94,6 @@ static char	*handover_spaces(char *str)
 	}
 	return (new_one);
 }
-#include <errno.h> //?
 
 static void	tilde_expendable(t_tokens *token, char *cmd_line)
 {
@@ -120,21 +120,22 @@ static void	tilde_expendable(t_tokens *token, char *cmd_line)
 	}
 }
 
-void	lexer(t_main *shell)
+int	lexer(t_main *shell)
 {
 	char	**arr;
-//	t_tokens *t;
 
-	arr = lex_split(handover_spaces(shell->cmd_line));
+	arr = lex_split(handover_spaces(shell->cmd_line), 0);
 	if (!arr)
-		exit(ENOMEM);//perror? // gerekli freeler okeymi kontrol et
+		return (perror("Lexer initialize") ,0);
 	shell->token = tlist(arr);
 	if (!shell->token)
-		exit(ENOMEM);//perror?
+		return (free_double(arr), perror("Lexer token create"), 0);
+	free(arr);
 	is_expendable(shell->token);
 	tilde_expendable(shell->token, shell->cmd_line);
 	if (!token_check(shell->token))
-		return (shell->control = 0, free(shell->cmd_line), free_tokens(shell->token));
+		return (shell->control = 0, free(shell->cmd_line), free_tokens(shell->token), 0);
+	return (1);
 }
 
 	/* t = shell->token;

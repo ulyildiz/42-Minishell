@@ -1,5 +1,6 @@
 NAME = minishell
-SRC =	expender.c \
+SRC =	expender_utils.c \
+		expender.c \
 		free.c \
 		initialize.c \
 		lexer_utils.c \

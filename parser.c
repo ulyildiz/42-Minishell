@@ -55,16 +55,16 @@ static t_command *cmd_struct_create(t_tokens *token)
 	return (cmd);
 }
 
-void	parser(t_main *shell, t_tokens *t, size_t i)
+int	parser(t_main *shell, t_tokens *t, size_t i)
 {
 	t_command	*cmds;
 //	t_command *tmp;
 
 	if (shell->control == 0)
-		return ;
+		return (1);
 	cmds = cmd_struct_create(t);
 	if (!cmds)
-		return /*hata mesajı*/;
+		return (perror("Parser"), 0);
 	shell->cmd = cmds;
 	while (t)
 	{
@@ -75,13 +75,14 @@ void	parser(t_main *shell, t_tokens *t, size_t i)
 			i = 0;
 			cmds->next = cmd_struct_create(t);
 			if (!cmds->next)
-				return ; // freeler
+				return (perror("Parser"), 0); // freeler
 			cmds->next->prev = cmds;
 			cmds = cmds->next;
 			token_position(cmds, t);
 		}
 		t = t->next;	
 	}
+	return (1);
 }
 
 /* 	tmp = shell->cmd;
