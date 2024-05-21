@@ -35,7 +35,8 @@ SRC = ft_atoi.c \
 		ft_substr.c \
 		ft_tolower.c \
 		ft_toupper.c \
-		ft_strappend.c
+		ft_strappend.c \
+		ft_strndup.c
 
 OBJ = $(SRC:.c=.o)
 

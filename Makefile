@@ -8,9 +8,10 @@ SRC =	expender.c \
 		parser.c \
 		shell.c \
 		syntax_check.c \
-		utils.c
+		utils.c \
+		expender_utils.c
 OBJ = $(SRC:.c=.o)
-CC = cc -Wall -Wextra -Werror
+CC = cc # -Wall -Wextra -Werror
 LIBFT = 42-libft
 
 

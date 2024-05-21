@@ -12,7 +12,9 @@
     "errno.h": "c",
     "types.h": "c",
     "_types.h": "c",
-    "unistd.h": "c"
+    "unistd.h": "c",
+    "cstdio": "c",
+    "_errno_t.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "clang",
   "C_Cpp_Runner.cppCompilerPath": "clang++",

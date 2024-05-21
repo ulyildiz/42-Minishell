@@ -12,6 +12,8 @@ static t_token_types	identify_t(const char *arr)
 		return (HEREDOC);
 	else if (ft_strlen(arr) == 2 && ft_strnstr(arr, ">>", 2))
 		return (RDR_IN);
+	else if (ft_strlen(arr) == 2 && ft_strnstr(arr, "<>", 2))
+		return (RDR_OUT);
 	else if (ft_strlen(arr) == 1 && *arr == '>')
 		return (RDR_IN);
 	else if (*arr == '\'')
@@ -98,7 +100,7 @@ t_tokens	*tlist(char **arr)
 	i = 0;
 	linked = NULL;
 	while (arr[i])
-		if (!token_add_back(&linked, create_token(arr[i++])))
+		if (!token_add_back(&linked, create_token(arr[i++]))) // arr 0 iken hata olursa freelemk bozar mı
 			return (free_tokens(linked), NULL);
 	return (linked);
 }

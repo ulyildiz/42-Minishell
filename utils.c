@@ -1,22 +1,24 @@
 #include "defines.h"
 #include "42-libft/libft.h"
-#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
 
-void	list_add_back(t_env **lst, t_env *tmp)
+
+void list_add_back(t_env **lst, t_env *tmp)
 {
-	t_env	*last;
+    t_env *last;
 
-	if (!tmp)
-		return;
-	if (!*lst)
-		*lst = tmp;
-	else
-	{
-		last = *lst;
-		while (last->next)
-			last = last->next;
-		last->next = tmp;
-	}
+    if (!tmp)
+        return;
+    if (!*lst)
+        *lst = tmp;
+    else
+    {
+        last = *lst;
+        while (last->next)
+            last = last->next;
+        last->next = tmp;
+    }
 }
 
 size_t	wordlen(const char *str)
