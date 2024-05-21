@@ -12,26 +12,6 @@ int	is_token(t_token_types type)
 	return (0);
 }
 
-static void	remove_quotes(t_tokens **token)
-{
-	t_tokens	*tmp;
-	t_tokens	*tmp2;
-
-	tmp2 = *token;
-	while (tmp2 && tmp2->next)
-	{
-		if (tmp2->next->is_expend == NONE &&
-			(tmp2->next->type == QUOTE || tmp2->next->type == D_QUOTE))
-		{
-			tmp = tmp2->next;
-			tmp2->next = tmp->next;
-			free(tmp->value);
-			free(tmp);
-		}
-		tmp2 = tmp2->next;
-	}
-}
-
 static size_t	lenght_to_token(t_tokens *lst)
 {
 	size_t	len;
@@ -45,43 +25,80 @@ static size_t	lenght_to_token(t_tokens *lst)
 	return (len);
 }
 
+static void	token_position(t_command *cmds, t_tokens *t)
+{
+	for_prev(cmds->prev, t->type);
+	for_itself(cmds, t->type);
+}
+
 static t_command *cmd_struct_create(t_tokens *token)
 {
-	t_command	*cmd = NULL;
+	t_command	*cmd;
 	size_t		i;
 
-	if (!token || token == NULL)
+	if (!token)
 		return (NULL);
 	cmd = (t_command *)ft_calloc(1, sizeof(t_command));
 	if (!cmd)
 		return (NULL);
+	if (is_token(token->type))
+		token = token->next;
 	i = lenght_to_token(token);
 	cmd->value = (char **)malloc((i + 1) * sizeof(char *));
 	if (!cmd->value)
 		return (free(cmd), NULL);
 	cmd->value[i] = NULL;
+	cmd->where_p = NONE_P;
+	cmd->where_r = NONE_RDR;
 	cmd->infile = STDIN_FILENO;
 	cmd->outfile = STDOUT_FILENO;
 	return (cmd);
 }
 
-void	parser(t_main *shell)
+void	parser(t_main *shell, t_tokens *t, size_t i)
 {
 	t_command	*cmds;
-	t_tokens	*t;
-	size_t		i;
+//	t_command *tmp;
 
 	if (shell->control == 0)
 		return ;
-	t = shell->token;
-	remove_quotes(&t);
 	cmds = cmd_struct_create(t);
 	if (!cmds)
 		return /*hata mesajı*/;
 	shell->cmd = cmds;
 	while (t)
 	{
+		if (!is_token(t->type))
+			cmds->value[i++] = t->value;	
+		else if (is_token(t->type))
+		{
+			i = 0;
+			cmds->next = cmd_struct_create(t);
+			if (!cmds->next)
+				return ; // freeler
+			cmds->next->prev = cmds;
+			cmds = cmds->next;
+			token_position(cmds, t);
+		}
+		t = t->next;	
+	}
+}
+
+/* 	tmp = shell->cmd;
+	while (tmp)
+	{
 		i = 0;
+	//	write(2, "x", 1);
+		while (tmp->value[i])
+		{
+			printf("%s ", tmp->value[i]);
+			i++;
+		}
+		printf("where_p = %d - where_r = %d\n", tmp->where_p, tmp->where_r);
+		tmp = tmp->next;
+		
+	} */
+/* 		i = 0;
 		while (t && !is_token(t->type))
 		{
 			cmds->value[i++] = t->value;
@@ -92,27 +109,10 @@ void	parser(t_main *shell)
 		cmds->next = cmd_struct_create(t);
 		if (cmds->next)
 			cmds->next->prev = cmds;
-		cmds = cmds->next;
-	}
-}
+		cmds = cmds->next; */
 
-//	printf("-%s-\n", shell->cmd->value[1]);
 /* 	while (shell->cmd)
 	{
-		i = 0;
-	//	write(2, "x", 1);
-		while (shell->cmd->value[i])
-		{
-			printf("value[i] = %s\n ", shell->cmd->value[i]);
-			i++;
-		}
-		printf("prev = %p - next = %p\n", shell->cmd->prev, shell->cmd->next);
+		printf("value = %s - prev = %p - next = %p\n", shell->cmd->value[0], shell->cmd->prev, shell->cmd->next);
 		shell->cmd = shell->cmd->next;
-		
 	} */
-
-	/*while (shell->cmd)
-	{
-		printf("prev = %p - next = %p\n", shell->cmd->prev, shell->cmd->next);
-		shell->cmd = shell->cmd->next;
-	}*/

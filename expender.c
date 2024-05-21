@@ -54,7 +54,6 @@ static int	dollar_expend(t_tokens *token, t_env *env)
 	free(token->value);
 	token->value = ft_strdup("");
 	token->value = ft_strappend(token->value,tmp,ft_strlen(tmp));
-	//printf("%s\n",token->value);
 	return(1);
 }
 
@@ -65,7 +64,7 @@ static int	homedir_expend(t_tokens *token, t_env *env)
 
 	if (token->is_expend != NONE)
 		return (1);
-	expnd_value = find_env(env, "HOME");//find envye envin olmama durumunu ekle
+	expnd_value = find_env(env, "HOME");
 	if (!expnd_value)
 		return (/*whle(1) döngüsüne çıkart*/ 0);
 	tmp = token->value;
@@ -116,9 +115,9 @@ void	expender(t_main *shell)
 			if (!home_expend(t, shell->envs))
 				return ;
 		}
-		//printf("%s\n",t->value);
 		t = t->next;
 	}
+	remove_quotes(&t);
 }
 
 // "" içinde olanlarda sadece $ değişkenleri expendlencek

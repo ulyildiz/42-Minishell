@@ -1,19 +1,19 @@
 #include <stdlib.h>
 #include "functions.h"
 #include "42-libft/libft.h"
-
+#include <stdio.h>
 static int	init_env(t_main *shell, char **env)
 {
 	t_env	*tmp;
 	char	**s;
 	
 	shell->envs = NULL;
+	s = ft_split(*env, '=');
 	while (*env)
 	{
 		tmp = (t_env *)malloc(sizeof(t_env));
 		if (!tmp)
 			return (0);
-		s = ft_split(*env, '=');
 		if (!s)
 			return (0);
 		tmp->name = s[0];
@@ -21,6 +21,7 @@ static int	init_env(t_main *shell, char **env)
 		tmp->next = NULL;
 		list_add_back(&(shell->envs), tmp);
 		env++;
+		printf("%s - %s\n", tmp->name, tmp->value);
 	}
 	return (1);
 }

@@ -5,6 +5,7 @@ SRC =	expender.c \
 		lexer_utils.c \
 		lexer.c \
 		main.c \
+		parser_utils.c \
 		parser.c \
 		shell.c \
 		syntax_check.c \

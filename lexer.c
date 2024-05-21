@@ -23,7 +23,6 @@ static char	**lex_split(char *ipt)
 			ipt++;
 		wl = wordlen(ipt);
 		arr[i] = ft_substr(ipt, 0, wl);
-//		printf("-%s-\n", arr[i]);
 		ipt += wl;
 		if (!arr[i])
 			return (free_double(arr), NULL);
@@ -120,8 +119,6 @@ static void	tilde_expendable(t_tokens *token, char *cmd_line)
 		tmp = tmp->next;
 	}
 }
-
-#include <unistd.h>
 
 void	lexer(t_main *shell)
 {

@@ -31,7 +31,10 @@ int			is_whitespace(char c);
 //expender
 void	expender(t_main *shell);
 
-//
-void	parser(t_main *shell);
+//parser
+void	parser(t_main *shell, t_tokens *t, size_t i);
+void	remove_quotes(t_tokens **token);
+void	for_prev(t_command *cmds, t_token_types type);
+void	for_itself(t_command *cmds, t_token_types type);
 
 #endif
