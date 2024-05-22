@@ -20,7 +20,7 @@ static int	init_env(t_main *shell, char **env)
 	while (*env)
 	{
 		tmp = (t_env *)malloc(sizeof(t_env));
-		if (!tmp )
+		if (!tmp)
 			return (free_env(shell->envs), 0);
 		s = ft_split(*env, '=');
 		if (!s)
@@ -41,9 +41,9 @@ int initialize(t_main *shell, char **env)
 		return (0);
 	if (!init_env(shell, env))
 		return (free(shell->prompt), 0); 
-    shell->paths = get_cmd(env); //execvenin arkasında yapılabilir
+	shell->paths = get_cmd(env); //execvenin arkasında yapılabilir
 	if (!shell->paths)
-		return (free(shell->prompt), 0);
+		return (free(shell->prompt), free_env(shell->envs), 0);
 	shell->control = 1;
 	return (1);
 }

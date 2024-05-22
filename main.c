@@ -13,6 +13,6 @@ int	main(int ac, char** av, char **env)
 	if (!initialize(&shell, env))
 		return (perror("Initialize"), 1);
 	start_shell(&shell);
-    
+	main_free(&shell);
     return (0);
 }

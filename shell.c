@@ -29,9 +29,8 @@ void	start_shell(t_main *shell)
 			break;
 		if (!lexer(shell) && !expender(shell))
 			break;
-		/* main_free(shell);
-		exit(1); */
 		parser(shell, shell->token, 0);
+		return ;
 		//executor
 		//update veya free?
 		shell->control = 1;

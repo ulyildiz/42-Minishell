@@ -14,7 +14,6 @@
 #include "functions.h"
 #include <stdio.h>
 #include <string.h>
-#include <sys/_types/_null.h>
 #include <unistd.h>
 
 static int	dollar_expend(t_tokens *token, t_env *env)
