@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   initialize.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/23 11:33:18 by ulyildiz          #+#    #+#             */
+/*   Updated: 2024/05/23 11:33:18 by ulyildiz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include "functions.h"
 #include "42-libft/libft.h"
@@ -37,6 +49,12 @@ static int	init_env(t_main *shell, char **env)
 
 int initialize(t_main *shell, char **env)
 {
+	shell->cmd = NULL;
+	shell->token = NULL;
+	shell->paths = NULL;
+	shell->envs = NULL;
+	shell->cmd_line = NULL;
+	shell->prompt = NULL;
 	if (!prompt(shell))
 		return (0);
 	if (!init_env(shell, env))

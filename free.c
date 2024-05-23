@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/23 11:33:46 by ulyildiz          #+#    #+#             */
+/*   Updated: 2024/05/23 11:33:46 by ulyildiz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include "defines.h"
 
+#include <unistd.h>
 void	free_double(char **arr)
 {
 	size_t	i;
@@ -25,7 +38,7 @@ void	free_env(t_env *env)
 	}
 }
 
-void	free_tokens(t_tokens *tokens)
+void	free_tokens(t_tokens *tokens, int flag)
 {
 	t_tokens	*tmp;
 
@@ -33,7 +46,7 @@ void	free_tokens(t_tokens *tokens)
 	{
 		tmp = tokens;
 		tokens = tokens->next;
-		if (tmp->value)
+		if (flag == 1 && tmp->value)
 			free(tmp->value);
 		free(tmp);
 	}
@@ -52,12 +65,12 @@ void	free_command(t_command *cmd)
 		free(tmp);
 	}
 }
-
 void	main_free(t_main *shell)
 {
 	free_env(shell->envs);
-	free_tokens(shell->token);
-	free_command(shell->cmd);
+	free_tokens(shell->token, 0);
+	if (shell->cmd)
+		free_command(shell->cmd);
 	free_double(shell->paths);
 	free(shell->prompt);
 	free(shell->cmd_line);

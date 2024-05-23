@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shell.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/23 11:33:38 by ulyildiz          #+#    #+#             */
+/*   Updated: 2024/05/23 11:33:38 by ulyildiz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "functions.h"
 #include "42-libft/libft.h"
 #include <stdio.h>
@@ -30,9 +42,10 @@ void	start_shell(t_main *shell)
 		if (!lexer(shell) && !expender(shell))
 			break;
 		parser(shell, shell->token, 0);
-		return ;
+		return (rl_clear_history());
 		//executor
 		//update veya free?
 		shell->control = 1;
 	}
+
 }

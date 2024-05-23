@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   defines.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/23 11:33:58 by ulyildiz          #+#    #+#             */
+/*   Updated: 2024/05/23 11:33:58 by ulyildiz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef DEFINES_H
 #define DEFINES_H
 
@@ -54,6 +66,7 @@ typedef struct s_command
 	char				**value;
 	int					infile;
 	int					outfile;
+	int					pipefd[2];
 	t_is_pipe			where_p;
 	t_is_rdr			where_r;
 	struct s_command	*prev;

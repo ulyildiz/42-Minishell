@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
+/*   Updated: 2024/05/23 13:39:24 by ulyildiz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "functions.h"
 #include "42-libft/libft.h"
 #include <stdlib.h>
@@ -52,13 +64,13 @@ static t_command *cmd_struct_create(t_tokens *token)
 	cmd->where_r = NONE_RDR;
 	cmd->infile = STDIN_FILENO;
 	cmd->outfile = STDOUT_FILENO;
+	cmd->pipefd[0] = -1;
 	return (cmd);
 }
 
 int	parser(t_main *shell, t_tokens *t, size_t i)
 {
 	t_command	*cmds;
-//	t_command *tmp;
 
 	if (shell->control == 0)
 		return (1);
