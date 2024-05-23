@@ -5,18 +5,6 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/23 11:33:48 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/05/23 11:33:48 by ulyildiz         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expender.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
 /*   Updated: 2024/05/21 16:30:46 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
@@ -94,7 +82,6 @@ static int	home_expend(t_tokens *token, t_env *env)
 int	expender(t_main *shell)
 {
 	t_tokens	*t;
-
 	if (shell->control == 0)
 		return (1);
 	t = shell->token;

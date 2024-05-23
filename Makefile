@@ -1,5 +1,7 @@
 NAME = minishell
-SRC =	expender_utils.c \
+SRC =	executor_utils.c \
+		executor.c \
+		expender_utils.c \
 		expender.c \
 		free.c \
 		initialize.c \

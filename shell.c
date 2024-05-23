@@ -32,6 +32,7 @@ static int	line_read(t_main *shell)
 void	start_shell(t_main *shell)
 {
 	int i;
+
 	while(1)
 	{
 		i = line_read(shell);
@@ -42,8 +43,8 @@ void	start_shell(t_main *shell)
 		if (!lexer(shell) && !expender(shell))
 			break;
 		parser(shell, shell->token, 0);
-		return (rl_clear_history());
-		//executor
+		//return (rl_clear_history());
+		executor(shell);
 		//update veya free?
 		shell->control = 1;
 	}

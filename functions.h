@@ -29,7 +29,7 @@ int			token_check(t_tokens *token);
 // free
 void		free_env(t_env *shell);
 void		free_double(char **arr);
-void		free_tokens(t_tokens *tokens);
+void		free_tokens(t_tokens *tokens, size_t i);
 void		main_free(t_main *shell);
 
 // utils
@@ -52,5 +52,8 @@ int			parser(t_main *shell, t_tokens *t, size_t i);
 void		remove_quotes(t_tokens **token);
 void		for_prev(t_command *cmds, t_token_types type);
 void		for_itself(t_command *cmds, t_token_types type);
+
+// executer
+int	executor(t_main *shell);
 
 #endif

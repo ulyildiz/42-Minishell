@@ -113,6 +113,6 @@ t_tokens	*tlist(char **arr)
 	linked = NULL;
 	while (arr[i])
 		if (!token_add_back(&linked, create_token(arr[i++])))
-			return (free_tokens(linked), NULL);
+			return (free_tokens(linked, 1), NULL);
 	return (linked);
 }

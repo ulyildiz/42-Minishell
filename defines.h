@@ -64,9 +64,10 @@ typedef struct s_command
 {
 
 	char				**value;
+	char				*cmd_and_path;
 	int					infile;
 	int					outfile;
-	int					pipefd[2];
+	//int					pipefd[2];
 	t_is_pipe			where_p;
 	t_is_rdr			where_r;
 	struct s_command	*prev;
@@ -90,5 +91,11 @@ typedef struct s_main
 	char		*prompt;
 	char		*cmd_line; // komut satırından okunan satır
 }   t_main;
+
+typedef struct	s_build
+{
+    char	*name;
+    void	(*func)(t_command *cmds, t_main *shell);
+}	t_build;
 
 #endif

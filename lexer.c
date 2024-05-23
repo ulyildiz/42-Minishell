@@ -131,23 +131,23 @@ static void	tilde_expendable(t_tokens *token, char *cmd_line)
 		tmp = tmp->next;
 	}
 }
-
+#include <unistd.h>
 int	lexer(t_main *shell)
 {
 	char	**arr;
 
 	arr = lex_split(handover_spaces(shell->cmd_line), 0);
 	if (!arr)
-		return (perror("Lexer initialize") ,0);
+		return (perror("Lexer initialize"), 1);
 	shell->token = tlist(arr);
 	if (!shell->token)
-		return (free_double(arr), perror("Lexer token create"), 0);
+		return (free_double(arr), perror("Lexer token create"), 1);
 	free(arr);
 	is_expendable(shell->token);
 	tilde_expendable(shell->token, shell->cmd_line);
 	if (!token_check(shell->token))
-		return (shell->control = 0, free(shell->cmd_line), free_tokens(shell->token), 0);
-	return (1);
+		return (shell->control = 0, free(shell->cmd_line), free_tokens(shell->token, 1), 1);
+	return (0);
 }
 
 	/* t = shell->token;
