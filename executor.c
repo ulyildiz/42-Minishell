@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t>+#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:54 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/05/24 21:08:54 by ysarac	          ###   ########.fr       */
+/*   Updated: 2024/05/23 11:33:54 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+// Helper function to execute a single command
 static void official_executer(t_command *cmds, t_main *shell, int i, int in_fd, int out_fd)
 {
 	cmds->pid = fork();
@@ -27,11 +28,13 @@ static void official_executer(t_command *cmds, t_main *shell, int i, int in_fd, 
 	}
 	else if (cmds->pid == 0)
 	{
+		// Handle input redirection
 		if (in_fd != STDIN_FILENO)
 		{
 			dup2(in_fd, STDIN_FILENO);
 			close(in_fd);
 		}
+		// Handle output redirection
 		if (out_fd != STDOUT_FILENO)
 		{
 			dup2(out_fd, STDOUT_FILENO);
@@ -81,8 +84,11 @@ int executor(t_main *shell)
 			ft_putchar_fd('\n', 2);
 			return 2;
 		}
+
+		// Close the write-end of the current pipe
 		if (pipefd[1] != STDOUT_FILENO)
 			close(pipefd[1]);
+		// Update the input file descriptor for the next command
 		if (in_fd != STDIN_FILENO)
 			close(in_fd);
 		in_fd = pipefd[0];

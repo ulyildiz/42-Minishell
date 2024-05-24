@@ -42,9 +42,9 @@ void	start_shell(t_main *shell)
 			break;
 		if (!lexer(shell) && !expender(shell))
 			break;
-		//parser(shell, shell->token, 0);
+		parser(shell, shell->token, 0);
 		//return (rl_clear_history());
-		//executor(shell);
+		executor(shell);
 		//update veya free?
 		shell->control = 1;
 	}
