@@ -104,8 +104,13 @@ int	expender(t_main *shell)
 		}
 		t = t->next;
 	}
-	return (remove_quotes(&t), 1);
+	return (remove_quotes(&shell->token), 1);
 }
+/* 	while (t != NULL)
+	{
+		printf("lexer = %s - quote = %d - type = %d\n", t->value, t->is_expend, t->type);
+		t = t->next;
+	} */
 
 // "" içinde olanlarda sadece $ değişkenleri expendlencek
 // '' içinde olanlarda hiçbir değişken expendlenmeyecek
