@@ -13,6 +13,33 @@
 #include "functions.h"
 #include "42-libft/libft.h"
 #include <stdio.h>
+#include <unistd.h>
+
+#include <sys/types.h>
+#include <sys/wait.h>
+
+static void official_executer(t_command *cmds, t_main *shell, int i)
+{
+	cmds->pid = fork();
+	if (cmds->pid == -1)
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
+	else if (cmds->pid == 0)
+	{
+		close(cmds->pipefd[i % 2]);
+		dup2(cmds->pipefd [ ( i % 2 ) ^ 1 ] , STDOUT_FILENO );
+		close(cmds->pipefd[ ( i % 2 ) ^ 1 ] );
+		execve(cmds->cmd_and_path, cmds->value, shell->env_for_execve_function); // Execute ls -la
+        perror("exec ls");
+        exit(EXIT_FAILURE);
+	}
+	
+	
+
+}
+
 
 int	executor(t_main *shell)
 {
@@ -24,30 +51,20 @@ int	executor(t_main *shell)
 	cmds = shell->cmd;
 	while(cmds)
 	{
-		if (!is_builtlin(cmds))
+		if (pipe(cmds->pipefd) == -1)
+		{
+			perror("pipe");
+			exit(EXIT_FAILURE);
+		}
+		if (is_builtin(cmds, shell))
 			;
-		else if (accessibility(shell))
-			//klasik execve
-			;
+		else if (accessibility(cmds,shell))
+			official_executer(cmds, shell, i);
 		else
 			return (ft_putstr_fd("ft_sh: command not found: ", 2),
 				ft_putstr_fd(cmds->value[0], 2), ft_putchar_fd('\n', 2), 2);
+		i++;
 		cmds = cmds->next;
 	}
-
-
-	printf("\n");
-	while (tmp)
-	{
-		i = 0;
-		while (tmp->value[i])
-		{
-			printf("%s ", tmp->value[i]);
-			i++;
-		}
-		printf("where_p = %d - where_r = %d\n", tmp->where_p, tmp->where_r);
-		tmp = tmp->next;
-	}
-
 	return (1);
 }

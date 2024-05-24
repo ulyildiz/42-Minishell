@@ -55,5 +55,7 @@ void		for_itself(t_command *cmds, t_token_types type);
 
 // executer
 int	executor(t_main *shell);
+int	is_builtin(t_command *cmds, t_main *shell);
+int	accessibility(t_command *cmds, t_main *shell);
 
 #endif

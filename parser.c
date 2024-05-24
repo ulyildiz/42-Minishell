@@ -64,7 +64,7 @@ static t_command *cmd_struct_create(t_tokens *token)
 	cmd->where_r = NONE_RDR;
 	cmd->infile = STDIN_FILENO;
 	cmd->outfile = STDOUT_FILENO;
-	cmd->pipefd[0] = -1;
+	//cmd->pipefd[0] = -1;
 	return (cmd);
 }
 

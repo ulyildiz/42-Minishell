@@ -46,7 +46,7 @@ $(NAME): $(OBJ)
 	ar rc $(NAME) *.o
 
 .c.o:
-	cc 	$(FLAG) -c $< -o $@
+	@cc 	$(FLAG) -c $< -o $@
 
 clean:
 	rm -rf $(OBJ)

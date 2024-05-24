@@ -20,7 +20,7 @@ LIBFT = 42-libft
 
 $(NAME): $(OBJ)
 	@make -C $(LIBFT)
-	$(CC) $(OBJ) -lreadline $(LIBFT)/libft.a -o $(NAME)
+	@$(CC) $(OBJ) -lreadline $(LIBFT)/libft.a -o $(NAME)
 all: $(NAME)
 
 clean: 

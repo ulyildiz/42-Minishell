@@ -63,5 +63,6 @@ int initialize(t_main *shell, char **env)
 	if (!shell->paths)
 		return (free(shell->prompt), free_env(shell->envs), 0);
 	shell->control = 1;
+	shell->env_for_execve_function = env;
 	return (1);
 }

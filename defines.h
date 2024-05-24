@@ -13,6 +13,8 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
+#include <unistd.h>
+
 typedef enum	e_token_types
 {
 	CMD, // komut kısım
@@ -67,9 +69,10 @@ typedef struct s_command
 	char				*cmd_and_path;
 	int					infile;
 	int					outfile;
-	//int					pipefd[2];
+	int					pipefd[2];
 	t_is_pipe			where_p;
 	t_is_rdr			where_r;
+	pid_t				pid;
 	struct s_command	*prev;
 	struct s_command	*next;
 }	t_command;
@@ -89,6 +92,7 @@ typedef struct s_main
 	int			control;
 	char		**paths; // komutlar için parçalanmış pathler
 	char		*prompt;
+	char		**env_for_execve_function;
 	char		*cmd_line; // komut satırından okunan satır
 }   t_main;
 

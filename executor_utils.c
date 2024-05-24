@@ -1,24 +1,27 @@
 #include "functions.h"
 #include "42-libft/libft.h"
 #include <stdio.h>
+#include <unistd.h>
 int	accessibility(t_command *cmds, t_main *shell)
 {
 	size_t	i;
 	char	*tmp;
 
 	i = 0;
-	tmp = ft_strjoin("/", cmds->value[0]);
-	//if ()
+	tmp = ft_strjoin("/",cmds->value[0]); // tmp kontrol et
 	while (shell->paths[i])
-	{
-		cmds->cmd_and_path = ft_strjoin(shell->paths[i], );
-		if (/*access*/)
-			break;
-		//free();
+	{	
+		cmds->cmd_and_path = ft_strjoin(shell->paths[i],tmp);
+		if (access(cmds->cmd_and_path, X_OK) == 0)
+		{
+			free(tmp);
+			return(1);
+		}
+		free(cmds->cmd_and_path);
 		i++;
 	}
-	//free(tmp);
-	return (1);
+	free(tmp);
+	return (0);
 }
 
 void echo(t_command *cmds, t_main *shell) {
@@ -50,7 +53,7 @@ void exit_cmd(t_command *cmds, t_main *shell) {
     exit(0);
 }
 
-int	is_builtlin(t_command *cmds, t_main *shell)
+int	is_builtin(t_command *cmds, t_main *shell)
 {
 	int i;
 	static t_build commands[] = {
