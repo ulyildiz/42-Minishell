@@ -25,7 +25,7 @@ int	main(int ac, char** av, char **env)
 	if (!initialize(&shell, env))
 		return (perror("Initialize"), 1);
 	start_shell(&shell);
-	main_free(&shell);
+	//main_free(&shell);
 /* 	shell.cmd = NULL;
 	shell.cmd_line = NULL;
 	shell.envs = NULL;

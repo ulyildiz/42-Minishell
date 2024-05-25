@@ -2,6 +2,9 @@
 #include "42-libft/libft.h"
 #include <stdio.h>
 #include <unistd.h>
+
+/// joinlerin geri dönüşlerini kontrol et
+
 int	accessibility(t_command *cmds, t_main *shell)
 {
 	size_t	i;
@@ -13,9 +16,12 @@ int	accessibility(t_command *cmds, t_main *shell)
 	{	
 		cmds->cmd_and_path = ft_strjoin(shell->paths[i],tmp);
 		if (access(cmds->cmd_and_path, X_OK) == 0)
+			return(free(tmp), 1);
+		else
 		{
-			free(tmp);
-			return(1);
+			cmds->cmd_and_path = ft_strjoin(find_env(shell->envs, "PWD")->value, tmp);
+			if (access(cmds->cmd_and_path, X_OK) == 0)
+			return(free(tmp), 1);
 		}
 		free(cmds->cmd_and_path);
 		i++;
