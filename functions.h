@@ -29,11 +29,11 @@ int			token_check(t_tokens *token);
 // free
 void		free_env(t_env *shell);
 void		free_double(char **arr);
-void		free_tokens(t_tokens *tokens, size_t i);
+void		free_tokens(t_tokens *tokens, int flag);
 void		main_free(t_main *shell);
 
 // utils
-char		**get_cmd(char **env);
+char		**get_cmd(t_env *env);
 void		list_add_back(t_env **lst, t_env *tmp);
 size_t		is_space(char *s);
 t_env		*find_env(t_env *envs, char *wanted);

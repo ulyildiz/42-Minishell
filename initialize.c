@@ -55,13 +55,11 @@ int initialize(t_main *shell, char **env)
 	shell->envs = NULL;
 	shell->cmd_line = NULL;
 	shell->prompt = NULL;
+	shell->paths = NULL;
 	if (!prompt(shell))
 		return (0);
 	if (!init_env(shell, env))
 		return (free(shell->prompt), 0); 
-	shell->paths = get_cmd(env); //execvenin arkasında yapılabilir
-	if (!shell->paths)
-		return (free(shell->prompt), free_env(shell->envs), 0);
 	shell->control = 1;
 	shell->env_for_execve_function = env;
 	return (1);

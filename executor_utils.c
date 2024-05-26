@@ -3,8 +3,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-/// joinlerin geri dönüşlerini kontrol et
-
+//pwdyi pathle ekle 
 int	accessibility(t_command *cmds, t_main *shell)
 {
 	size_t	i;
@@ -12,17 +11,19 @@ int	accessibility(t_command *cmds, t_main *shell)
 
 	i = 0;
 	tmp = ft_strjoin("/",cmds->value[0]); // tmp kontrol et
+/* 	if (!tmp)
+		return (perror("Access"), ); */
 	while (shell->paths[i])
 	{	
 		cmds->cmd_and_path = ft_strjoin(shell->paths[i],tmp);
 		if (access(cmds->cmd_and_path, X_OK) == 0)
 			return(free(tmp), 1);
-		else
+/* 		else
 		{
 			cmds->cmd_and_path = ft_strjoin(find_env(shell->envs, "PWD")->value, tmp);
 			if (access(cmds->cmd_and_path, X_OK) == 0)
-			return(free(tmp), 1);
-		}
+				return(free(tmp), 1);
+		} */
 		free(cmds->cmd_and_path);
 		i++;
 	}

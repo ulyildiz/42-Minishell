@@ -22,7 +22,7 @@ static int	line_read(t_main *shell)
 {
 	shell->cmd_line = readline(shell->prompt);
 	if (!shell->cmd_line)
-		return (clear_history(), perror("Readline"), 2);
+		return (rl_clear_history(), perror("Readline"), 2);
 	else if (!is_space(shell->cmd_line))
 		return (free(shell->cmd_line), 0);
 	add_history(shell->cmd_line);
