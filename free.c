@@ -62,15 +62,16 @@ void	free_command(t_command *cmd)
 		cmd = cmd->next;
 		if (tmp->value)
 			free_double(tmp->value);
+		//free(tmp->cmd_and_path);
 		free(tmp);
 	}
 }
+
 void	main_free(t_main *shell)
 {
 	free_env(shell->envs);
 	free_tokens(shell->token, 0);
-	if (shell->cmd)
-		free_command(shell->cmd);
+	free_command(shell->cmd);
 	free_double(shell->paths);
 	free(shell->prompt);
 	free(shell->cmd_line);
