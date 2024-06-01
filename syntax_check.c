@@ -22,7 +22,7 @@ static int	pipe_check(t_tokens *t)
 		return (0);
 	else if (t->type == PIPE && (t->next->type == HEREDOC
 			|| t->next->type == RDR_IN || t->next->type == RDR_OUT
-			|| t->next->type == PIPE))
+			|| t->next->type == PIPE || t->next->type == RDR_D_IN))
 		return (0);
 	return (1);
 }
@@ -30,14 +30,14 @@ static int	pipe_check(t_tokens *t)
 static int	rdr_check(t_tokens *t)
 {
 	if ((t->type == RDR_IN || t->type == RDR_OUT
-			|| t->type == HEREDOC) && t->next == NULL)
+			|| t->type == HEREDOC || t->type == RDR_D_IN) && t->next == NULL)
 		return (0);
-	else if (t->next && ((t->type == HEREDOC || t->type == RDR_IN || t->type == RDR_OUT)
-		&& (t->next->type == HEREDOC || t->next->type == RDR_IN
-		|| t->next->type == RDR_OUT)))
+	else if (t->next && ((t->type == HEREDOC || t->type == RDR_IN || t->type == RDR_D_IN
+			|| t->type == RDR_OUT) && (t->next->type == HEREDOC || t->next->type == RDR_IN
+			|| t->next->type == RDR_OUT || t->next->type == RDR_D_IN)))
 		return (0);
 	else if ((t->type == HEREDOC || t->type == RDR_IN
-			|| t->type == RDR_OUT) && t->next->type == PIPE)
+			|| t->type == RDR_OUT || t->type == RDR_D_IN) && t->next->type == PIPE)
 		return (0);
 	return (1);
 }

@@ -43,10 +43,10 @@ void	start_shell(t_main *shell)
 		if (!lexer(shell) && !expender(shell))
 			break;
 		parser(shell, shell->token, 0);
-		rl_clear_history();
+/* 		rl_clear_history();
 		main_free(shell);
-		exit(1);
-		//executor(shell);
+		exit(1); */
+		executor(shell);
 		//update veya free?
 		shell->control = 1;
 	}

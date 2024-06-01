@@ -63,6 +63,11 @@ void	free_command(t_command *cmd)
 		if (tmp->value)
 			free_double(tmp->value);
 		//free(tmp->cmd_and_path);
+/* 		if (cmd->fd[0] != STDIN_FILENO)
+			close(cmd->fd[0]);
+		if (cmd->fd[1] != STDOUT_FILENO)
+			close(cmd->fd[1]); */
+/* 		free(tmp->cmd_and_path); */
 		free(tmp);
 	}
 }

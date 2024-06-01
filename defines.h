@@ -20,6 +20,7 @@ typedef enum	e_token_types
 	CMD, // komut kısım
 	PIPE, // pipe
 	RDR_IN, // redirection tokenleri
+	RDR_D_IN,
 	RDR_OUT,
 	HEREDOC,
 	D_QUOTE,//çift tırnak 
@@ -47,9 +48,11 @@ typedef enum	e_is_rdr
 {
 	NONE_RDR,
 	R_RDR_IN,
+	R_D_RDR_IN,
 	R_RDR_OUT,
 	R_RDR_H,
 	L_RDR_IN,
+	L_D_RDR_IN,
 	L_RDR_OUT,
 	L_RDR_H
 }	t_is_rdr;

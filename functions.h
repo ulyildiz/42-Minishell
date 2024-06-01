@@ -30,6 +30,7 @@ int			token_check(t_tokens *token);
 void		free_env(t_env *shell);
 void		free_double(char **arr);
 void		free_tokens(t_tokens *tokens, int flag);
+void	free_command(t_command *cmd);
 void		main_free(t_main *shell);
 
 // utils

@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/05/28 21:35:39 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/01 14:25:07 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 int	is_token(t_token_types type)
 {
 	if (type == PIPE || type == RDR_IN
-		|| type == RDR_OUT || type == HEREDOC)
+		|| type == RDR_OUT || type == HEREDOC
+		|| type == RDR_D_IN)
 		return (1);
 	return (0);
 }
@@ -98,7 +99,7 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 	return (1);
 }
 
-/* 	tmp = shell->cmd;
+/*  	tmp = shell->cmd;
 	while (tmp)
 	{
 		i = 0;
@@ -111,7 +112,8 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 		printf("where_p = %d - where_r = %d\n", tmp->where_p, tmp->where_r);
 		tmp = tmp->next;
 		
-	} */
+	}
+	return (1); */
 /* 		i = 0;
 		while (t && !is_token(t->type))
 		{

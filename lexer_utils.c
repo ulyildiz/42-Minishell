@@ -23,9 +23,7 @@ static t_token_types	identify_t(const char *arr)
 	else if (ft_strlen(arr) == 2 && ft_strnstr(arr, "<<", 2))
 		return (HEREDOC);
 	else if (ft_strlen(arr) == 2 && ft_strnstr(arr, ">>", 2))
-		return (RDR_IN);
-	else if (ft_strlen(arr) == 2 && ft_strnstr(arr, "<>", 2))
-		return (RDR_OUT);
+		return (RDR_D_IN);
 	else if (ft_strlen(arr) == 1 && *arr == '>')
 		return (RDR_IN);
 	else if (*arr == '\'')

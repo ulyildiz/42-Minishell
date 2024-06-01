@@ -41,6 +41,8 @@ void	for_prev(t_command *cmds, t_token_types type)
 		cmds->where_p = R_P;
 	else if (type == RDR_IN)
 		cmds->where_r = R_RDR_IN;
+	else if (type == RDR_D_IN)
+		cmds->where_r = R_D_RDR_IN;
 	else if (type == RDR_OUT)
 		cmds->where_r = R_RDR_OUT;
 	else if (type == HEREDOC)
@@ -53,6 +55,8 @@ void	for_itself(t_command *cmds, t_token_types type)
 		cmds->where_p = L_P;
 	else if (type == RDR_IN)
 		cmds->where_r = L_RDR_IN;
+	else if (type == RDR_D_IN)
+		cmds->where_r = L_D_RDR_IN;
 	else if (type == RDR_OUT)
 		cmds->where_r = L_RDR_OUT;
 	else if (type == HEREDOC)
