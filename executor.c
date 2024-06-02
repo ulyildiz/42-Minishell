@@ -17,53 +17,72 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <fcntl.h>
+#include <errno.h>
 
-/* void	redirection_touch(t_command *cmd, t_command *lst) //?
+int	opens(t_command *cmd, t_command *lst, int flag)
 {
-	if (lst->where_r == L_RDR_IN)
-		cmd->fd[1] = open(lst->value[0], O_CREAT | O_APPEND | O_WRONLY, 777); // -1 kontrol?
-	else if (lst->where_r == L_D_RDR_IN)
-		cmd->fd[1] = open(lst->value[0], O_CREAT | O_TRUNC | O_WRONLY, 777);
-	else if (lst->where_r == L_RDR_OUT)
-		cmd->fd[0] = open(lst->value[0], O_RDONLY);
-} */
+	int	i;
 
-/* void	set_fd(t_command *cmd, t_command **lst)
+	i = 0;
+	if (lst->where_r == R_RDR_IN || lst->where_r == L_RDR_IN)
+		i = open(lst->value[0], O_CREAT | O_TRUNC | O_WRONLY, 0777);
+	else if (lst->where_r == R_D_RDR_IN || lst->where_r == L_D_RDR_IN)
+		i = open(lst->value[0], O_CREAT | O_APPEND | O_WRONLY, 0777);
+	else if (lst->where_r == R_RDR_OUT || lst->where_r == L_RDR_OUT)
+		i = open(lst->value[0], O_RDONLY);
+	printf("open = %d\n", i);
+	if (flag == 1)
+	{
+		if (lst->where_r == L_RDR_IN)
+			cmd->fd[1] = i;
+		else if (lst->where_r == L_D_RDR_IN)
+			cmd->fd[1] = i;
+		else if (lst->where_r == L_RDR_OUT)
+			cmd->fd[0] = i;
+	}
+	return (i);
+}
+
+int	redirection_touch (t_command *cmd, t_command **lst)
 {
-	int	fd[2];
-	
+	int	i;
+
+	i = 0;
 	while ((*lst) && ((*lst)->where_r == R_D_RDR_IN || (*lst)->where_r == R_RDR_IN
 		|| (*lst)->where_r == R_RDR_OUT))
 	{
-		open((*lst)->value[0], O_CREAT);
+		if (opens(cmd, *lst, 0) == -1)
+			return (0);
 		(*lst) = (*lst)->next;
 	}
 	if ((*lst) && (*lst)->where_r == L_D_RDR_IN || (*lst)->where_r == L_RDR_IN
 		|| (*lst)->where_r == L_RDR_OUT)
-		redirection_touch(cmd, *lst);
-	else if (cmd->where_p == R_P || cmd->where_p == B_P)
 	{
-		if (pipe(fd) == -1)
-			return ;
-		cmd->fd[1] = fd[1];
-		cmd->next->fd[0] = fd[0];
-		printf("cmd = %s - fd %d\n", cmd->value[0] ,cmd->fd[1]);
+		if (opens(cmd, *lst, 1) == -1)
+			return (0);
 	}
-	if (cmd->prev)
-			close(cmd->prev->fd[1]);
-} */
+	return (1);
+}
 
 int	set_fd(t_command *cmd)
 {
 	int fd[2];
-	
+	t_command	*lst;
+
 	while (cmd)
-	{	if (/*rdr*/)
-			;
+	{
+		lst = cmd;
+		if (cmd->where_r != NONE_RDR)
+		{
+			lst = lst->next;
+			if (!redirection_touch(cmd, &lst))
+				return (perror("While opening a file"), 0);
+			cmd = lst;
+		}
 		else if (cmd->where_p == R_P || cmd->where_p == B_P)
 		{
 			if (pipe(fd) == -1)
-				return (0);
+				return (perror("Pipe"), 0);
 			cmd->fd[1] = fd[1];
 			cmd->next->fd[0] = fd[0];
 		}
@@ -84,12 +103,12 @@ static void official_executer(t_command *cmds, t_main *shell, int i)
 	{
 		if (i == 0 && cmds->fd[1] != STDOUT_FILENO)
 			dup2(cmds->fd[1], 1);
-		else if (i > 0 && cmds->next)
+/* 		else if (i > 0 && cmds->next)
 		{
 			close(cmds->prev->fd[1]);
 			dup2(cmds->fd[0], 0);
 			dup2(cmds->fd[1], 1);
-		}
+		} */
 		else if (i > 0)
 		{
 			close(cmds->prev->fd[1]);
@@ -106,6 +125,7 @@ static void official_executer(t_command *cmds, t_main *shell, int i)
 int executor(t_main *shell)
 {
 	t_command	*cmds;
+
 	int i = 0;
 
 	cmds = shell->cmd;
