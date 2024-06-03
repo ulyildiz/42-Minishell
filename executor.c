@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:54 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/01 18:37:18 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/03 13:10:36 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,17 @@
 #include <fcntl.h>
 #include <errno.h>
 
-int	opens(t_command *cmd, t_command *lst, int flag)
+static int	opens(t_command *cmd, t_command *lst, int flag)
 {
 	int	i;
 
 	i = 0;
-	if (lst->where_r == R_RDR_IN || lst->where_r == L_RDR_IN)
+	if (lst->prev->where_r == R_RDR_IN || lst->where_r == L_RDR_IN)
 		i = open(lst->value[0], O_CREAT | O_TRUNC | O_WRONLY, 0777);
-	else if (lst->where_r == R_D_RDR_IN || lst->where_r == L_D_RDR_IN)
+	else if (lst->prev->where_r == R_D_RDR_IN || lst->where_r == L_D_RDR_IN)
 		i = open(lst->value[0], O_CREAT | O_APPEND | O_WRONLY, 0777);
 	else if (lst->where_r == R_RDR_OUT || lst->where_r == L_RDR_OUT)
-		i = open(lst->value[0], O_RDONLY);
-	printf("open = %d\n", i);
+		i = open(lst->value[0], O_RDONLY, 0666);
 	if (flag == 1)
 	{
 		if (lst->where_r == L_RDR_IN)
@@ -40,10 +39,11 @@ int	opens(t_command *cmd, t_command *lst, int flag)
 		else if (lst->where_r == L_RDR_OUT)
 			cmd->fd[0] = i;
 	}
+	printf("open = %d\n", i);
 	return (i);
 }
 
-int	redirection_touch (t_command *cmd, t_command **lst)
+static int	redirection_touch (t_command *cmd, t_command **lst)
 {
 	int	i;
 
@@ -64,9 +64,9 @@ int	redirection_touch (t_command *cmd, t_command **lst)
 	return (1);
 }
 
-int	set_fd(t_command *cmd)
+static int	set_fd(t_command *cmd)
 {
-	int fd[2];
+	int			fd[2];
 	t_command	*lst;
 
 	while (cmd)
@@ -103,12 +103,6 @@ static void official_executer(t_command *cmds, t_main *shell, int i)
 	{
 		if (i == 0 && cmds->fd[1] != STDOUT_FILENO)
 			dup2(cmds->fd[1], 1);
-/* 		else if (i > 0 && cmds->next)
-		{
-			close(cmds->prev->fd[1]);
-			dup2(cmds->fd[0], 0);
-			dup2(cmds->fd[1], 1);
-		} */
 		else if (i > 0)
 		{
 			close(cmds->prev->fd[1]);
@@ -125,7 +119,6 @@ static void official_executer(t_command *cmds, t_main *shell, int i)
 int executor(t_main *shell)
 {
 	t_command	*cmds;
-
 	int i = 0;
 
 	cmds = shell->cmd;
@@ -152,82 +145,8 @@ int executor(t_main *shell)
 			close(cmds->prev->fd[0]);
 		i++;
 		cmds = cmds->next;
+		while (cmds && !(cmds->where_p == L_P || cmds->where_p == B_P))
+			cmds = cmds->next;
 	}
-	return (free_double(shell->paths), 1);
+	return (free_double(shell->paths), free_command(shell->cmd), 1);
 }
-
-/* // Helper function to execute a single command
-static void official_executer(t_command *cmds, t_main *shell, int in_fd, int out_fd)
-{
-	cmds->pid = fork();
-	if (cmds->pid == -1)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
-	else if (cmds->pid == 0)
-	{
-		// Handle input redirection
-		if (in_fd != STDIN_FILENO)
-		{
-			dup2(in_fd, STDIN_FILENO);
-			close(in_fd);
-		}
-		// Handle output redirection
-		if (out_fd != STDOUT_FILENO)
-		{
-			dup2(out_fd, STDOUT_FILENO);
-			close(out_fd);
-		}
-		execve(cmds->cmd_and_path, cmds->value, shell->env_for_execve_function);
-		perror("execve");
-		exit(EXIT_FAILURE);
-	}
-	waitpid(cmds->pid, NULL, 0);
-} */
-/* 
-	int i = 0;
-	while (shell->paths[i])
-		printf("%s\n", shell->paths[i++]); */
-
-/* 		if (cmds->next)
-		{
-			if (pipe(pipefd) == -1)
-			{
-				perror("pipe");
-				exit(EXIT_FAILURE);
-			}
-		}
-		else
-		{
-			pipefd[1] = STDOUT_FILENO;
-		}
-
-		if (is_builtin(cmds, shell))
-		{
-			// Handle built-in command
-			// Implement your built-in command handling logic here
-		}
-		else if (accessibility(cmds, shell))
-		{
-			official_executer(cmds, shell, in_fd, pipefd[1]);
-		}
-		else
-		{
-			ft_putstr_fd("ft_sh: command not found: ", 2);
-			ft_putstr_fd(cmds->value[0], 2);
-			ft_putchar_fd('\n', 2);
-			return 2;
-		}
-
-		// Close the write-end of the current pipe
-		if (pipefd[1] != STDOUT_FILENO)
-			close(pipefd[1]);
-		// Update the input file descriptor for the next command
-		if (in_fd != STDIN_FILENO)
-			close(in_fd);
-		in_fd = pipefd[0];
-
-		waitpid(cmds->pid, NULL, 0);
-		cmds = cmds->next;
-	} */

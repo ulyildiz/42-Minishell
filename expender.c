@@ -82,6 +82,7 @@ static int	home_expend(t_tokens *token, t_env *env)
 int	expender(t_main *shell)
 {
 	t_tokens	*t;
+
 	if (shell->control == 0)
 		return (1);
 	t = shell->token;
@@ -102,15 +103,17 @@ int	expender(t_main *shell)
 			if (!home_expend(t, shell->envs))
 				return (0);
 		}
+
+		t = t->next;
+	}
+ 	t = shell->token;
+ 	while (t != NULL)
+	{
+		printf("lexer = %s - quote = %d - type = %d\n", t->value, t->is_expend, t->type);
 		t = t->next;
 	}
 	return (remove_quotes(&shell->token), 1);
 }
-/* 	while (t != NULL)
-	{
-		printf("lexer = %s - quote = %d - type = %d\n", t->value, t->is_expend, t->type);
-		t = t->next;
-	} */
 
 // "" içinde olanlarda sadece $ değişkenleri expendlencek
 // '' içinde olanlarda hiçbir değişken expendlenmeyecek

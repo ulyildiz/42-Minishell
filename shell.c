@@ -40,13 +40,14 @@ void	start_shell(t_main *shell)
 			continue ;
 		else if (i == 2)
 			break;
-		if (!lexer(shell) && !expender(shell))
+		if (!lexer(shell))
 			break;
-		parser(shell, shell->token, 0);
-/* 		rl_clear_history();
-		main_free(shell);
-		exit(1); */
-		executor(shell);
+		if (!expender(shell))
+			break;
+		if (!parser(shell, shell->token, 0))
+			break;
+/* 		if (!executor(shell))
+			break; */
 		//update veya free?
 		shell->control = 1;
 	}

@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:26 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/05/23 11:33:26 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/03 18:27:54 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static char	**lex_split(char *ipt, size_t j)
+static char	**lex_split(char *ipt, size_t j, size_t len, size_t len2)
 {
 	char	**arr;
 	size_t	i;
@@ -25,26 +25,24 @@ static char	**lex_split(char *ipt, size_t j)
 	if (!ipt)
 		return (NULL);
 	i = 0;
-	wc = wordcount(ipt);
+	wc = len - len2;
 	arr = (char **)ft_calloc(1 + wc, sizeof(char *));
 	if (!arr)
 		return (free(ipt), NULL);
-	while (i < wc)
+	while (i <= wc)
 	{
-		while ((ipt[j] == 32 || (9 <= ipt[j] && ipt[j] <= 13)) && ipt[j] != '\0')
-			j++;
-		wl = wordlen(&ipt[j]);
+		wl = ft_strlen(&ipt[j]);
 		arr[i] = ft_substr(&ipt[j], 0, wl);
-		j += wl;
 		if (!arr[i])
-			return (free_double(arr), free(ipt), NULL);
+			return (free(ipt), free_double(arr), NULL);
+		j += wl + 1;
 		i++;
 	}
 	free(ipt);
 	return (arr);
 }
 
-static size_t	find_spacelen(char	*s)
+static size_t	find_len(char *s)
 {
 	size_t	i;
 	size_t	len;
@@ -66,43 +64,42 @@ static size_t	find_spacelen(char	*s)
 	return (len);
 }
 
-static char	*handover_spaces(char *str)
+static char	*handover_spaces(char *str, size_t *len)
 {
 	char	*new_one;
-	size_t	len;
+	size_t	i;
 
-	len = find_spacelen(str);
-	new_one = ft_calloc(len + 1, sizeof(char));
+	i = find_len(str);
+	new_one = ft_calloc(i + 1, sizeof(char));
 	if (!new_one)
 		return (NULL);
-	len = 0;
 	while (*str)
 	{
 		if (*str == '|')
 		{
-			new_one[len++] = ' ';
-			new_one[len++] = *str++;
-			new_one[len++] = ' ';
+			new_one[(*len)++] = '\0';
+			new_one[(*len)++] = *str++;
+			new_one[(*len)++] = '\0';
 			while (*str == '|')
-				new_one[len++] = *str++;
+				new_one[(*len)++] = *str++;
 		}
 		else if (*str == '<' || *str == '>')
 		{
-			new_one[len++] = ' ';
-			new_one[len++] = *str++;
+			new_one[(*len)++] = '\0';
+			new_one[(*len)++] = *str++;
 			if (*str == '<' || *str == '>')
-				new_one[len++] = *str++;
-			new_one[len++] = ' ';
+				new_one[(*len)++] = *str++;
+			new_one[(*len)++] = '\0';
 		}
 		else if (*str == '\"' || *str == '\'')
 		{
-			new_one[len++] = ' ';
-			new_one[len++] = *str++;
-			new_one[len++] = ' ';
+			new_one[(*len)++] = '\0';
+			new_one[(*len)++] = *str++;
+			new_one[(*len)++] = '\0';
 
 		}
 		else
-			new_one[len++] = *str++;
+			new_one[(*len)++] = *str++;
 	}
 	return (new_one);
 }
@@ -135,24 +132,31 @@ static void	tilde_expendable(t_tokens *token, char *cmd_line)
 int	lexer(t_main *shell)
 {
 	char	**arr;
+	size_t	len;
 
-	arr = lex_split(handover_spaces(shell->cmd_line), 0);
+	len = 0;
+	arr = lex_split(handover_spaces(shell->cmd_line, &len), 0, len, ft_strlen(shell->cmd_line));
 	if (!arr)
-		return (perror("Lexer initialize"), 1);
+		return (perror("Lexer initialize"), 0);
 	shell->token = tlist(arr);
 	if (!shell->token)
-		return (free_double(arr), perror("Lexer token create"), 1);
+		return (free_double(arr), perror("Lexer token create"), 0);
 	free(arr);
 	is_expendable(shell->token);
 	tilde_expendable(shell->token, shell->cmd_line);
 	if (!token_check(shell->token))
 		return (shell->control = 0, free(shell->cmd_line), free_tokens(shell->token, 1), 1);
-	return (0);
-}
-
-	/* t = shell->token;
+/* 	t_tokens *t;
+	t = shell->token;
 	while (t != NULL)
 	{
-		printf("lexer = %s - quote = %d - type = %d\n", t->value, t->is_expend, t->type);
+		printf("lexer = %s - expendable = %d - type = %d\n", t->value, t->is_expend, t->type);
 		t = t->next;
-	}*/
+	} */
+	return (1);
+}
+
+/* 	int i = 0;
+	while (arr[i])
+		printf("-%s-\n", arr[i++]); */
+

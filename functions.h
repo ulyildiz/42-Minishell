@@ -30,7 +30,7 @@ int			token_check(t_tokens *token);
 void		free_env(t_env *shell);
 void		free_double(char **arr);
 void		free_tokens(t_tokens *tokens, int flag);
-void	free_command(t_command *cmd);
+void		free_command(t_command *cmd);
 void		main_free(t_main *shell);
 
 // utils
@@ -55,8 +55,9 @@ void		for_prev(t_command *cmds, t_token_types type);
 void		for_itself(t_command *cmds, t_token_types type);
 
 // executer
-int	executor(t_main *shell);
-int	is_builtin(t_command *cmds, t_main *shell);
-int	accessibility(t_command *cmds, t_main *shell);
+int			executor(t_main *shell);
+int			is_builtin(t_command *cmds, t_main *shell);
+int			accessibility(t_command *cmds, t_main *shell);
+void		close_fd(t_command *cmds, int flag);
 
 #endif

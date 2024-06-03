@@ -24,6 +24,13 @@ int	accessibility(t_command *cmds, t_main *shell)
 	return (0);
 }
 
+void	close_fd(t_command *cmds, int flag)
+{
+	if (!cmds)
+		return ;
+
+}
+
 void echo(t_command *cmds, t_main *shell) {
     printf("echo command\n");
 }
@@ -55,18 +62,18 @@ void exit_cmd(t_command *cmds, t_main *shell) {
 
 int	is_builtin(t_command *cmds, t_main *shell)
 {
-	int i;
-	static t_build commands[] = {
-    {"echo", echo},
-    {"cd", cd},
-    {"pwd", pwd},
-    {"env", env},
-    {"unset", unset},
-    {"export", export},
-    {"exit", exit_cmd},
-    {NULL, NULL}
+	int				i;
+	static t_build	commands[] = {
+	{"echo", echo},
+	{"cd", cd},
+	{"pwd", pwd},
+	{"env", env},
+	{"unset", unset},
+	{"export", export},
+	{"exit", exit_cmd},
+	{NULL, NULL}
 	};
-	
+
 	i = 0;
 	while (commands[i].name)
 	{

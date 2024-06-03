@@ -99,7 +99,7 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 	return (1);
 }
 
-/*  	tmp = shell->cmd;
+/* 	tmp = shell->cmd;
 	while (tmp)
 	{
 		i = 0;
@@ -112,8 +112,8 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 		printf("where_p = %d - where_r = %d\n", tmp->where_p, tmp->where_r);
 		tmp = tmp->next;
 		
-	}
-	return (1); */
+	} */
+
 /* 		i = 0;
 		while (t && !is_token(t->type))
 		{
