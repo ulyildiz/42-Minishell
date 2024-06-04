@@ -20,7 +20,7 @@ int	is_token(t_token_types type)
 {
 	if (type == PIPE || type == RDR_IN
 		|| type == RDR_OUT || type == HEREDOC
-		|| type == RDR_D_IN)
+		|| type == RDR_D_IN || type == QUOTE || type == D_QUOTE)
 		return (1);
 	return (0);
 }
@@ -70,6 +70,16 @@ static t_command *cmd_struct_create(t_tokens *token)
 	return (cmd);
 }
 
+static char	*cleanup_value(t_tokens *t)
+{
+	char	*end_value;
+
+
+
+
+	return (end_value);
+}
+
 int	parser(t_main *shell, t_tokens *t, size_t i)
 {
 	t_command	*cmds;
@@ -98,8 +108,7 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 	}
 	return (1);
 }
-
-/* 	tmp = shell->cmd;
+/* 	t_command *tmp = shell->cmd;
 	while (tmp)
 	{
 		i = 0;
@@ -111,7 +120,6 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 		}
 		printf("where_p = %d - where_r = %d\n", tmp->where_p, tmp->where_r);
 		tmp = tmp->next;
-		
 	} */
 
 /* 		i = 0;

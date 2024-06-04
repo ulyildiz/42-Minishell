@@ -153,7 +153,7 @@ int	is_builtin(t_command *cmds, t_main *shell)
 	i = 0;
 	while (commands[i].name)
 	{	
-		if (ft_strncmp(ft_strlower(cmds->value[0]), commands[i].name, ft_strlen(cmds->value[0])) == 0) 
+		if (ft_strncmp(cmds->value[0], commands[i].name, ft_strlen(cmds->value[0])) == 0) 
 		{
             commands[i].func(cmds, shell);
             return (1);

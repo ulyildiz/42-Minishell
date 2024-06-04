@@ -28,8 +28,8 @@ static char	**lex_split(char *ipt, size_t j, size_t len, size_t len2)
 	wc = len - len2;
 	arr = (char **)ft_calloc(1 + wc, sizeof(char *));
 	if (!arr)
-		return (free(ipt), NULL);
-	while (i <= wc)
+		return (free(ipt), 	write(2, "a", 1),NULL);
+	while (i < wc)
 	{
 		wl = ft_strlen(&ipt[j]);
 		arr[i] = ft_substr(&ipt[j], 0, wl);
@@ -128,14 +128,16 @@ static void	tilde_expendable(t_tokens *token, char *cmd_line)
 		tmp = tmp->next;
 	}
 }
-#include <unistd.h>
+
 int	lexer(t_main *shell)
 {
+	char	*ar;
 	char	**arr;
 	size_t	len;
 
 	len = 0;
-	arr = lex_split(handover_spaces(shell->cmd_line, &len), 0, len, ft_strlen(shell->cmd_line));
+	ar = handover_spaces(shell->cmd_line, &len);
+	arr = lex_split(ar, 0, ++len, ft_strlen(shell->cmd_line));
 	if (!arr)
 		return (perror("Lexer initialize"), 0);
 	shell->token = tlist(arr);
@@ -146,13 +148,13 @@ int	lexer(t_main *shell)
 	tilde_expendable(shell->token, shell->cmd_line);
 	if (!token_check(shell->token))
 		return (shell->control = 0, free(shell->cmd_line), free_tokens(shell->token, 1), 1);
-/* 	t_tokens *t;
+	t_tokens *t;
 	t = shell->token;
 	while (t != NULL)
 	{
 		printf("lexer = %s - expendable = %d - type = %d\n", t->value, t->is_expend, t->type);
 		t = t->next;
-	} */
+	}
 	return (1);
 }
 

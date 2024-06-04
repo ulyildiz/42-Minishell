@@ -44,8 +44,8 @@ void	start_shell(t_main *shell)
 			break;
 		if (!expender(shell))
 			break;
-		if (!parser(shell, shell->token, 0))
-			break;
+/* 		if (!parser(shell, shell->token, 0))
+			break; */
 /* 		if (!executor(shell))
 			break; */
 		//update veya free?
@@ -53,3 +53,10 @@ void	start_shell(t_main *shell)
 	}
 
 }
+
+/* 		while(shell->token)
+		{
+			printf("%s -", shell->token->value);
+			shell->token = shell->token->next;
+		}
+		printf("\n"); */
