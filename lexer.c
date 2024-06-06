@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:26 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/06 12:32:00 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:57:38 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char	**lex_split(char *ipt, size_t j, size_t len, size_t len2)
 	i = 0;
 	wc = len - len2;
 //	printf("%zu - %zu\n", len, len2);
-	arr = (char **)ft_calloc(-1, sizeof(char *));
+	arr = (char **)ft_calloc(1 + wc, sizeof(char *));
 	if (!arr)
 		return (free(ipt), NULL);
 	while (i < wc && j < len) // j < len (ls | cat > "a") gibi durumlarda oluşan ekstra tokenstrucutnı engelliyor onu freelediğinden emin ol
@@ -169,7 +169,7 @@ int	lexer(t_main *shell)
 	}
 	return (1);
 }
-y
+
 /* 	int i = 0;
 	while (arr[i])
 		printf("-%s-\n", arr[i++]); */

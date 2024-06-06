@@ -16,6 +16,37 @@
 #include <string.h>
 #include <unistd.h>
 
+size_t	expended_len(char *old_v, char *expend_v, char *orj_expend_v)
+{
+	size_t	len;
+
+	len = ft_strlen(old_v) - ft_strlen(orj_expend_v) + ft_strlen(expend_v);
+	return (len);
+}
+
+char	*expend_placement(char *old_value, char *expend_value, char *orj_expend_v)
+{
+	char	*new_value;
+	size_t	i;
+	size_t	j;
+	size_t	f;
+
+	i = 0;
+	j = 0;
+	f = 0;
+	new_value = ft_calloc(1 + expended_len(old_value, expend_value, orj_expend_v), sizeof(char));
+	if (!new_value)
+		return (0);
+	while(old_value[f] && !ft_strnstr(&old_value[f], orj_expend_v, ft_strlen(orj_expend_v)))
+		new_value[i++] = old_value[f++];
+	while (expend_value[j])
+		new_value[i++] = expend_value[j++];
+	f += ft_strlen(orj_expend_v);
+	while(old_value[f])
+		new_value[i++] = old_value[f++];
+	free(old_value);
+	return (new_value);
+}
 static int	dollar_expend(t_tokens *token, t_env *env)
 {
 	size_t	i;
@@ -55,45 +86,16 @@ static int	homedir_expend(t_tokens *token, t_env *env)
 	expnd_value = find_env(env, "HOME");
 	if (!expnd_value)
 		return (0);
-	tmp = token->value;
-	token->value = ft_strjoin(expnd_value->value, token->value + 1);
+	tmp = ft_strjoin(expnd_value->value, "/");
+	if (!tmp)
+		return (perror("Homedir expend"), 0);
+	token->value = expend_placement(token->value, tmp, "~/");
 	free(tmp);
 	if (!token->value)
 		return (perror("Homedir expand"), 0);
 	return (1);
 }
 
-size_t	expended_len(char *old_v, char *expend_v, char *orj_expend_v)
-{
-	size_t	len;
-
-	len = ft_strlen(old_v) - ft_strlen(orj_expend_v) + ft_strlen(expend_v);
-	return (len);
-}
-
-char	*expend_placement(char *old_value, char *expend_value, char *orj_expend_v)
-{
-	char	*new_value;
-	size_t	i;
-	size_t	j;
-
-	i = -1;
-	j = -1;
-	new_value = ft_calloc(1 + expended_len(old_value, expend_value, orj_expend_v), sizeof(char));
-	if (!new_value)
-		return (0);
-	while(!ft_strnstr(&old_value[++i], expend_value, ft_strlen(expend_value)))
-	{
-		new_value[i] = old_value[i];
-		//i++;
-	}
-	while (expend_value[j])
-		new_value[i++] = expend_value[j++];
-	while()
-		new_value[i + j] = old_value[];
-	
-	return (new_value);
-}
 
 static int	home_expend(t_tokens *token, t_env *env)
 {
@@ -104,8 +106,7 @@ static int	home_expend(t_tokens *token, t_env *env)
 	expnd_value = find_env(env, "HOME");
 	if (!expnd_value)
 		return (0);
-	free(token->value);
-	token->value = ft_strdup(expnd_value->value);
+	token->value = expend_placement(token->value, expnd_value->value, "~");
 	if (!token->value)
 		return (perror("Home expand"), 0);
 	return (1);
@@ -118,7 +119,7 @@ int	expender(t_main *shell)
 	if (shell->control == 0)
 		return (1);
 	t = shell->token;
-	while (t != NULL)
+	while (t)
 	{
 		if (ft_strnstr(t->value, "$", ft_strlen(t->value)))
 		{
@@ -139,13 +140,3 @@ int	expender(t_main *shell)
 	}
 	return (/* remove_quotes(&shell->token), */ 1);
 }
-
-/*  t = shell->token;
- 	while (t != NULL)
-	{
-		printf("lexer = %s - quote = %d - type = %d\n", t->value, t->is_expend, t->type);
-		t = t->next;
-	} */
-// "" içinde olanlarda sadece $ değişkenleri expendlencek
-// '' içinde olanlarda hiçbir değişken expendlenmeyecek
-// ~ ve ~/ işaretleri expendlencek mi? expend sırasında sağı ve solu whitespace olmalı
