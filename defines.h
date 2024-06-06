@@ -70,8 +70,6 @@ typedef struct s_command
 
 	char				**value;
 	char				*cmd_and_path;
-	int					infile;
-	int					outfile;
 	int					fd[2];
 	t_is_pipe			where_p;
 	t_is_rdr			where_r;

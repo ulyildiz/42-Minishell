@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:26 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/03 18:27:54 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/06 12:32:00 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 #include "42-libft/libft.h"
 #include <stdlib.h>
 #include <stdio.h>
+
+size_t	null_escape(char *str, size_t len, size_t index)
+{
+	if (index < len && str[index] == '\0')
+		return (2);
+	return (1);
+}
 
 static char	**lex_split(char *ipt, size_t j, size_t len, size_t len2)
 {
@@ -26,22 +33,27 @@ static char	**lex_split(char *ipt, size_t j, size_t len, size_t len2)
 		return (NULL);
 	i = 0;
 	wc = len - len2;
-	arr = (char **)ft_calloc(1 + wc, sizeof(char *));
+//	printf("%zu - %zu\n", len, len2);
+	arr = (char **)ft_calloc(-1, sizeof(char *));
 	if (!arr)
-		return (free(ipt), 	write(2, "a", 1),NULL);
-	while (i < wc)
+		return (free(ipt), NULL);
+	while (i < wc && j < len) // j < len (ls | cat > "a") gibi durumlarda oluşan ekstra tokenstrucutnı engelliyor onu freelediğinden emin ol
 	{
 		wl = ft_strlen(&ipt[j]);
 		arr[i] = ft_substr(&ipt[j], 0, wl);
 		if (!arr[i])
 			return (free(ipt), free_double(arr), NULL);
-		j += wl + 1;
+		j += wl + null_escape(ipt, len, j + wl + 1);
+//		printf("arr[%zu] = %s\n j = %zu\n", i, arr[i], j);
 		i++;
 	}
 	free(ipt);
 	return (arr);
 }
-
+//ls \0|\0 cat \0>\0 \0"\0a\0"\0\0
+//ls | cat > "a"
+//ls | cat > a
+//ls \0|\0 cat \0>\0 a\0
 static size_t	find_len(char *s)
 {
 	size_t	i;
@@ -152,12 +164,12 @@ int	lexer(t_main *shell)
 	t = shell->token;
 	while (t != NULL)
 	{
-		printf("lexer = %s - expendable = %d - type = %d\n", t->value, t->is_expend, t->type);
+		printf("lexer = %s/%zu - expendable = %d - type = %d\n", t->value, ft_strlen(t->value), t->is_expend, t->type);
 		t = t->next;
 	}
 	return (1);
 }
-
+y
 /* 	int i = 0;
 	while (arr[i])
 		printf("-%s-\n", arr[i++]); */

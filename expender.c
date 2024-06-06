@@ -63,6 +63,38 @@ static int	homedir_expend(t_tokens *token, t_env *env)
 	return (1);
 }
 
+size_t	expended_len(char *old_v, char *expend_v, char *orj_expend_v)
+{
+	size_t	len;
+
+	len = ft_strlen(old_v) - ft_strlen(orj_expend_v) + ft_strlen(expend_v);
+	return (len);
+}
+
+char	*expend_placement(char *old_value, char *expend_value, char *orj_expend_v)
+{
+	char	*new_value;
+	size_t	i;
+	size_t	j;
+
+	i = -1;
+	j = -1;
+	new_value = ft_calloc(1 + expended_len(old_value, expend_value, orj_expend_v), sizeof(char));
+	if (!new_value)
+		return (0);
+	while(!ft_strnstr(&old_value[++i], expend_value, ft_strlen(expend_value)))
+	{
+		new_value[i] = old_value[i];
+		//i++;
+	}
+	while (expend_value[j])
+		new_value[i++] = expend_value[j++];
+	while()
+		new_value[i + j] = old_value[];
+	
+	return (new_value);
+}
+
 static int	home_expend(t_tokens *token, t_env *env)
 {
 	t_env	*expnd_value;
@@ -105,7 +137,7 @@ int	expender(t_main *shell)
 		}
 		t = t->next;
 	}
-	return (remove_quotes(&shell->token), 1);
+	return (/* remove_quotes(&shell->token), */ 1);
 }
 
 /*  t = shell->token;

@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:38 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/05/23 11:33:38 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/06 10:49:12 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	start_shell(t_main *shell)
 			break;
 		if (!lexer(shell))
 			break;
-		if (!expender(shell))
-			break;
+/* 		if (!expender(shell))
+			break; */
 /* 		if (!parser(shell, shell->token, 0))
 			break; */
 /* 		if (!executor(shell))
