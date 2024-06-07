@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/06 14:20:41 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/07 18:03:37 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 
 int	is_token(t_tokens *t)
 {
-	if (t->type != CMD && (t->is_expend != WITHIN_D_Q
-		&& t->is_expend != WITHIN_Q))
+	if (t->type == PIPE /* && (t->is_expend != WITHIN_D_Q
+		&& t->is_expend != WITHIN_Q) */)
 		return (1);
 	return (0);
 }
@@ -27,20 +27,74 @@ int	is_token(t_tokens *t)
 static size_t	lenght_to_token(t_tokens *lst)
 {
 	size_t	len;
+	size_t	i;
 
 	len = 0;
 	while (lst && !is_token(lst))
 	{
-		lst = lst->next;
-		len++;
+		i = 0;
+		while (lst && lst->is_expend != NONE)
+		{
+			lst = lst->next;
+			if (lst && lst->is_expend == NONE)
+				len++;
+		}
+		while (lst && lst->value[i])
+		{
+			while (lst->value[i] && is_whitespace(lst->value[i]))
+				i++;
+			while(lst->value[i] && !is_whitespace(lst->value[i]))
+				i++;
+			len++;
+			while (lst->value[i] && is_whitespace(lst->value[i]))
+				i++;
+		}
+		if (lst)
+			lst = lst->next;
 	}
 	return (len);
 }
 
-static void	token_position(t_command *cmds, t_tokens *t)
+size_t	rdr_count(char **str)
 {
-	for_prev(cmds->prev, t->type);
-	for_itself(cmds, t->type);
+	size_t	len;
+	size_t	i;
+
+	i = 0;
+	len = 0;
+	while(str[i])
+	{
+		if (ft_strncmp(str[i], "<", 1) && ft_strlen(str[i] ) == 1)
+			len++;
+		if (ft_strncmp(str[i], ">", 1) && ft_strlen(str[i]) == 1)
+			len++;
+		if (ft_strncmp(str[i], ">>", 2) && ft_strlen(str[i]) == 2)
+			len++;
+		i++;
+	}
+	return (len);
+}
+
+static int	rdr_position(t_command *cmds)
+{
+	char	**tmp;
+	size_t	i = 0;
+	size_t	j = 0;
+	size_t	f = 0;
+
+	cmds->rdrs = malloc((rdr_count(cmds->value) + 1) * sizeof(char *));
+	if (!cmds->rdrs)
+		return (0);
+	printf("%zu\n", rdr_count(cmds->value));
+/* 	while (cmds->value[i])
+	{
+		if (is_rdr())
+		{
+			
+		}
+		i++;
+	}	 */
+	return (1);
 }
 
 static t_command *cmd_struct_create(t_tokens *token)
@@ -67,24 +121,38 @@ static t_command *cmd_struct_create(t_tokens *token)
 	return (cmd);
 }
 
-static char	*cleanup_value(t_tokens *t)
+/* static char	*cleanup_value(t_command *cmds, t_tokens **t)
 {
 	char	*end_value;
 
-
-/* 	if (t->is_expend == WITHIN_D_Q || t->is_expend == WITHIN_Q)
+	end_value = ft_strdup("");
+ 	if (*t && ((*t)->is_expend == WITHIN_D_Q || (*t)->is_expend == WITHIN_Q))
 	{
-		end_value
+		end_value = ft_strappend(end_value, (*t)->value, ft_strlen((*t)->value));
+		(*t) = (*t)->next;
 	}
-	else */
-	
-
 	return (end_value);
+} */
+
+int	arrange_split(t_command *cmds, t_tokens *t, size_t *i)
+{
+	char	**ar;
+	size_t	j;
+
+	j = 0;
+	//printf("t->v %s\n", t->value);
+	ar = ft_split(t->value, ' ');
+	if (!ar)
+		return (0);
+	while (ar[j])
+		cmds->value[(*i)++] = ar[j++];
+	return (free(ar), 1);
 }
 
 int	parser(t_main *shell, t_tokens *t, size_t i)
 {
 	t_command	*cmds;
+	size_t		j = 0;
 
 	if (shell->control == 0)
 		return (1);
@@ -94,9 +162,14 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 	shell->cmd = cmds;
 	while (t)
 	{
-		if (!is_token(t))
-			cmds->value[i++] = t->value;	
-		else if (is_token(t))
+		if (t && !is_token(t))
+		{
+			if (t->is_expend == NONE)
+				arrange_split(cmds, t, &i);
+			else
+				cmds->value[i++] = ft_strdup(t->value);
+		}
+		else if (t && is_token(t))
 		{
 			i = 0;
 			cmds->next = cmd_struct_create(t);
@@ -104,23 +177,26 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 				return (perror("Parser"), 0); // freeler
 			cmds->next->prev = cmds;
 			cmds = cmds->next;
-			token_position(cmds, t);
 		}
-		t = t->next;	
+		if (t)
+			t = t->next;
 	}
-	t_command *tmp = shell->cmd;
+	//rdr_position(cmds->prev);
+	//cmds->next = NULL;
+/* 	t_command *tmp = shell->cmd;
 	while (tmp)
 	{
 		i = 0;
-	//	write(2, "x", 1);
 		while (tmp->value[i])
 		{
-			printf("%s", tmp->value[i]);
+			printf("/%s/", tmp->value[i]);
 			i++;
 		}
-		printf("/where_p = %d - where_r = %d\n", tmp->where_p, tmp->where_r);
-		tmp = tmp->next;
-	}
+		printf("\n");
+		//printf("/where_p = %d - where_r = %d\n", tmp->where_p, tmp->where_r);
+		if(tmp)
+			tmp = tmp->next;
+	} */
 	return (1);
 }
 

@@ -15,6 +15,10 @@
 
 #include <unistd.h>
 
+typedef int	t_bool;
+#define true 1
+#define false 0
+
 typedef enum	e_token_types
 {
 	CMD, // komut kısım
@@ -67,8 +71,8 @@ typedef struct	s_tokens
 
 typedef struct s_command
 {
-
 	char				**value;
+	char				**rdrs;
 	char				*cmd_and_path;
 	int					fd[2];
 	t_is_pipe			where_p;

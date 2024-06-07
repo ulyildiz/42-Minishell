@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:38 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/06 15:38:30 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:03:17 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	line_read(t_main *shell)
 void	start_shell(t_main *shell)
 {
 	int i;
-
+	t_tokens *t;
 	while(1)
 	{
 		i = line_read(shell);
@@ -42,10 +42,18 @@ void	start_shell(t_main *shell)
 			break;
 		if (!lexer(shell))
 			break;
-		if (!expender(shell))
+ 		if (!expender(shell))
 			break;
-/* 		if (!parser(shell, shell->token, 0))
-			break; */
+		//printf("\n");
+		t = shell->token;
+		while(t)
+		{
+			printf("-%s-\n", t->value);
+			t = t->next;
+		}
+		printf("\n");
+ 		if (!parser(shell, shell->token, 0))
+			break;
 /* 		if (!executor(shell))
 			break; */
 		//update veya free?
@@ -53,10 +61,3 @@ void	start_shell(t_main *shell)
 	}
 
 }
-
-/* 		while(shell->token)
-		{
-			printf("%s -", shell->token->value);
-			shell->token = shell->token->next;
-		}
-		printf("\n"); */

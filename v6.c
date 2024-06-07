@@ -95,28 +95,24 @@ char **lexer(const char *input, int *count) {
         if (input[k] == '|' && !in_single_quotes && !in_double_quotes) {
             if (j > 0) {
                 token[j] = '\0';
-                append_node(&head, token, STRING);
+                append_node(&head, token, PIPE);
                 j = 0;
             }
             append_node(&head, "|", PIPE);
         } else if (input[k] == '\'' && !in_double_quotes) {
-            if (j > 0) {
-                token[j] = '\0';
-                append_node(&head, token, STRING);
-                j = 0;
-            }
             in_single_quotes = !in_single_quotes;
-            append_node(&head, "\'", SINGLE_QUOTE);
+            token[j++] = input[k];
         } else if (input[k] == '"' && !in_single_quotes) {
+            in_double_quotes = !in_double_quotes;
+            token[j++] = input[k];
+        } else if ((input[k] != ' ' || in_single_quotes || in_double_quotes)) {
+            token[j++] = input[k];
+        } else {
             if (j > 0) {
                 token[j] = '\0';
                 append_node(&head, token, STRING);
                 j = 0;
             }
-            in_double_quotes = !in_double_quotes;
-            append_node(&head, "\"", DOUBLE_QUOTE);
-        } else {
-            token[j++] = input[k];
         }
     }
 
@@ -132,15 +128,16 @@ char **lexer(const char *input, int *count) {
 }
 
 int main() {
-    const char *input = "echo \"| merhaba |\" > \'echo\' \'\"\' | echo \' \" \' ";
+    const char *input = "echo   d \"mer\" d ";
     int count;
     char **tokens = lexer(input, &count);
 
     for (int i = 0; i < count; i++) {
-        printf("Token[%d]: -%s-\n", i, tokens[i]);
+        printf("Token[%d]: %s\n", i, tokens[i]);
         free(tokens[i]);
     }
 
     free(tokens);
     return 0;
 }
+

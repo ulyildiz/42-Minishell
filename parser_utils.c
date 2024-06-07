@@ -10,26 +10,49 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "defines.h"
+#include "functions.h"
 #include <stdlib.h>
+
+int	need_remove(char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while(s[i])
+	{
+		if (!is_whitespace(s[i++]))
+			return (0);
+	}
+	return (1);
+}
 
 void	remove_quotes(t_tokens **token)
 {
 	t_tokens	*tmp;
-	t_tokens	*tmp2;
+	t_tokens	*prev;
+	t_tokens	*current;
 
-	tmp2 = *token;
-	while (tmp2 && tmp2->next)
+	current = *token;
+	prev = NULL;
+	while (current)
 	{
-		if (tmp2->next->is_expend == NONE &&
-			(tmp2->next->type == QUOTE || tmp2->next->type == D_QUOTE))
+		if (need_remove(current->value) || (current->is_expend == NONE &&
+			(current->type == QUOTE || current->type == D_QUOTE)))
 		{
-			tmp = tmp2->next;
-			tmp2->next = tmp->next;
+			tmp = current;
+			if (prev)
+				prev->next = current->next;
+			else
+				*token = current->next;
+			current = current->next;
 			free(tmp->value);
 			free(tmp);
 		}
-		tmp2 = tmp2->next;
+		else
+		{
+			prev = current;
+			current = current->next;
+		}
 	}
 }
 

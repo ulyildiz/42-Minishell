@@ -40,14 +40,9 @@ static int	token_add_back(t_tokens **list, t_tokens *new)
 	tmp = *list;
 	if (!new)
 		return (0);
-	if (!*list)
-		*list = new;
-	else
-	{
-		while (tmp->next != NULL)
-			tmp = tmp->next;
-		tmp->next = new;
-	}
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	tmp->next = new;
 	return (1);
 }
 
@@ -96,21 +91,22 @@ static t_tokens	*create_token(char	*arr)
 	new = (t_tokens *)ft_calloc(1, sizeof(t_tokens));
 	if (!new)
 		return (NULL);
-	new->value = arr;
+	new->value = ft_strdup(arr);
 	new->is_expend = NONE;
 	new->type = identify_t(arr);
 	return (new);
 }
 
-t_tokens	*tlist(char **arr)
+int	tlist(t_tokens **head, char *arr)
 {
-	t_tokens	*linked;
-	size_t		i;
+	t_tokens	*new;
 
-	i = 0;
-	linked = NULL;
-	while (arr[i])
-		if (!token_add_back(&linked, create_token(arr[i++])))
-			return (free_tokens(linked, 1), NULL);
-	return (linked);
+	new = create_token(arr);
+	if (!new)
+		return (0);
+	if (!*head)
+		*head = new;
+	else
+		token_add_back(head, new);
+	return (1);
 }

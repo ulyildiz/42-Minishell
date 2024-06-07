@@ -22,7 +22,7 @@ void		start_shell(t_main *shell);
 
 // lexer
 int			lexer(t_main *shell);
-t_tokens	*tlist(char **arr);
+int			tlist(t_tokens **head, char *arr);
 void		is_expendable(t_tokens *lst);
 int			token_check(t_tokens *token);
 

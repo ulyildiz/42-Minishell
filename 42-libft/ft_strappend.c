@@ -22,7 +22,7 @@ char	*ft_strappend(char *s1, char *s2, size_t len)
 	i = ft_strlen(s1);
 	s3 = (char *)malloc(i + j + 1);
 	if (s3 == NULL)
-		return (free(s1), NULL);
+		return (free(s1), NULL);//double free var mı bak
 	ft_memcpy(s3, s1, i);
 	ft_memcpy(s3 + i, s2, j);
 	s3[i + j] = '\0';
