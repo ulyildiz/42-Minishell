@@ -6,7 +6,7 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:38 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/07 16:03:17 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/08 16:16:53 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,17 @@ void	start_shell(t_main *shell)
  		if (!expender(shell))
 			break;
 		//printf("\n");
-		t = shell->token;
+/* 		t = shell->token;
 		while(t)
 		{
 			printf("-%s-\n", t->value);
 			t = t->next;
 		}
-		printf("\n");
+		printf("\n"); */
  		if (!parser(shell, shell->token, 0))
 			break;
-/* 		if (!executor(shell))
-			break; */
+		if (!executor(shell))
+			break;
 		//update veya free?
 		shell->control = 1;
 	}

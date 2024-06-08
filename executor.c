@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:54 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/03 13:10:36 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/08 16:37:23 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,8 @@ int executor(t_main *shell)
 
 	cmds = shell->cmd;
 	if (shell->control == 0)
-		return (0);
-	if ((cmds->where_p != NONE_P || cmds->where_r != NONE_RDR)
-		&& !set_fd(cmds))
+		return (1);
+	if ((cmds->where_p != NONE_P) && !set_fd(cmds))
 		return (0);
 	shell->paths = get_cmd(shell->envs);
 	if (!shell->paths)
@@ -145,8 +144,6 @@ int executor(t_main *shell)
 			close(cmds->prev->fd[0]);
 		i++;
 		cmds = cmds->next;
-		while (cmds && !(cmds->where_p == L_P || cmds->where_p == B_P))
-			cmds = cmds->next;
 	}
 	return (free_double(shell->paths), free_command(shell->cmd), 1);
 }

@@ -6,7 +6,7 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/07 18:03:37 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/08 16:16:13 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,31 @@ size_t	rdr_count(char **str)
 	len = 0;
 	while(str[i])
 	{
-		if (ft_strncmp(str[i], "<", 1) && ft_strlen(str[i] ) == 1)
+		if (!ft_strncmp(str[i], "<", 1) && ft_strlen(str[i]) == 1)
 			len++;
-		if (ft_strncmp(str[i], ">", 1) && ft_strlen(str[i]) == 1)
+		else if (!ft_strncmp(str[i], ">", 1) && ft_strlen(str[i]) == 1)
 			len++;
-		if (ft_strncmp(str[i], ">>", 2) && ft_strlen(str[i]) == 2)
+		else if (!ft_strncmp(str[i], ">>", 2) && ft_strlen(str[i]) == 2)
 			len++;
 		i++;
 	}
+	len *= 2;
 	return (len);
+}
+int is_rdr(char *strs)
+{
+	int i;
+	
+	i = 0;
+	while (strs[i])
+	{
+		if(strs[i] == '<')
+			return (1);
+		if(strs[i] == '>')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 static int	rdr_position(t_command *cmds)
@@ -82,18 +98,40 @@ static int	rdr_position(t_command *cmds)
 	size_t	j = 0;
 	size_t	f = 0;
 
-	cmds->rdrs = malloc((rdr_count(cmds->value) + 1) * sizeof(char *));
-	if (!cmds->rdrs)
-		return (0);
-	printf("%zu\n", rdr_count(cmds->value));
-/* 	while (cmds->value[i])
-	{
-		if (is_rdr())
-		{
-			
-		}
+	while(cmds->value[i])
 		i++;
-	}	 */
+	tmp = ft_calloc(i - rdr_count(cmds->value) + 1 , sizeof(char *));
+	if (!tmp)
+		return(0);
+	cmds->rdrs = ft_calloc((rdr_count(cmds->value) + 1) , sizeof(char *));
+	if (!cmds->rdrs)
+		return (free_double(tmp), 0);
+	j = 0;
+	i = 0;
+ 	while (cmds->value[i])
+	{
+		if (is_rdr(cmds->value[i]) == 1)
+		{
+			cmds->rdrs[j++] = cmds->value[i++];
+			cmds->rdrs[j++] = cmds->value[i];
+		}
+		else
+			tmp[f++] = cmds->value[i];
+		i++;
+	}
+	free(cmds->value);
+	cmds->value = tmp;
+/* 	i = 0;
+	while (cmds->rdrs[i])
+	{
+		printf("rds:: %s\n",cmds->rdrs[i++]);
+	}
+	i = 0;
+	while (cmds->value[i])
+	{
+		printf("value:: %s\n",cmds->value[i++]);
+	}
+	 */
 	return (1);
 }
 
@@ -171,19 +209,22 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 		}
 		else if (t && is_token(t))
 		{
+			rdr_position(cmds);
 			i = 0;
 			cmds->next = cmd_struct_create(t);
 			if (!cmds->next)
 				return (perror("Parser"), 0); // freeler
+			cmds->where_p = R_P;
 			cmds->next->prev = cmds;
 			cmds = cmds->next;
+			cmds->where_p = L_P;
 		}
 		if (t)
 			t = t->next;
 	}
-	//rdr_position(cmds->prev);
+	rdr_position(cmds);
 	//cmds->next = NULL;
-/* 	t_command *tmp = shell->cmd;
+	t_command *tmp = shell->cmd;
 	while (tmp)
 	{
 		i = 0;
@@ -193,10 +234,10 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 			i++;
 		}
 		printf("\n");
-		//printf("/where_p = %d - where_r = %d\n", tmp->where_p, tmp->where_r);
+		printf("/where_p = %d - where_r = %d\n", tmp->where_p, tmp->where_r);
 		if(tmp)
 			tmp = tmp->next;
-	} */
+	}
 	return (1);
 }
 
