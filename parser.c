@@ -6,7 +6,7 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/08 16:16:13 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/08 18:06:16 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ static t_command *cmd_struct_create(t_tokens *token)
 	cmd->where_r = NONE_RDR;
 	cmd->fd[0] = STDIN_FILENO;
 	cmd->fd[1] = STDOUT_FILENO;
+	cmd->rdrs = NULL;
 	return (cmd);
 }
 

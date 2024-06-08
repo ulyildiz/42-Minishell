@@ -6,7 +6,7 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:54 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/08 16:37:23 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/08 18:33:32 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,65 +19,59 @@
 #include <fcntl.h>
 #include <errno.h>
 
-static int	opens(t_command *cmd, t_command *lst, int flag)
+static int	opens(t_command *cmd, size_t *i)
 {
-	int	i;
+	int	fd;
 
-	i = 0;
-	if (lst->prev->where_r == R_RDR_IN || lst->where_r == L_RDR_IN)
-		i = open(lst->value[0], O_CREAT | O_TRUNC | O_WRONLY, 0777);
-	else if (lst->prev->where_r == R_D_RDR_IN || lst->where_r == L_D_RDR_IN)
-		i = open(lst->value[0], O_CREAT | O_APPEND | O_WRONLY, 0777);
-	else if (lst->where_r == R_RDR_OUT || lst->where_r == L_RDR_OUT)
-		i = open(lst->value[0], O_RDONLY, 0666);
-	if (flag == 1)
+	fd = 0;
+	if (ft_strncmp(cmd->rdrs[*i],">>",2))
 	{
-		if (lst->where_r == L_RDR_IN)
-			cmd->fd[1] = i;
-		else if (lst->where_r == L_D_RDR_IN)
-			cmd->fd[1] = i;
-		else if (lst->where_r == L_RDR_OUT)
-			cmd->fd[0] = i;
+		fd = open(cmd->rdrs[(++(*i))], O_CREAT | O_APPEND | O_WRONLY, 0777);
+		cmd->fd[1] = fd;
 	}
-	printf("open = %d\n", i);
-	return (i);
+	else if (ft_strncmp(cmd->rdrs[*i],"<",1))
+	{
+		fd = open(cmd->rdrs[(++(*i))], O_RDONLY, 0777);
+		cmd->fd[0] = fd;
+	}
+	else if (ft_strncmp(cmd->rdrs[*i],">",1))
+	{
+		fd = open(cmd->rdrs[(++(*i))], O_CREAT | O_TRUNC | O_WRONLY, 0777);
+		cmd->fd[1] = fd;
+	}
+	/* printf("open = %d\n", i); */
+	return (*i);
 }
 
-static int	redirection_touch (t_command *cmd, t_command **lst)
+static int	redirection_touch (t_command *cmd)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	while ((*lst) && ((*lst)->where_r == R_D_RDR_IN || (*lst)->where_r == R_RDR_IN
-		|| (*lst)->where_r == R_RDR_OUT))
+	while (cmd->rdrs[i])
 	{
-		if (opens(cmd, *lst, 0) == -1)
+		if (opens(cmd, &i) == -1)
 			return (0);
-		(*lst) = (*lst)->next;
 	}
-	if ((*lst) && (*lst)->where_r == L_D_RDR_IN || (*lst)->where_r == L_RDR_IN
+/* 	if ((*lst) && (*lst)->where_r == L_D_RDR_IN || (*lst)->where_r == L_RDR_IN
 		|| (*lst)->where_r == L_RDR_OUT)
 	{
 		if (opens(cmd, *lst, 1) == -1)
 			return (0);
-	}
+	} */
 	return (1);
 }
 
 static int	set_fd(t_command *cmd)
 {
 	int			fd[2];
-	t_command	*lst;
 
 	while (cmd)
 	{
-		lst = cmd;
-		if (cmd->where_r != NONE_RDR)
+		if (cmd->rdrs != NULL)
 		{
-			lst = lst->next;
-			if (!redirection_touch(cmd, &lst))
+			if (!redirection_touch(cmd))
 				return (perror("While opening a file"), 0);
-			cmd = lst;
 		}
 		else if (cmd->where_p == R_P || cmd->where_p == B_P)
 		{
