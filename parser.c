@@ -98,6 +98,8 @@ static int	rdr_position(t_command *cmds)
 	size_t	j = 0;
 	size_t	f = 0;
 
+	if(rdr_count(cmds->value) <= 0)
+		return(0);
 	while(cmds->value[i])
 		i++;
 	tmp = ft_calloc(i - rdr_count(cmds->value) + 1 , sizeof(char *));
@@ -225,7 +227,7 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 	}
 	rdr_position(cmds);
 	//cmds->next = NULL;
-	t_command *tmp = shell->cmd;
+/* 	t_command *tmp = shell->cmd;
 	while (tmp)
 	{
 		i = 0;
@@ -238,7 +240,7 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 		printf("/where_p = %d - where_r = %d\n", tmp->where_p, tmp->where_r);
 		if(tmp)
 			tmp = tmp->next;
-	}
+	} */
 	return (1);
 }
 
