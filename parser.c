@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/08 18:06:16 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/10 12:41:47 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,8 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 	}
 	rdr_position(cmds);
 	//cmds->next = NULL;
+	return (1);
+}
 /* 	t_command *tmp = shell->cmd;
 	while (tmp)
 	{
@@ -241,8 +243,6 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 		if(tmp)
 			tmp = tmp->next;
 	} */
-	return (1);
-}
 
 /* 		i = 0;
 		while (t && !is_token(t->type))

@@ -14,30 +14,51 @@
 #include "42-libft/libft.h"
 #include <unistd.h>
 
-static int	pipe_check(t_tokens *t)
+static void	syntax_message(int flag)
 {
-	if (t->type == PIPE && t->next == NULL)
+	if (flag == 1)
+		ft_putstr_fd("Syntax error near unexpected pipe token\n", 2);
+	else if (flag == 2)
+		ft_putstr_fd("Syntax error near unexpected redirection token\n", 2);
+	else if (flag == 3)
+		ft_putstr_fd("Syntax error unclosed quote.\n", 2);
+}
+
+static int	pipe_check(t_tokens *t, size_t len)
+{
+	if (t->type != PIPE)
+		return (1);
+	if (t->next == NULL)
 		return (0);
-	else if (t->type == CMD && ft_strnstr(t->value, "|", ft_strlen(t->value)))
+	else if (t->next->type == PIPE)
 		return (0);
-	else if (t->type == PIPE && (t->next->type == HEREDOC
-			|| t->next->type == RDR_IN || t->next->type == RDR_OUT
-			|| t->next->type == PIPE || t->next->type == RDR_D_IN))
+	else if (len == 0 && t->next != NULL)
 		return (0);
 	return (1);
 }
 //  '<>' '><' düşün
 static int	rdr_check(t_tokens *t)
 {
-	if ((t->type == RDR_IN || t->type == RDR_OUT
-			|| t->type == HEREDOC || t->type == RDR_D_IN) && t->next == NULL)
-		return (0);
-	else if (t->next && ((t->type == HEREDOC || t->type == RDR_IN || t->type == RDR_D_IN
-			|| t->type == RDR_OUT) && (t->next->type == HEREDOC || t->next->type == RDR_IN
-			|| t->next->type == RDR_OUT || t->next->type == RDR_D_IN)))
-		return (0);
-	else if ((t->type == HEREDOC || t->type == RDR_IN
-			|| t->type == RDR_OUT || t->type == RDR_D_IN) && t->next->type == PIPE)
+	
+	return (1);
+}
+
+static int	quote_check(t_tokens *t)
+{
+	size_t	d_q;
+	size_t	q;
+
+	d_q = 0;
+	q = 0;
+	while (t)
+	{
+		if (t->type == D_QUOTE)	
+			d_q++;
+		else if (t->type == QUOTE)
+			q++;
+		t = t->next;
+	}
+	if (d_q % 2 != 0 || q % 2 != 0)
 		return (0);
 	return (1);
 }
@@ -45,16 +66,21 @@ static int	rdr_check(t_tokens *t)
 int	token_check(t_tokens *token)
 {
 	t_tokens	*t;
+	size_t	len;
+	size_t	len2;
 
 	t = token;
+	len = t_lst_size(t);
+	len2 = len;
+	if (!quote_check(t))
+		return (syntax_message(3), 0);
 	while (t)
 	{
-		if (!pipe_check(t))
-			return (ft_putstr_fd(
-					"Syntax error near unexpected pipe token\n", 2), 0);
+		if (!pipe_check(t, len - len2))
+			return (syntax_message(1), 0);
 		else if (!rdr_check(t))
-			return (ft_putstr_fd(
-					"Syntax error near unexpected redirection token\n", 2), 0);
+			return (syntax_message(2), 0);
+		len2--;
 		t = t->next;
 	}
 	return (1);

@@ -112,3 +112,16 @@ int	is_whitespace(char c)
 		return (1);
 	return (0);
 }
+
+size_t	t_lst_size(t_tokens *t)
+{
+	size_t	len;
+
+	len = 0;
+	while (t)
+	{
+		len++;
+		t = t->next;
+	}
+	return (len);
+}

@@ -13,8 +13,6 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
-#include <unistd.h>
-
 typedef int	t_bool;
 #define true 1
 #define false 0
@@ -77,7 +75,7 @@ typedef struct s_command
 	int					fd[2];
 	t_is_pipe			where_p;
 	t_is_rdr			where_r;
-	pid_t				pid;
+	int					pid;
 	struct s_command	*prev;
 	struct s_command	*next;
 }	t_command;
@@ -91,14 +89,16 @@ typedef struct	s_env
 
 typedef struct s_main
 {
-	t_env		*envs; //envler için
-	t_tokens	*token; //token listesi (whitespacelere ve tokenlere göre splitli
+	t_env		*envs;
+	t_tokens	*token;
 	t_command	*cmd;
+	t_bool		in_s;
+	t_bool		in_d;
 	int			control;
-	char		**paths; // komutlar için parçalanmış pathler
+	char		**paths;
 	char		*prompt;
 	char		**env_for_execve_function;
-	char		*cmd_line; // komut satırından okunan satır
+	char		*cmd_line;
 }   t_main;
 
 typedef struct	s_build

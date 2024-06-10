@@ -65,8 +65,7 @@ int set_fd(t_command *cmd)
             if (pipe(fd) == -1)
                 return (perror("pipe"), 0);
             cmd->fd[1] = fd[1];
-            if (cmd->next)
-                cmd->next->fd[0] = fd[0];
+            cmd->next->fd[0] = fd[0];
         }
         cmd = cmd->next;
     }
@@ -105,16 +104,17 @@ static void official_executer(t_command *cmds, t_main *shell, int i)
 int executor(t_main *shell)
 {
     t_command *cmds;
-    int i = 0;
+    int i;
 
+	i = 0;
     cmds = shell->cmd;
     if (shell->control == 0)
-        return 1;
-    if (!set_fd(cmds))
-        return 0;
+        return (1);
     shell->paths = get_cmd(shell->envs);
     if (!shell->paths)
-        return 0; // close resources if needed
+        return (0);
+    if (!set_fd(cmds))
+        return (free_double(shell->paths), 0);
     while (cmds)
     {
         if (is_builtin(cmds, shell))

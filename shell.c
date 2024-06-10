@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:38 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/08 16:16:53 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/10 23:08:52 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	start_shell(t_main *shell)
 {
 	int i;
 	t_tokens *t;
+
 	while(1)
 	{
 		i = line_read(shell);
