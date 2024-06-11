@@ -4,8 +4,5 @@
 
 int main(void)
 {   
-    printf("%d\n",chdir(".."));
-    printf("%d\n",chdir("-"));
-    system("cd -");
-    return(1);
+
 }

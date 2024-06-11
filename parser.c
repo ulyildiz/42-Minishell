@@ -6,7 +6,7 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/08 18:06:16 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/11 08:15:21 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,6 @@ int	arrange_split(t_command *cmds, t_tokens *t, size_t *i)
 	size_t	j;
 
 	j = 0;
-	//printf("t->v %s\n", t->value);
 	ar = ft_split(t->value, ' ');
 	if (!ar)
 		return (0);

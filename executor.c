@@ -99,7 +99,6 @@ static void official_executer(t_command *cmds, t_main *shell, int i)
         perror("execve");
         exit(EXIT_FAILURE);
     }
-    waitpid(cmds->pid, NULL, 0);
 }
 
 int executor(t_main *shell)
@@ -135,5 +134,6 @@ int executor(t_main *shell)
         i++;
         cmds = cmds->next;
     }
+    wait(NULL);
     return (free_double(shell->paths), free_command(shell->cmd), 1);
 }
