@@ -24,7 +24,7 @@ void		start_shell(t_main *shell);
 int			lexer(t_main *shell);
 int			tlist(t_tokens **head, char *arr);
 void		is_expendable(t_tokens *lst);
-int			token_check(t_tokens *token);
+int			token_check(t_main *shell);
 void		listing_squote(t_main *shell, char *tmp, size_t *j, char *token);
 void		listing_dquote(t_main *shell, char *tmp, size_t *j, char *token);
 void		listing_token(t_main *shell, char *tmp, size_t *j, char *token);

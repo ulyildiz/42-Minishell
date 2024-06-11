@@ -15,22 +15,28 @@ static int opens(t_command *cmd, size_t *i)
     {
         fd = open(cmd->rdrs[++(*i)], O_CREAT | O_APPEND | O_WRONLY, 0777);
         if (fd == -1)
-            return (perror("open"), -1);
+            return (perror(cmd->rdrs[++(*i)]), -1);
+		if (cmd->fd[1] != STDOUT_FILENO)
+			close(cmd->fd[1]);
         cmd->fd[1] = fd;
     }
     else if (!ft_strncmp(cmd->rdrs[*i], "<", 1))
     {
         fd = open(cmd->rdrs[++(*i)], O_RDONLY, 0777);
         if (fd == -1)
-            return (perror("open"), -1);
-        cmd->fd[0] = fd;
+            return (perror(cmd->rdrs[++(*i)]), -1);
+        if (cmd->fd[0] != STDOUT_FILENO)
+			close(cmd->fd[0]);
+		cmd->fd[0] = fd;
     }
     else if (!ft_strncmp(cmd->rdrs[*i], ">", 1))
     {
         fd = open(cmd->rdrs[++(*i)], O_CREAT | O_TRUNC | O_WRONLY, 0777);
         if (fd == -1)
-            return (perror("open"), -1);
-        cmd->fd[1] = fd;
+            return (perror(cmd->rdrs[++(*i)]), -1);
+		if (cmd->fd[1] != STDOUT_FILENO)
+			close(cmd->fd[1]);
+	    cmd->fd[1] = fd;
     }
     return (0);
 }
@@ -55,17 +61,17 @@ int set_fd(t_command *cmd)
 
     while (cmd)
     {
-        if (cmd->rdrs)
-        {
-            if (!redirection_touch(cmd))
-                return (0);
-        }
         if (cmd->where_p == R_P || cmd->where_p == B_P)
         {
             if (pipe(fd) == -1)
                 return (perror("pipe"), 0);
             cmd->fd[1] = fd[1];
             cmd->next->fd[0] = fd[0];
+        }
+    	if (cmd->rdrs)
+        {
+            if (!redirection_touch(cmd))
+                return (0);
         }
         cmd = cmd->next;
     }
@@ -82,6 +88,7 @@ static void official_executer(t_command *cmds, t_main *shell, int i)
     }
     else if (cmds->pid == 0)
     {
+
         if (i == 0 && cmds->fd[1] != STDOUT_FILENO)
         {
             dup2(cmds->fd[1], STDOUT_FILENO);
@@ -89,16 +96,16 @@ static void official_executer(t_command *cmds, t_main *shell, int i)
         }
         else if (i > 0)
         {
+            dup2(cmds->fd[1], STDOUT_FILENO);
             close(cmds->prev->fd[1]);
             dup2(cmds->fd[0], STDIN_FILENO);
-            if (cmds->fd[1] != STDOUT_FILENO)
-                dup2(cmds->fd[1], STDOUT_FILENO);
+			close(cmds->fd[0]);
         }
         execve(cmds->cmd_and_path, cmds->value, shell->env_for_execve_function);
         perror("execve");
         exit(EXIT_FAILURE);
     }
-    waitpid(cmds->pid, NULL, 0);
+
 }
 
 int executor(t_main *shell)
@@ -122,17 +129,18 @@ int executor(t_main *shell)
         else if (accessibility(cmds, shell))
             official_executer(cmds, shell, i);
         else
-        {
             return (ft_putstr_fd("ft_sh: command not found: ", 2),
                     ft_putstr_fd(cmds->value[0], 2),
                     ft_putchar_fd('\n', 2),
                     free_double(shell->paths), 1);
-        }
         if (cmds->fd[1] != STDOUT_FILENO)
             close(cmds->fd[1]);
-        if (cmds->prev && cmds->prev->fd[0] != STDIN_FILENO)
-            close(cmds->prev->fd[0]);
+		if (cmds->fd[0] != STDIN_FILENO)
+			close(cmds->fd[0]);
+        if (cmds->prev && cmds->prev->fd[1] != STDOUT_FILENO)
+            close(cmds->prev->fd[1]);
         i++;
+		waitpid(cmds->pid, NULL, 0);
         cmds = cmds->next;
     }
     return (free_double(shell->paths), free_command(shell->cmd), 1);

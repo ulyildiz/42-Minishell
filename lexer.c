@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:26 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/10 23:11:45 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/11 10:27:52 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 
 static int	last_things(t_main *shell)
 {
-	if (!token_check(shell->token))
-		return (shell->control = 0, 1);
 	is_expendable(shell->token);
+	if (!token_check(shell))
+		return (shell->control = 0, 1);
 	return (1);
 }
 
@@ -69,6 +69,7 @@ int	lexer(t_main *shell)
 	}
 	return (last_things(shell));
 }
+
 /* 	t_tokens *t;
 	t = shell->token;
 	printf("a = %p\n", t);
@@ -77,7 +78,6 @@ int	lexer(t_main *shell)
 		printf("lexer = %s/%zu - expendable = %d - type = %d\n", t->value, ft_strlen(t->value), t->is_expend, t->type);
 		t = t->next;
 	} */
-
 /* 	int i = 0;
 	while (arr[i])
 		printf("-%s-\n", arr[i++]); */

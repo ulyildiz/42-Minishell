@@ -67,7 +67,9 @@
     "unordered_map": "c",
     "vector": "c",
     "cstdlib": "c",
-    "_symbol_aliasing.h": "c"
+    "_symbol_aliasing.h": "c",
+    "wait.h": "c",
+    "_errno_t.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "clang",
   "C_Cpp_Runner.cppCompilerPath": "clang++",

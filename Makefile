@@ -6,6 +6,7 @@ SRC =	executor_utils.c \
 		free.c \
 		initialize.c \
 		lexer_utils.c \
+		lexer_utils2.c \
 		lexer.c \
 		main.c \
 		parser_utils.c \

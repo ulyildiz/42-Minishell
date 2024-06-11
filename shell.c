@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:38 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/10 23:08:52 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/11 10:28:17 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,6 @@ void	start_shell(t_main *shell)
 			break;
  		if (!expender(shell))
 			break;
-		//printf("\n");
-/* 		t = shell->token;
-		while(t)
-		{
-			printf("-%s-\n", t->value);
-			t = t->next;
-		}
-		printf("\n"); */
  		if (!parser(shell, shell->token, 0))
 			break;
 		if (!executor(shell))
@@ -60,5 +52,12 @@ void	start_shell(t_main *shell)
 		//update veya free?
 		shell->control = 1;
 	}
-
 }
+
+/* 		t = shell->token;
+		while(t)
+		{
+			printf("-%s -> expend_va = %d -> type_va = %d\n", t->value, t->is_expend, t->type);
+			t = t->next;
+		}
+		printf("\n"); */

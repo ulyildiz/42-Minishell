@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/10 12:41:47 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/11 10:37:03 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <errno.h>
 
 int	is_token(t_tokens *t)
 {
-	if (t->type == PIPE /* && (t->is_expend != WITHIN_D_Q
-		&& t->is_expend != WITHIN_Q) */)
+	if (t->type == PIPE && (t->is_expend != WITHIN_D_Q
+		&& t->is_expend != WITHIN_Q))
 		return (1);
 	return (0);
 }
@@ -29,6 +30,7 @@ static size_t	lenght_to_token(t_tokens *lst)
 	size_t	len;
 	size_t	i;
 
+	errno;
 	len = 0;
 	while (lst && !is_token(lst))
 	{
@@ -123,17 +125,6 @@ static int	rdr_position(t_command *cmds)
 	}
 	free(cmds->value);
 	cmds->value = tmp;
-/* 	i = 0;
-	while (cmds->rdrs[i])
-	{
-		printf("rds:: %s\n",cmds->rdrs[i++]);
-	}
-	i = 0;
-	while (cmds->value[i])
-	{
-		printf("value:: %s\n",cmds->value[i++]);
-	}
-	 */
 	return (1);
 }
 
@@ -181,7 +172,6 @@ int	arrange_split(t_command *cmds, t_tokens *t, size_t *i)
 	size_t	j;
 
 	j = 0;
-	//printf("t->v %s\n", t->value);
 	ar = ft_split(t->value, ' ');
 	if (!ar)
 		return (0);
@@ -229,6 +219,7 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 	//cmds->next = NULL;
 	return (1);
 }
+
 /* 	t_command *tmp = shell->cmd;
 	while (tmp)
 	{
@@ -243,7 +234,6 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 		if(tmp)
 			tmp = tmp->next;
 	} */
-
 /* 		i = 0;
 		while (t && !is_token(t->type))
 		{
