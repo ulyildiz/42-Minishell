@@ -74,12 +74,12 @@ int	token_check(t_main *shell)
 	size_t		len;
 	size_t		len2;
 
+	if (!quote_check(shell->token))
+		return (syntax_message(3), 0);
+	remove_quotes(&shell->token);
 	t = shell->token;
 	len = t_lst_size(t);
 	len2 = len;
-	if (!quote_check(t))
-		return (syntax_message(3), 0);
-	remove_quotes(&shell->token);
 	while (t)
 	{
 		if (!pipe_check(t, len - len2))

@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/11 15:18:56 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/13 23:21:35 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static int	rdr_position(t_command *cmds)
 	i = 0;
 	j = 0;
 	f = 0;
-	if (rdr_count(cmds->value) <= 0)
+	if (cmds->rdrs == NULL)
 		return (0);
 	while (cmds->value[i])
 		i++;
@@ -112,7 +112,7 @@ static int	rdr_position(t_command *cmds)
 		return (0);
 	cmds->rdrs = ft_calloc((rdr_count(cmds->value) + 1), sizeof(char *));
 	if (!cmds->rdrs)
-		return (free_double(tmp), 0);
+		return (free(tmp), 0);
 	j = 0;
 	i = 0;
 	while (cmds->value[i])
@@ -144,7 +144,7 @@ static t_command	*cmd_struct_create(t_tokens *token)
 	if (is_token(token))
 		token = token->next;
 	i = lenght_to_token(token);
-	cmd->value = (char **)malloc((i + 1) * sizeof(char *));
+	cmd->value = (char **)ft_calloc((i + 1) , sizeof(char *));
 	if (!cmd->value)
 		return (free(cmd), NULL);
 	cmd->value[i] = NULL;
@@ -156,6 +156,13 @@ static t_command	*cmd_struct_create(t_tokens *token)
 	return (cmd);
 }
 
+/* char	*identifier_check(t_tokens *t, char **s)
+{
+	if (ft_strnstr(t->value,))
+
+	return (NULL);
+} */
+
 int	arrange_split(t_command *cmds, t_tokens *t, size_t *i)
 {
 	char	**ar;
@@ -165,6 +172,10 @@ int	arrange_split(t_command *cmds, t_tokens *t, size_t *i)
 	ar = ft_split(t->value, ' ');
 	if (!ar)
 		return (0);
+/* 	if (ft_strncmp(ar[0], "export", ft_strlen(ar[0]))) // küçük harf yapma fonksiyonunu koy ar[0]a & " || ft_strncmp(ar[0], "env", ft_strlen(ar[0])" env export ile synı hatayı vermiyor
+	{
+		if ()
+	} */
 	while (ar[j])
 		cmds->value[(*i)++] = ar[j++];
 	return (free(ar), 1);
@@ -176,7 +187,7 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 	size_t		j;
 
 	j = 0;
-	if (shell->control == 0)
+	if (!t || shell->control == 0)
 		return (1);
 	cmds = cmd_struct_create(t);
 	if (!cmds)
@@ -206,6 +217,7 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 		if (t)
 			t = t->next;
 	}
+	cmds->next = NULL;
 	rdr_position(cmds);
 	return (1);
 }

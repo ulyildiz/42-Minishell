@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/13 12:04:34 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/13 23:19:11 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,19 +134,27 @@ int	executor(t_main *shell)
 	if (!shell->paths)
 		return (0);
 	if (!set_fd(cmds))
-		return (free_double(shell->paths), write(2, "a", 1),0);
-	while (cmds)
+		return (free_double(shell->paths), 0);
+	while (cmds != NULL)
 	{
 		if (is_builtin(cmds, shell))
 			;
 		else if (accessibility(cmds, shell))
 			official_executer(cmds, shell, i, FALSE);
 		else
-			return (ft_putstr_fd("ft_sh: command not found: ", 2),
-					ft_putstr_fd(cmds->value[0], 2),
-					ft_putchar_fd('\n', 2),
-					free_double(shell->paths),
-					1);
+		{
+			if (cmds->fd[1] != STDOUT_FILENO)
+				close(cmds->fd[1]);
+			if (cmds->fd[0] != STDIN_FILENO)
+				close(cmds->fd[0]);
+			while (wait(NULL) != -1)
+				;
+			ft_putstr_fd("ft_sh: command not found: ", 2);
+			ft_putstr_fd(cmds->value[0], 2);
+			ft_putchar_fd('\n', 2);
+			free_double(shell->paths);
+			return (1);
+		}
 		if (cmds->fd[1] != STDOUT_FILENO)
 			close(cmds->fd[1]);
 		if (cmds->fd[0] != STDIN_FILENO)

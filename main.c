@@ -20,7 +20,7 @@ int	main(int ac, char **av, char **env)
 
 	av = (void *)av;
 	if (ac >= 2)
-		return (ft_putstr_fd("Too much argument.", 2), 1);
+		return (ft_putstr_fd("Too much argument.\n", 2), 1);
 	if (!initialize(&shell, env))
 		return (perror("Initialize"), 1);
 	start_shell(&shell);
