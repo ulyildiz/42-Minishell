@@ -6,14 +6,14 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:18 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/11 14:14:39 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/11 14:47:39 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "functions.h"
 #include "42-libft/libft.h"
+#include "functions.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 static int	prompt(t_main *shell)
 {
@@ -47,7 +47,7 @@ static int	init_env(t_main *shell, char **env)
 	return (1);
 }
 
-int initialize(t_main *shell, char **env)
+int	initialize(t_main *shell, char **env)
 {
 	shell->cmd = NULL;
 	shell->token = NULL;
@@ -59,7 +59,7 @@ int initialize(t_main *shell, char **env)
 	if (!prompt(shell))
 		return (0);
 	if (!init_env(shell, env))
-		return (free(shell->prompt), 0); 
+		return (free(shell->prompt), 0);
 	shell->control = 1;
 	shell->env_for_execve_function = env;
 	return (1);

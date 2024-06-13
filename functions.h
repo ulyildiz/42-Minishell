@@ -46,6 +46,7 @@ size_t		wordcount(char *s);
 size_t		wordlen(const char *str);
 int			is_whitespace(char c);
 size_t		t_lst_size(t_tokens *t);
+void		syntax_message(int flag);
 
 // expender
 int			expender(t_main *shell);

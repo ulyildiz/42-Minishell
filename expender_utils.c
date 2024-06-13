@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/20 21:05:33 by ysarac            #+#    #+#             */
-/*   Updated: 2024/05/21 16:31:11 by ulyildiz         ###   ########.fr       */
+/*   Created: 2024/06/11 14:48:03 by ulyildiz          #+#    #+#             */
+/*   Updated: 2024/06/11 14:48:03 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+
 static char	*expand_dollar_dollar(char *tmp)
 {
-	char	*pid_str;
-	char	*new_tmp;
+	char *pid_str;
+	char *new_tmp;
 
 	pid_str = ft_itoa(getpid());
 	if (!pid_str)
@@ -36,9 +37,9 @@ static char	*expand_dollar_question(char *tmp)
 static char	*expand_variable(char *tmp, const char *token_value, size_t *i,
 		t_env *env)
 {
-	size_t	j;
-	char	*new_tmp;
-	t_env	*expnd_value;
+	size_t j;
+	char *new_tmp;
+	t_env *expnd_value;
 
 	j = 0;
 	(*i)++;
@@ -86,7 +87,7 @@ char	*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
 	{
 		tmp = expand_variable(tmp, token_value, i, env);
 	}
-/* 	else
+	/* 	else
 	{
 		tmp = ft_strappend(tmp, "$", 1); //bak
 		(*i)++;

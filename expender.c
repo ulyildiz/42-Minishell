@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/11 04:01:44 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/11 14:47:51 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	home_expend(t_tokens *token, t_env *env)
 {
 	char	*tmp;
 	size_t	i;
-	size_t start;
+	size_t	start;
 
 	if (token->is_expend == WITHIN_D_Q || token->is_expend == WITHIN_Q)
 		return (1);
@@ -57,12 +57,15 @@ static int	home_expend(t_tokens *token, t_env *env)
 	tmp = ft_strdup("");
 	while (token->value[i] && tmp)
 	{
-		if(token->value[i] == '~')
+		if (token->value[i] == '~')
 		{
-			if ((i > 0 && !is_whitespace(token->value[i - 1])) || (!is_whitespace(token->value[i + 1]) && token->value[i + 1] != '\0' && token->value[i + 1] != '/'))
+			if ((i > 0 && !is_whitespace(token->value[i - 1]))
+				|| (!is_whitespace(token->value[i + 1]) && token->value[i
+					+ 1] != '\0' && token->value[i + 1] != '/'))
 				tmp = ft_strappend(tmp, "~", 1);
 			else
-				tmp = ft_strappend(tmp, find_env(env,"HOME")->value, ft_strlen(find_env(env,"HOME")->value));
+				tmp = ft_strappend(tmp, find_env(env, "HOME")->value,
+						ft_strlen(find_env(env, "HOME")->value));
 		}
 		else
 			tmp = ft_strappend(tmp, &token->value[i], 1);

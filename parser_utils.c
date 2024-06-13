@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/23 11:33:31 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/05/23 11:33:31 by ulyildiz         ###   ########.fr       */
+/*   Created: 2024/06/11 15:14:37 by ulyildiz          #+#    #+#             */
+/*   Updated: 2024/06/11 15:15:28 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	need_remove(char *s)
 	size_t	i;
 
 	i = 0;
-	while(s[i])
+	while (s[i])
 	{
 		if (!is_whitespace(s[i++]))
 			return (0);
@@ -36,8 +36,8 @@ void	remove_quotes(t_tokens **token)
 	prev = NULL;
 	while (current)
 	{
-		if (need_remove(current->value) || (current->is_expend == NONE &&
-			(current->type == QUOTE || current->type == D_QUOTE)))
+		if (need_remove(current->value) || (current->is_expend == NONE
+				&& (current->type == QUOTE || current->type == D_QUOTE)))
 		{
 			tmp = current;
 			if (prev)

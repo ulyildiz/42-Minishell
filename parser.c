@@ -6,21 +6,21 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/11 10:37:03 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/11 15:18:56 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "functions.h"
 #include "42-libft/libft.h"
+#include "functions.h"
+#include <errno.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
-#include <errno.h>
 
 int	is_token(t_tokens *t)
 {
 	if (t->type == PIPE && (t->is_expend != WITHIN_D_Q
-		&& t->is_expend != WITHIN_Q))
+			&& t->is_expend != WITHIN_Q))
 		return (1);
 	return (0);
 }
@@ -30,7 +30,6 @@ static size_t	lenght_to_token(t_tokens *lst)
 	size_t	len;
 	size_t	i;
 
-	errno;
 	len = 0;
 	while (lst && !is_token(lst))
 	{
@@ -45,7 +44,7 @@ static size_t	lenght_to_token(t_tokens *lst)
 		{
 			while (lst->value[i] && is_whitespace(lst->value[i]))
 				i++;
-			while(lst->value[i] && !is_whitespace(lst->value[i]))
+			while (lst->value[i] && !is_whitespace(lst->value[i]))
 				i++;
 			len++;
 			while (lst->value[i] && is_whitespace(lst->value[i]))
@@ -64,7 +63,7 @@ size_t	rdr_count(char **str)
 
 	i = 0;
 	len = 0;
-	while(str[i])
+	while (str[i])
 	{
 		if (!ft_strncmp(str[i], "<", 1) && ft_strlen(str[i]) == 1)
 			len++;
@@ -77,16 +76,17 @@ size_t	rdr_count(char **str)
 	len *= 2;
 	return (len);
 }
-int is_rdr(char *strs)
+
+int	is_rdr(char *strs)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (strs[i])
 	{
-		if(strs[i] == '<')
+		if (strs[i] == '<')
 			return (1);
-		if(strs[i] == '>')
+		if (strs[i] == '>')
 			return (1);
 		i++;
 	}
@@ -96,23 +96,26 @@ int is_rdr(char *strs)
 static int	rdr_position(t_command *cmds)
 {
 	char	**tmp;
-	size_t	i = 0;
-	size_t	j = 0;
-	size_t	f = 0;
+	size_t	i;
+	size_t	j;
+	size_t	f;
 
-	if(rdr_count(cmds->value) <= 0)
-		return(0);
-	while(cmds->value[i])
+	i = 0;
+	j = 0;
+	f = 0;
+	if (rdr_count(cmds->value) <= 0)
+		return (0);
+	while (cmds->value[i])
 		i++;
-	tmp = ft_calloc(i - rdr_count(cmds->value) + 1 , sizeof(char *));
+	tmp = ft_calloc(i - rdr_count(cmds->value) + 1, sizeof(char *));
 	if (!tmp)
-		return(0);
-	cmds->rdrs = ft_calloc((rdr_count(cmds->value) + 1) , sizeof(char *));
+		return (0);
+	cmds->rdrs = ft_calloc((rdr_count(cmds->value) + 1), sizeof(char *));
 	if (!cmds->rdrs)
 		return (free_double(tmp), 0);
 	j = 0;
 	i = 0;
- 	while (cmds->value[i])
+	while (cmds->value[i])
 	{
 		if (is_rdr(cmds->value[i]) == 1)
 		{
@@ -128,7 +131,7 @@ static int	rdr_position(t_command *cmds)
 	return (1);
 }
 
-static t_command *cmd_struct_create(t_tokens *token)
+static t_command	*cmd_struct_create(t_tokens *token)
 {
 	t_command	*cmd;
 	size_t		i;
@@ -153,19 +156,6 @@ static t_command *cmd_struct_create(t_tokens *token)
 	return (cmd);
 }
 
-/* static char	*cleanup_value(t_command *cmds, t_tokens **t)
-{
-	char	*end_value;
-
-	end_value = ft_strdup("");
- 	if (*t && ((*t)->is_expend == WITHIN_D_Q || (*t)->is_expend == WITHIN_Q))
-	{
-		end_value = ft_strappend(end_value, (*t)->value, ft_strlen((*t)->value));
-		(*t) = (*t)->next;
-	}
-	return (end_value);
-} */
-
 int	arrange_split(t_command *cmds, t_tokens *t, size_t *i)
 {
 	char	**ar;
@@ -183,8 +173,9 @@ int	arrange_split(t_command *cmds, t_tokens *t, size_t *i)
 int	parser(t_main *shell, t_tokens *t, size_t i)
 {
 	t_command	*cmds;
-	size_t		j = 0;
+	size_t		j;
 
+	j = 0;
 	if (shell->control == 0)
 		return (1);
 	cmds = cmd_struct_create(t);
@@ -206,7 +197,7 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 			i = 0;
 			cmds->next = cmd_struct_create(t);
 			if (!cmds->next)
-				return (perror("Parser"), 0); // freeler
+				return (perror("Parser"), 0);
 			cmds->where_p = R_P;
 			cmds->next->prev = cmds;
 			cmds = cmds->next;
@@ -216,7 +207,6 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 			t = t->next;
 	}
 	rdr_position(cmds);
-	//cmds->next = NULL;
 	return (1);
 }
 
@@ -249,6 +239,7 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 
 /* 	while (shell->cmd)
 	{
-		printf("value = %s - prev = %p - next = %p\n", shell->cmd->value[0], shell->cmd->prev, shell->cmd->next);
+		printf("value = %s - prev = %p - next = %p\n", shell->cmd->value[0],
+				shell->cmd->prev, shell->cmd->next);
 		shell->cmd = shell->cmd->next;
 	} */

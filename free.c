@@ -5,15 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/23 11:33:46 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/05/23 11:33:46 by ulyildiz         ###   ########.fr       */
+/*   Created: 2024/06/11 14:47:44 by ulyildiz          #+#    #+#             */
+/*   Updated: 2024/06/11 14:47:44 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "defines.h"
-
+#include <stdlib.h>
 #include <unistd.h>
+
 void	free_double(char **arr)
 {
 	size_t	i;
@@ -26,7 +26,7 @@ void	free_double(char **arr)
 
 void	free_env(t_env *env)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	while (env)
 	{
@@ -56,14 +56,13 @@ void	free_command(t_command *cmd)
 {
 	t_command	*tmp;
 
-	while(cmd)
+	while (cmd)
 	{
 		tmp = cmd;
 		cmd = cmd->next;
 		if (tmp->value)
 			free_double(tmp->value);
-		free(tmp->cmd_and_path);
-/* 		free(tmp->cmd_and_path); */
+//		free(tmp->cmd_and_path);
 		free(tmp);
 	}
 }

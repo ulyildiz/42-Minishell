@@ -14,17 +14,19 @@
 #include "functions.h"
 #include "42-libft/libft.h"
 
-int	main(int ac, char** av, char **env)
+int	main(int ac, char **av, char **env)
 {
 	t_main	shell;
 
-	//signal_reciever();
 	av = (void *)av;
-	if (ac >=2)
-		return(ft_putstr_fd("Too much argument.", 2), 1);
+	if (ac >= 2)
+		return (ft_putstr_fd("Too much argument.", 2), 1);
 	if (!initialize(&shell, env))
 		return (perror("Initialize"), 1);
 	start_shell(&shell);
+	return (0);
+}
+
 	//main_free(&shell);
 /* 	shell.cmd = NULL;
 	shell.cmd_line = NULL;
@@ -33,5 +35,3 @@ int	main(int ac, char** av, char **env)
 	shell.prompt = NULL;
 	shell.token = NULL;
 	system("Leaks minishell"); */
-    return (0);
-}

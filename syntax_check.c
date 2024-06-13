@@ -5,24 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/20 14:30:36 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/05/20 16:11:47 by ulyildiz         ###   ########.fr       */
+/*   Created: 2024/06/11 15:19:36 by ulyildiz          #+#    #+#             */
+/*   Updated: 2024/06/11 15:19:36 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "functions.h"
 #include "42-libft/libft.h"
+#include "functions.h"
 #include <unistd.h>
-
-static void	syntax_message(int flag)
-{
-	if (flag == 1)
-		ft_putstr_fd("Syntax error near unexpected pipe token\n", 2);
-	else if (flag == 2)
-		ft_putstr_fd("Syntax error near unexpected redirection token\n", 2);
-	else if (flag == 3)
-		ft_putstr_fd("Syntax error unclosed quote.\n", 2);
-}
 
 static int	pipe_check(t_tokens *t, size_t len)
 {
@@ -39,8 +29,8 @@ static int	pipe_check(t_tokens *t, size_t len)
 
 static int	is_rdr_flag(t_tokens *t)
 {
-	if (t->type == RDR_D_IN || t->type == RDR_IN
-		|| t->type == RDR_OUT || t->type == HEREDOC)
+	if (t->type == RDR_D_IN || t->type == RDR_IN || t->type == RDR_OUT
+		|| t->type == HEREDOC)
 		return (1);
 	return (0);
 }
@@ -67,7 +57,7 @@ static int	quote_check(t_tokens *t)
 	q = 0;
 	while (t)
 	{
-		if (t->type == D_QUOTE)	
+		if (t->type == D_QUOTE)
 			d_q++;
 		else if (t->type == QUOTE)
 			q++;
@@ -81,8 +71,8 @@ static int	quote_check(t_tokens *t)
 int	token_check(t_main *shell)
 {
 	t_tokens	*t;
-	size_t	len;
-	size_t	len2;
+	size_t		len;
+	size_t		len2;
 
 	t = shell->token;
 	len = t_lst_size(t);
@@ -101,3 +91,6 @@ int	token_check(t_main *shell)
 	}
 	return (1);
 }
+
+
+// = syntax düzelt
