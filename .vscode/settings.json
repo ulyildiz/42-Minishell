@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "function.h": "c",
+        "stdio.h": "c",
+        "functions.h": "c",
+        "libft.h": "c",
+        "defines.h": "c"
+    }
+}
