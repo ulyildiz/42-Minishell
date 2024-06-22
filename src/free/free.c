@@ -13,7 +13,7 @@
 
 #include "functions.h"
 
-/* void	free_double(char **arr)
+void	free_double(char **arr)
 {
 	size_t	i;
 
@@ -21,7 +21,7 @@
 	while (arr[i])
 		free(arr[i++]);
 	free(arr);
-} */
+}
 
 void	free_env(t_env *env)
 {
@@ -36,7 +36,7 @@ void	free_env(t_env *env)
 		free(tmp);
 	}
 }
-/* 
+
 void	free_tokens(t_tokens *tokens, int flag)
 {
 	t_tokens	*tmp;
@@ -62,7 +62,7 @@ void	free_command(t_command *cmd)
 		if (tmp->value)
 			free_double(tmp->value);
 		free(tmp->cmd_and_path);
-/* 		free(tmp->cmd_and_path);
+/* 		free(tmp->cmd_and_path); */
 		free(tmp);
 	}
 }
@@ -76,4 +76,3 @@ void	main_free(t_main *shell)
 	free(shell->prompt);
 	free(shell->cmd_line);
 }
- */

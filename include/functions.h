@@ -19,19 +19,55 @@
 
 /********************************   Funtions   ********************************/
 
-// initialize functions
-int initialize(t_main *shell, char **env);
 
-// shell functions
-void	start_shell(t_main *shell);
+// preparing
+int			initialize(t_main *shell, char **env);
+void		start_shell(t_main *shell);
 
-// utils functions
-void	list_add_back(t_env **lst, t_env *tmp);
-size_t	is_space(char *s);
+// lexer
+int			lexer(t_main *shell);
+int			tlist(t_tokens **head, char *arr);
+void		is_expendable(t_tokens *lst);
+int			token_check(t_main *shell);
+void		listing_squote(t_main *shell, char *tmp, size_t *j, char *token);
+void		listing_dquote(t_main *shell, char *tmp, size_t *j, char *token);
+void		listing_token(t_main *shell, char *tmp, size_t *j, char *token);
+void		listing_rdr(t_main *shell, char *tmp, size_t *j, size_t *i, char *token);
 
-// free functions
-void	free_env(t_env *env);
+// free
+void		free_env(t_env *shell);
+void		free_double(char **arr);
+void		free_tokens(t_tokens *tokens, int flag);
+void		free_command(t_command *cmd);
+void		main_free(t_main *shell);
 
-// lexer functions
-int lexer(t_main *shell);
+// utils
+char		**get_cmd(t_env *env);
+void		list_add_back(t_env **lst, t_env *tmp);
+size_t		is_space(char *s);
+t_env		*find_env(t_env *envs, char *wanted);
+size_t		wordcount(char *s);
+size_t		wordlen(const char *str);
+int			is_whitespace(char c);
+size_t		t_lst_size(t_tokens *t);
+void		syntax_message(int flag);
+
+// expender
+int			expender(t_main *shell);
+char		*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
+				t_env *env);
+char		*append_literal(char *tmp, char *token_value, size_t *start,
+				size_t *i);
+//parser
+int			parser(t_main *shell, t_tokens *t, size_t i);
+void		remove_quotes(t_tokens **token);
+void		for_prev(t_command *cmds, t_token_types type);
+void		for_itself(t_command *cmds, t_token_types type);
+
+// executer
+int			executor(t_main *shell);
+int			is_builtin(t_command *cmds, t_main *shell);
+int			accessibility(t_command *cmds, t_main *shell);
+void		close_fd(t_command *cmds, int flag);
+
 #endif

@@ -4,7 +4,15 @@ SRC =	src/main.c \
 		src/utils/utils.c \
 		src/free/free.c \
 		src/shell/shell.c \
-		src/main_structure/lexer/lexer.c
+		src/main_structure/lexer/lexer.c \
+		src/main_structure/expander/expander.c \
+		src/main/utils/lexer_utils.c \
+		src/main/utils/syntax_utils.c \
+		src/main/utils/parser_utils.c \
+		src/main/utils/expander_utils.c \
+		
+		
+
 		
 OBJ = $(SRC:.c=.o)
 CC = cc -I ./include -I ./42-Libft # -Wall -Wextra -Werror

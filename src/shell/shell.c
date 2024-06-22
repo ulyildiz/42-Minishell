@@ -12,6 +12,7 @@
 
 #include "functions.h"
 
+
 static int	line_read(t_main *shell)
 {
 	shell->cmd_line = readline(shell->prompt);
@@ -25,33 +26,33 @@ static int	line_read(t_main *shell)
 
 void	start_shell(t_main *shell)
 {
-	int i;
-	//t_tokens *t;
-	while(1)
+	int			i;
+	t_tokens	*t;
+
+	while (1)
 	{
 		i = line_read(shell);
 		if (!i)
 			continue ;
 		else if (i == 2)
-			break;
- 		if (!lexer(shell))
-			break;
- 		/* if (!expender(shell))
-			break; */
-		//printf("\n");
+			break ;
+		if (!lexer(shell))
+			break ;
+		if (!expender(shell))
+			break ;
+		if (!parser(shell, shell->token, 0))
+			break ;
+		if (!executor(shell))
+			break ;
+		shell->control = 1;
+	}
+}
+
 /* 		t = shell->token;
 		while(t)
 		{
-			printf("-%s-\n", t->value);
+			printf("-%s -> expend_va = %d -> type_va = %d\n", t->value,
+					t->is_expend, t->type);
 			t = t->next;
 		}
 		printf("\n"); */
- 		/* if (!parser(shell, shell->token, 0))
-			break;
-		if (!executor(shell))
-			break; */
-		//update veya free?
-		shell->control = 1;
-	}
-
-}
