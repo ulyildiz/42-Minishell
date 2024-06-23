@@ -33,12 +33,34 @@ static size_t	lenght_to_token(t_tokens *lst)
 	len = 0;
 	while (lst && !is_token(lst))
 	{
-		i = 0;
-		while (lst && lst->is_expend != NONE)
+		if (lst && lst->is_expend == NONE)
+		{
+			i = 0;
+			while (lst->value[i])
+			{
+				while (lst->value[i] && is_whitespace(lst->value[i]))
+					i++;
+				while (lst->value[i] && !is_whitespace(lst->value[i]))
+					i++;
+				len++;
+				while (lst->value[i] && is_whitespace(lst->value[i]))
+					i++;
+			}
+		}
+		else
+			len++;
+		lst = lst->next;
+	}
+	return (len);
+}
+/* 		while (lst && lst->is_expend != NONE)
 		{
 			lst = lst->next;
 			if (lst && lst->is_expend == NONE)
+			{
+		//		printf("%s\n", lst->value);
 				len++;
+			}
 		}
 		while (lst && lst->value[i])
 		{
@@ -51,10 +73,7 @@ static size_t	lenght_to_token(t_tokens *lst)
 				i++;
 		}
 		if (lst)
-			lst = lst->next;
-	}
-	return (len);
-}
+			lst = lst->next; */ // ltt emin olunca sil
 
 size_t	rdr_count(char **str)
 {
@@ -155,7 +174,7 @@ static t_command	*cmd_struct_create(t_tokens *token)
 	return (cmd);
 }
 
-int	arrange_split(t_command *cmds, t_tokens *t, size_t *i)
+/* int	arrange_split(t_command *cmds, t_tokens *t, size_t *i)
 {
 	char	**ar;
 	size_t	j;
@@ -167,64 +186,71 @@ int	arrange_split(t_command *cmds, t_tokens *t, size_t *i)
 	while (ar[j])
 		cmds->value[(*i)++] = ar[j++];
 	return (free(ar), 1);
-}
+} */
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-// Function prototypes for helper functions
-static int handle_command(t_command **cmds, t_tokens **t, size_t *i);
-static int handle_token(t_command **cmds, t_tokens **t, size_t *i);
-
-// Main parser function
-int parser(t_main *shell, t_tokens *t, size_t i) {
-    t_command *cmds;
-    
-    if (shell->control == 0) return 1;
-    cmds = cmd_struct_create(t);
-    if (!cmds) return (perror("Parser"), 0);
-    
-    shell->cmd = cmds;
-    while (t) {
-        if (!is_token(t)) {
-            if (!handle_command(&cmds, &t, &i)) return 0;
-        } else {
-            if (!handle_token(&cmds, &t, &i)) return 0;
-        }
-    }
-    
-    rdr_position(cmds);
-    return 1;
+static int handle_token(t_command **cmds, t_tokens **t, size_t *i)
+{
+	rdr_position(*cmds);
+	*i = 0;
+	(*cmds)->next = cmd_struct_create(*t);
+	if (!(*cmds)->next)
+		return (perror("Parser"), 0);
+	(*cmds)->where_p = R_P;
+	(*cmds)->next->prev = *cmds;
+	*cmds = (*cmds)->next;
+	(*cmds)->where_p = L_P;
+	*t = (*t)->next;
+	return (1);
 }
 
-// Helper function to handle non-token commands
-static int handle_command(t_command **cmds, t_tokens **t, size_t *i) {
-    if ((*t)->is_expend == NONE) {
-        if (!arrange_split(*cmds, *t, i)) return 0;
-    } else {
-        (*cmds)->value[(*i)++] = ft_strdup((*t)->value);
-    }
-    *t = (*t)->next;
-    return 1;
+static int handle_command(t_command **cmds, t_tokens **t, size_t *i)
+{
+	char	**ar;
+	size_t	j;
+
+	if ((*t)->is_expend == NONE)
+	{
+		j = 0;
+		ar = ft_split((*t)->value, ' ');
+		if (!ar)
+			return (0);
+		while (ar[j])
+			(*cmds)->value[(*i)++] = ar[j++];
+		free(ar);
+	}
+	else
+		(*cmds)->value[(*i)++] = ft_strdup((*t)->value);
+	*t = (*t)->next;
+	return (1);
 }
 
-// Helper function to handle token transitions
-static int handle_token(t_command **cmds, t_tokens **t, size_t *i) {
-    rdr_position(*cmds);
-    *i = 0;
+int parser(t_main *shell, t_tokens *t, size_t i)
+{
+	t_command *cmds;
     
-    (*cmds)->next = cmd_struct_create(*t);
-    if (!(*cmds)->next) return (perror("Parser"), 0);
-    
-    (*cmds)->where_p = R_P;
-    (*cmds)->next->prev = *cmds;
-    *cmds = (*cmds)->next;
-    (*cmds)->where_p = L_P;
-    
-    *t = (*t)->next;
-    return 1;
+	if (shell->control == 0)
+		return (1);
+	cmds = cmd_struct_create(t);
+	if (!cmds)
+		return (perror("Parser"), 0);
+	shell->cmd = cmds;
+	while (t)
+	{
+		if (!is_token(t))
+		{
+			if (!handle_command(&cmds, &t, &i))
+				return (0);
+		}
+		else
+		{
+			if (!handle_token(&cmds, &t, &i))
+				return (0);
+		}
+	}
+	rdr_position(cmds);
+	return (1);
 }
-
 /* 	t_command *tmp = shell->cmd;
 	while (tmp)
 	{
