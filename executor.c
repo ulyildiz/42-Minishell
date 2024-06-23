@@ -168,16 +168,3 @@ int	executor(t_main *shell)
 	}
 	return (free_double(shell->paths), /* free_command(shell->cmd), */ 1);
 }
-
-/* 		if (i == 0 && cmds->fd[1] != STDOUT_FILENO)
-		{
-			dup2(cmds->fd[1], STDOUT_FILENO);
-			close(cmds->next->fd[0]);
-		}
-		else if (i > 0)
-		{
-			dup2(cmds->fd[1], STDOUT_FILENO);
-			close(cmds->prev->fd[1]);
-			dup2(cmds->fd[0], STDIN_FILENO);
-			close(cmds->fd[0]);
-		} */

@@ -149,7 +149,6 @@ static t_command	*cmd_struct_create(t_tokens *token)
 		return (free(cmd), NULL);
 	cmd->value[i] = NULL;
 	cmd->where_p = NONE_P;
-	cmd->where_r = NONE_RDR;
 	cmd->fd[0] = STDIN_FILENO;
 	cmd->fd[1] = STDOUT_FILENO;
 	cmd->rdrs = NULL;
@@ -169,45 +168,61 @@ int	arrange_split(t_command *cmds, t_tokens *t, size_t *i)
 		cmds->value[(*i)++] = ar[j++];
 	return (free(ar), 1);
 }
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-int	parser(t_main *shell, t_tokens *t, size_t i)
-{
-	t_command	*cmds;
-	size_t		j;
+// Function prototypes for helper functions
+static int handle_command(t_command **cmds, t_tokens **t, size_t *i);
+static int handle_token(t_command **cmds, t_tokens **t, size_t *i);
 
-	j = 0;
-	if (shell->control == 0)
-		return (1);
-	cmds = cmd_struct_create(t);
-	if (!cmds)
-		return (perror("Parser"), 0);
-	shell->cmd = cmds;
-	while (t)
-	{
-		if (t && !is_token(t))
-		{
-			if (t->is_expend == NONE)
-				arrange_split(cmds, t, &i);
-			else
-				cmds->value[i++] = ft_strdup(t->value);
-		}
-		else if (t && is_token(t))
-		{
-			rdr_position(cmds);
-			i = 0;
-			cmds->next = cmd_struct_create(t);
-			if (!cmds->next)
-				return (perror("Parser"), 0);
-			cmds->where_p = R_P;
-			cmds->next->prev = cmds;
-			cmds = cmds->next;
-			cmds->where_p = L_P;
-		}
-		if (t)
-			t = t->next;
-	}
-	rdr_position(cmds);
-	return (1);
+// Main parser function
+int parser(t_main *shell, t_tokens *t, size_t i) {
+    t_command *cmds;
+    
+    if (shell->control == 0) return 1;
+    cmds = cmd_struct_create(t);
+    if (!cmds) return (perror("Parser"), 0);
+    
+    shell->cmd = cmds;
+    while (t) {
+        if (!is_token(t)) {
+            if (!handle_command(&cmds, &t, &i)) return 0;
+        } else {
+            if (!handle_token(&cmds, &t, &i)) return 0;
+        }
+    }
+    
+    rdr_position(cmds);
+    return 1;
+}
+
+// Helper function to handle non-token commands
+static int handle_command(t_command **cmds, t_tokens **t, size_t *i) {
+    if ((*t)->is_expend == NONE) {
+        if (!arrange_split(*cmds, *t, i)) return 0;
+    } else {
+        (*cmds)->value[(*i)++] = ft_strdup((*t)->value);
+    }
+    *t = (*t)->next;
+    return 1;
+}
+
+// Helper function to handle token transitions
+static int handle_token(t_command **cmds, t_tokens **t, size_t *i) {
+    rdr_position(*cmds);
+    *i = 0;
+    
+    (*cmds)->next = cmd_struct_create(*t);
+    if (!(*cmds)->next) return (perror("Parser"), 0);
+    
+    (*cmds)->where_p = R_P;
+    (*cmds)->next->prev = *cmds;
+    *cmds = (*cmds)->next;
+    (*cmds)->where_p = L_P;
+    
+    *t = (*t)->next;
+    return 1;
 }
 
 /* 	t_command *tmp = shell->cmd;
@@ -220,7 +235,7 @@ int	parser(t_main *shell, t_tokens *t, size_t i)
 			i++;
 		}
 		printf("\n");
-		printf("/where_p = %d - where_r = %d\n", tmp->where_p, tmp->where_r);
+		printf("/where_p = %d", tmp->where_p);
 		if(tmp)
 			tmp = tmp->next;
 	} */
