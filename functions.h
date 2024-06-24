@@ -33,8 +33,8 @@ void		listing_rdr(t_main *shell, char *tmp, size_t *j, size_t *i, char *token);
 // free
 void		free_env(t_env *shell);
 void		free_double(char **arr);
-void		free_tokens(t_tokens *tokens, int flag);
-void		free_command(t_command *cmd);
+void		free_tokens(t_main *shell);
+void		free_command(t_main *shell);
 void		main_free(t_main *shell);
 
 // utils
@@ -57,13 +57,13 @@ char		*append_literal(char *tmp, char *token_value, size_t *start,
 //parser
 int			parser(t_main *shell, t_tokens *t, size_t i);
 void		remove_quotes(t_tokens **token);
-void		for_prev(t_command *cmds, t_token_types type);
-void		for_itself(t_command *cmds, t_token_types type);
+int			is_token(t_tokens *t);
+size_t		rdr_count(char **str);
+int			is_rdr(char *strs);
 
 // executer
 int			executor(t_main *shell);
 int			is_builtin(t_command *cmds, t_main *shell);
 int			accessibility(t_command *cmds, t_main *shell);
-void		close_fd(t_command *cmds, int flag);
 
 #endif

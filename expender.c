@@ -49,7 +49,6 @@ static int	home_expend(t_tokens *token, t_env *env)
 {
 	char	*tmp;
 	size_t	i;
-	size_t start;
 
 	if (token->is_expend == WITHIN_D_Q || token->is_expend == WITHIN_Q)
 		return (1);

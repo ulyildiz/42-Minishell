@@ -76,10 +76,10 @@ int	token_check(t_main *shell)
 
 	if (!quote_check(shell->token))
 		return (syntax_message(3), 0);
+	remove_quotes(&shell->token);
 	t = shell->token;
 	len = t_lst_size(t);
 	len2 = len;
-	remove_quotes(&shell->token);
 	while (t)
 	{
 		if (!pipe_check(t, len - len2))
@@ -91,6 +91,5 @@ int	token_check(t_main *shell)
 	}
 	return (1);
 }
-
 
 // = syntax düzelt

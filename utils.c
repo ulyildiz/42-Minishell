@@ -2,21 +2,17 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+        
-	+:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+      
-	+#+        */
-/*                                                +#+#+#+#+#+  
-	+#+           */
-/*   Created: 2024/05/23 11:33:42 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/05/26 18:34:23 by ulyildiz         ###   ########.fr       */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/24 14:27:15 by ulyildiz          #+#    #+#             */
+/*   Updated: 2024/06/24 14:27:15 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "42-libft/libft.h"
 #include "functions.h"
 #include <stdio.h>
-
 
 void	list_add_back(t_env **lst, t_env *tmp)
 {
@@ -84,9 +80,13 @@ size_t	is_space(char *s)
 
 t_env	*find_env(t_env *envs, char *wanted)
 {
+	size_t	l;
+	
+	l = ft_strlen(wanted);
 	while (envs)
 	{
-		if (!ft_strncmp(envs->name, wanted, ft_strlen(wanted)))
+		if (!ft_strncmp(envs->name, wanted, l) &&
+			!ft_strncmp(envs->name, wanted, ft_strlen(envs->name)))
 			return (envs);
 		envs = envs->next;
 	}

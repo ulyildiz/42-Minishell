@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "functions.h"
+#include "42-libft/libft.h"
 #include <stdlib.h>
 
 int	need_remove(char *s)
@@ -47,6 +48,7 @@ void	remove_quotes(t_tokens **token)
 			current = current->next;
 			free(tmp->value);
 			free(tmp);
+			tmp = NULL;
 		}
 		else
 		{
@@ -54,4 +56,49 @@ void	remove_quotes(t_tokens **token)
 			current = current->next;
 		}
 	}
+}
+
+int	is_token(t_tokens *t)
+{
+	if (t->type == PIPE && (t->is_expend != WITHIN_D_Q
+			&& t->is_expend != WITHIN_Q))
+		return (1);
+	return (0);
+}
+
+size_t	rdr_count(char **str)
+{
+	size_t	len;
+	size_t	i;
+
+	i = 0;
+	len = 0;
+	while (str[i])
+	{
+		if (!ft_strncmp(str[i], "<", 1) && ft_strlen(str[i]) == 1)
+			len++;
+		else if (!ft_strncmp(str[i], ">", 1) && ft_strlen(str[i]) == 1)
+			len++;
+		else if (!ft_strncmp(str[i], ">>", 2) && ft_strlen(str[i]) == 2)
+			len++;
+		i++;
+	}
+	len *= 2;
+	return (len);
+}
+
+int	is_rdr(char *strs)
+{
+	int	i;
+
+	i = 0;
+	while (strs[i])
+	{
+		if (strs[i] == '<')
+			return (1);
+		if (strs[i] == '>')
+			return (1);
+		i++;
+	}
+	return (0);
 }

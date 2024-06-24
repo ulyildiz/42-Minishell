@@ -33,11 +33,6 @@ int	accessibility(t_command *cmds, t_main *shell)
 	return (0);
 }
 
-void	close_fd(t_command *cmds, int flag)
-{
-	if (!cmds)
-		return ;
-}
 
 void	echo(t_command *cmds, t_main *shell)
 {
@@ -47,6 +42,7 @@ void	echo(t_command *cmds, t_main *shell)
 
 	i = 1;
 	newline = 1;
+	shell = (void *)shell;
 	if (cmds->value[i] && cmds->value[i][0] == '-')
 	{
 		while (cmds->value[i] && cmds->value[i][0] == '-')
@@ -289,6 +285,7 @@ void	exit_cmd(t_command *cmds, t_main *shell)
 	free işlemleri yapılacak
 	ama bu kısmı projenin sonuna bırakıyorum
 	*/
+	shell = (void *)shell;
 	exit(0);
 }
 
@@ -303,7 +300,7 @@ int	is_builtin(t_command *cmds, t_main *shell)
 	while (commands[i].name)
 	{
 		if (ft_strncmp(ft_strlower(cmds->value[0]), commands[i].name,
-				ft_strlen(cmds->value[0])) == 0)
+				ft_strlen(cmds->value[0])) == 0) // ana value küçültülüyor 
 		{
 			commands[i].func(cmds, shell);
 			return (1);

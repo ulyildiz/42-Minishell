@@ -32,7 +32,7 @@ static char	*expand_dollar_question(char *tmp)
 {
 	return (ft_strappend(tmp, "0", 1));
 }
-
+#include <stdio.h>
 static char	*expand_variable(char *tmp, const char *token_value, size_t *i,
 		t_env *env)
 {
@@ -43,10 +43,9 @@ static char	*expand_variable(char *tmp, const char *token_value, size_t *i,
 	j = 0;
 	(*i)++;
 	while (ft_isalpha(token_value[*i + j]))
-	{
 		j++;
-	}
 	new_tmp = ft_strndup(&token_value[*i], j);
+	printf("token_v = %s\n", new_tmp);
 	expnd_value = find_env(env, new_tmp);
 	if (expnd_value)
 	{
@@ -86,10 +85,10 @@ char	*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
 	{
 		tmp = expand_variable(tmp, token_value, i, env);
 	}
-/* 	else
+	else
 	{
 		tmp = ft_strappend(tmp, "$", 1); //bak
 		(*i)++;
-	} */
+	}
 	return (tmp);
 }

@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/13 12:04:34 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/24 19:41:29 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	opens(t_command *cmd, size_t *i)
 		fd = open(cmd->rdrs[++(*i)], O_RDONLY, 0777);
 		if (fd == -1)
 			return (perror(cmd->rdrs[(*i)]), -1);
-		if (cmd->fd[0] != STDOUT_FILENO)
+		if (cmd->fd[0] != STDIN_FILENO)
 			close(cmd->fd[0]);
 		cmd->fd[0] = fd;
 	}
@@ -73,7 +73,7 @@ int	set_fd(t_command *cmd)
 
 	while (cmd)
 	{
-		if (cmd->where_p == R_P || cmd->where_p == B_P)
+		if (cmd->where_p == R_P)
 		{
 			if (pipe(fd) == -1)
 				return (perror("pipe"), 0);
@@ -83,15 +83,29 @@ int	set_fd(t_command *cmd)
 		if (cmd->rdrs)
 		{
 			if (!redirection_touch(cmd))
-				return (0);
+				return (1);
 		}
 		cmd = cmd->next;
 	}
-	return (1);
+	return (2);
 }
 
-static void	official_executer(t_command *cmds, t_main *shell, int i, t_bool is_single)
+void	close_all(t_command *cmds)
 {
+	while (cmds)
+	{
+		if (cmds->fd[1] != STDOUT_FILENO)
+			close(cmds->fd[1]);
+		if (cmds->fd[0] != STDIN_FILENO)
+			close(cmds->fd[0]);
+		cmds = cmds->next;
+	}
+}
+
+static void	official_executer(t_command *cmds, t_main *shell, t_bool is_single)
+{
+	t_command *tmp;
+
 	cmds->pid = fork();
 	if (cmds->pid == -1)
 	{
@@ -104,67 +118,49 @@ static void	official_executer(t_command *cmds, t_main *shell, int i, t_bool is_s
 		{
 			dup2(cmds->fd[1], STDOUT_FILENO);
 			dup2(cmds->fd[0], STDIN_FILENO);
-			t_command *tmp = cmds;
-			tmp = tmp->next;
-			while (tmp)
-			{
-				if (tmp->fd[0] != STDIN_FILENO)
-					close(tmp->fd[0]);
-				if (tmp->fd[1] != STDOUT_FILENO)
-					close(tmp->fd[1]);
-				tmp = tmp->next;
-			}
+			tmp = cmds->next;
+			close_all(tmp);
 		}
 		execve(cmds->cmd_and_path, cmds->value, shell->env_for_execve_function);
 		perror("execve");
 		exit(EXIT_FAILURE);
 	}
 }
-
 int	executor(t_main *shell)
 {
 	t_command	*cmds;
 	int			i;
 
-	i = 0;
 	cmds = shell->cmd;
 	if (shell->control == 0)
 		return (1);
 	shell->paths = get_cmd(shell->envs);
 	if (!shell->paths)
 		return (0);
-	if (!set_fd(cmds))
+	i = set_fd(cmds);
+	if (!i)
 		return (free_double(shell->paths), 0);
+	else if (i == 1)
+		return (free_double(shell->paths), close_all(cmds), 1);
 	while (cmds != NULL)
 	{
 		if (is_builtin(cmds, shell))
 			;
 		else if (accessibility(cmds, shell))
-			official_executer(cmds, shell, i, FALSE);
+			official_executer(cmds, shell, FALSE);
 		else
 		{
-			if (cmds->fd[1] != STDOUT_FILENO) // kapatıp çıkacaksak tüm pipeler kapnmalı
-				close(cmds->fd[1]);
-			if (cmds->fd[0] != STDIN_FILENO)
-				close(cmds->fd[0]);
-			while (wait(NULL) != -1)
-				;
 			ft_putstr_fd("ft_sh: command not found: ", 2);
 			ft_putstr_fd(cmds->value[0], 2);
 			ft_putchar_fd('\n', 2);
-			free_double(shell->paths);
-			return (1); // return atma olmayan komuttan sonraki komutta çalışıyor // gerekli mi?
 		}
 		if (cmds->fd[1] != STDOUT_FILENO)
 			close(cmds->fd[1]);
 		if (cmds->fd[0] != STDIN_FILENO)
 			close(cmds->fd[0]);
-		i++;
 		cmds = cmds->next;
 	}
 	while (wait(NULL) != -1)
-	{
 		;
-	}
-	return (free_double(shell->paths), /* free_command(shell->cmd), */ 1);
+	return (free_double(shell->paths), free_command(shell), 1);
 }

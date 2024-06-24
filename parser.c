@@ -6,24 +6,15 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/11 15:18:56 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/24 18:55:47 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "42-libft/libft.h"
 #include "functions.h"
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-int	is_token(t_tokens *t)
-{
-	if (t->type == PIPE && (t->is_expend != WITHIN_D_Q
-			&& t->is_expend != WITHIN_Q))
-		return (1);
-	return (0);
-}
 
 static size_t	lenght_to_token(t_tokens *lst)
 {
@@ -75,42 +66,6 @@ static size_t	lenght_to_token(t_tokens *lst)
 		if (lst)
 			lst = lst->next; */ // ltt emin olunca sil
 
-size_t	rdr_count(char **str)
-{
-	size_t	len;
-	size_t	i;
-
-	i = 0;
-	len = 0;
-	while (str[i])
-	{
-		if (!ft_strncmp(str[i], "<", 1) && ft_strlen(str[i]) == 1)
-			len++;
-		else if (!ft_strncmp(str[i], ">", 1) && ft_strlen(str[i]) == 1)
-			len++;
-		else if (!ft_strncmp(str[i], ">>", 2) && ft_strlen(str[i]) == 2)
-			len++;
-		i++;
-	}
-	len *= 2;
-	return (len);
-}
-
-int	is_rdr(char *strs)
-{
-	int	i;
-
-	i = 0;
-	while (strs[i])
-	{
-		if (strs[i] == '<')
-			return (1);
-		if (strs[i] == '>')
-			return (1);
-		i++;
-	}
-	return (0);
-}
 
 static int	rdr_position(t_command *cmds)
 {
@@ -163,31 +118,15 @@ static t_command	*cmd_struct_create(t_tokens *token)
 	if (is_token(token))
 		token = token->next;
 	i = lenght_to_token(token);
-	cmd->value = (char **)malloc((i + 1) * sizeof(char *));
+	cmd->value = (char **)ft_calloc((i + 1), sizeof(char *));
 	if (!cmd->value)
 		return (free(cmd), NULL);
-	cmd->value[i] = NULL;
 	cmd->where_p = NONE_P;
 	cmd->fd[0] = STDIN_FILENO;
 	cmd->fd[1] = STDOUT_FILENO;
 	cmd->rdrs = NULL;
 	return (cmd);
 }
-
-/* int	arrange_split(t_command *cmds, t_tokens *t, size_t *i)
-{
-	char	**ar;
-	size_t	j;
-
-	j = 0;
-	ar = ft_split(t->value, ' ');
-	if (!ar)
-		return (0);
-	while (ar[j])
-		cmds->value[(*i)++] = ar[j++];
-	return (free(ar), 1);
-} */
-#include <stdio.h>
 
 static int handle_token(t_command **cmds, t_tokens **t, size_t *i)
 {
@@ -249,8 +188,9 @@ int parser(t_main *shell, t_tokens *t, size_t i)
 		}
 	}
 	rdr_position(cmds);
-	return (1);
+	return (free_tokens(shell), 1);
 }
+
 /* 	t_command *tmp = shell->cmd;
 	while (tmp)
 	{

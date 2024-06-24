@@ -6,14 +6,14 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:46 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/05/23 11:33:46 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/24 19:40:11 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "defines.h"
-
 #include <unistd.h>
+
 void	free_double(char **arr)
 {
 	size_t	i;
@@ -38,42 +38,48 @@ void	free_env(t_env *env)
 	}
 }
 
-void	free_tokens(t_tokens *tokens, int flag)
+void	free_tokens(t_main *shell)
 {
+	t_tokens	*t;
 	t_tokens	*tmp;
 
-	while (tokens)
+	t = shell->token;
+	while (t)
 	{
-		tmp = tokens;
-		tokens = tokens->next;
-		if (flag == 1 && tmp->value)
+		tmp = t;
+		t = t->next;
+		if (tmp->value)
 			free(tmp->value);
 		free(tmp);
 	}
+	shell->token = NULL;
 }
 
-void	free_command(t_command *cmd)
+void	free_command(t_main *shell)
 {
 	t_command	*tmp;
+	t_command	*cmd;
 
+	cmd = shell->cmd;
 	while(cmd)
 	{
 		tmp = cmd;
 		cmd = cmd->next;
 		if (tmp->value)
 			free_double(tmp->value);
+		if (tmp->rdrs)
+			free_double(tmp->rdrs);
 		free(tmp->cmd_and_path);
-/* 		free(tmp->cmd_and_path); */
 		free(tmp);
 	}
+	shell->cmd = NULL;
 }
 
 void	main_free(t_main *shell)
 {
 	free_env(shell->envs);
-	free_tokens(shell->token, 0);
-	free_command(shell->cmd);
+	free_tokens(shell);
+	free_command(shell);
 	free_double(shell->paths);
-	free(shell->prompt);
 	free(shell->cmd_line);
 }

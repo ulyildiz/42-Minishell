@@ -10,19 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "42-libft/libft.h"
 #include "functions.h"
 #include <stdio.h>
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 static int	line_read(t_main *shell)
 {
 	shell->cmd_line = readline(shell->prompt);
 	if (!shell->cmd_line)
-		return (clear_history(), perror("Readline"), 2);
+		return (clear_history(), free_env(shell->envs), perror("Readline"), 2);
 	else if (!is_space(shell->cmd_line))
 		return (free(shell->cmd_line), 0);
 	add_history(shell->cmd_line);
@@ -32,7 +30,7 @@ static int	line_read(t_main *shell)
 void	start_shell(t_main *shell)
 {
 	int			i;
-	t_tokens	*t;
+	//t_tokens	*t;
 
 	while (1)
 	{

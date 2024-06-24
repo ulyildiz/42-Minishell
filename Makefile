@@ -15,7 +15,7 @@ SRC =	executor_utils.c \
 		syntax_check.c \
 		utils.c
 OBJ = $(SRC:.c=.o)
-CC = cc #-Wall -Wextra -Werror
+CC = cc -Wall -Wextra -Werror
 LIBFT = 42-libft
 
 
