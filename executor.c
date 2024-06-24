@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/24 19:41:29 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/24 20:52:41 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int	redirection_touch(t_command *cmd)
 	return (1);
 }
 
-int	set_fd(t_command *cmd)
+int	set_fd(t_command *cmd, int *i) //fdleri dinamik yapmayı dene
 {
 	int	fd[2];
 
@@ -76,7 +76,7 @@ int	set_fd(t_command *cmd)
 		if (cmd->where_p == R_P)
 		{
 			if (pipe(fd) == -1)
-				return (perror("pipe"), 0);
+				return (perror("Pipe"), 1);
 			cmd->fd[1] = fd[1];
 			cmd->next->fd[0] = fd[0];
 		}
@@ -85,24 +85,29 @@ int	set_fd(t_command *cmd)
 			if (!redirection_touch(cmd))
 				return (1);
 		}
+		(*i)++;
 		cmd = cmd->next;
 	}
-	return (2);
+	return (0);
 }
 
-void	close_all(t_command *cmds)
+void	close_all(t_command *cmds, int i)
 {
-	while (cmds)
+	int	count;
+
+	count = 0;
+	while (cmds && i > count)
 	{
 		if (cmds->fd[1] != STDOUT_FILENO)
 			close(cmds->fd[1]);
 		if (cmds->fd[0] != STDIN_FILENO)
 			close(cmds->fd[0]);
+		count++;
 		cmds = cmds->next;
 	}
 }
 
-static void	official_executer(t_command *cmds, t_main *shell, t_bool is_single)
+static void	official_executer(t_command *cmds, t_main *shell, int i, t_bool is_single)
 {
 	t_command *tmp;
 
@@ -119,13 +124,14 @@ static void	official_executer(t_command *cmds, t_main *shell, t_bool is_single)
 			dup2(cmds->fd[1], STDOUT_FILENO);
 			dup2(cmds->fd[0], STDIN_FILENO);
 			tmp = cmds->next;
-			close_all(tmp);
+			close_all(tmp, i);
 		}
 		execve(cmds->cmd_and_path, cmds->value, shell->env_for_execve_function);
 		perror("execve");
 		exit(EXIT_FAILURE);
 	}
 }
+
 int	executor(t_main *shell)
 {
 	t_command	*cmds;
@@ -137,17 +143,14 @@ int	executor(t_main *shell)
 	shell->paths = get_cmd(shell->envs);
 	if (!shell->paths)
 		return (0);
-	i = set_fd(cmds);
-	if (!i)
-		return (free_double(shell->paths), 0);
-	else if (i == 1)
-		return (free_double(shell->paths), close_all(cmds), 1);
+	if (set_fd(cmds, &i))
+		return (free_double(shell->paths), close_all(cmds, i), 1);
 	while (cmds != NULL)
 	{
 		if (is_builtin(cmds, shell))
 			;
 		else if (accessibility(cmds, shell))
-			official_executer(cmds, shell, FALSE);
+			official_executer(cmds, shell, i ,FALSE);
 		else
 		{
 			ft_putstr_fd("ft_sh: command not found: ", 2);
@@ -162,5 +165,5 @@ int	executor(t_main *shell)
 	}
 	while (wait(NULL) != -1)
 		;
-	return (free_double(shell->paths), free_command(shell), 1);
+	return (free_double(shell->paths), /* free_command(shell), */ 1);
 }
