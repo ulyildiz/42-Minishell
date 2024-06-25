@@ -26,8 +26,6 @@ int	main(int ac, char **av, char **env)
 	start_shell(&shell);
 	return (0);
 }
-
-	//main_free(&shell);
 /* 	shell.cmd = NULL;
 	shell.cmd_line = NULL;
 	shell.envs = NULL;
@@ -35,3 +33,5 @@ int	main(int ac, char **av, char **env)
 	shell.prompt = NULL;
 	shell.token = NULL;
 	system("Leaks minishell"); */
+
+	//main_free(&shell);

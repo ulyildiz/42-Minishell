@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/24 20:52:41 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/25 12:59:58 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ int	executor(t_main *shell)
 	t_command	*cmds;
 	int			i;
 
+	i = 0;
 	cmds = shell->cmd;
 	if (shell->control == 0)
 		return (1);
@@ -165,5 +166,5 @@ int	executor(t_main *shell)
 	}
 	while (wait(NULL) != -1)
 		;
-	return (free_double(shell->paths), /* free_command(shell), */ 1);
+	return (free_double(shell->paths), free_command(shell), 1);
 }

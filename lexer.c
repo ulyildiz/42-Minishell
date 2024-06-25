@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:26 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/13 10:04:55 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/25 20:23:58 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ static void	looping(t_main *shell, char *tmp, size_t input_len, size_t *j)
 		else if (shell->cmd_line[i] == '>' && !shell->in_s && !shell->in_d)
 			listing_rdr(shell, tmp, j, &i, ">");
 		else if (shell->cmd_line[i] == '"' && !shell->in_s)
-			listing_dquote(shell, tmp, j, "\"");
+			shell->in_d = !shell->in_d;/* listing_dquote(shell, tmp, j, "\""); */
 		else if (shell->cmd_line[i] == '\'' && !shell->in_d)
-			listing_squote(shell, tmp, j, "'");
+			shell->in_s = !shell->in_s;/* listing_squote(shell, tmp, j, "'");*/
 		else
 			tmp[(*j)++] = shell->cmd_line[i];
 		i++;
@@ -66,7 +66,7 @@ int	lexer(t_main *shell)
 		tmp[j] = '\0';
 		tlist(&shell->token, tmp);
 	}
-	return (last_things(shell));
+	return (free(tmp), last_things(shell));
 }
 
 /* 	t_tokens *t;

@@ -1,0 +1,99 @@
+/* 
+char *merge(char *str1, char *str2, int flag)
+{
+    char *new_v;
+
+    if (flag == 1 && str1 == NULL)
+        return (NULL);
+    new_v = ft_strjoin(str1, str2);
+    if (!new_v && flag == 1)
+        return (free(str1), NULL);
+    return (new_v);
+}
+
+int is_merge_needed(char *str, int flag)
+{
+    size_t len;
+
+    len = ft_strlen(str);
+    if (flag == 1)
+    {
+        if (str[len - 1] != ' ') // Adjusted to len - 1 to check the last character
+            return (1);
+    }
+    else if (flag == 2)
+    {
+        if (str[0] != ' ')
+            return (1);
+    }
+    return (0);
+}
+
+int merge_needed_value(t_tokens **t)
+{
+    t_tokens *current;
+    t_tokens *prev;
+    t_tokens *next;
+    char *tmp = NULL;
+
+    current = *t;
+    prev = NULL;
+    while (current)
+    {
+        next = current->next;
+        if (current->is_expend != NONE)
+        {
+            if (current && current->next != NULL && is_merge_needed(current->next->value, 2))
+            {
+                tmp = merge(current->value, current->next->value, 1);
+                if (tmp)
+                {
+                    free(current->value);
+                    current->value = tmp;
+                    t_tokens *to_free = current->next;
+                    current->next = to_free->next;
+                    free(to_free->value);
+                    free(to_free);
+                }
+            }
+            if (prev != NULL && is_merge_needed(prev->value, 1))
+            {
+                tmp = merge(prev->value, current->value, 0);
+                if (tmp)
+                {
+                    free(prev->value);
+                    prev->value = tmp;
+                    prev->next = current->next;
+                    free(current->value);
+                    free(current);
+                    current = prev->next;
+                }
+            }
+        }
+        prev = current;
+        if (current)
+            current = current->next;
+    }
+    return (1);
+} */
+
+static int handle_command(t_command **cmds, t_tokens **t, size_t *i)
+{
+	char	**ar;
+	size_t	j;
+
+	if ((*t)->is_expend == NONE)
+	{
+		j = 0;
+		ar = ft_split((*t)->value, ' ');
+		if (!ar)
+			return (0);
+		while (ar[j])
+			(*cmds)->value[(*i)++] = ar[j++];
+		free(ar);
+	}
+	else
+		(*cmds)->value[(*i)++] = ft_strdup((*t)->value);
+	*t = (*t)->next;
+	return (1);
+}

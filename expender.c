@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expender.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/07 15:57:11 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/25 20:30:40 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ int	expender(t_main *shell)
 	if (shell->control == 0)
 		return (1);
 	t = shell->token;
+	shell->in_d = FALSE;
+	shell->in_s = FALSE;
 	while (t)
 	{
 		if (ft_strnstr(t->value, "$", ft_strlen(t->value)))

@@ -48,7 +48,7 @@ void	remove_quotes(t_tokens **token)
 			current = current->next;
 			free(tmp->value);
 			free(tmp);
-			tmp = NULL;
+			//tmp = NULL; //?
 		}
 		else
 		{

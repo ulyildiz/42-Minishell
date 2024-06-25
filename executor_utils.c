@@ -21,15 +21,13 @@ int	accessibility(t_command *cmds, t_main *shell)
 			if (access(cmds->cmd_and_path, X_OK) == 0)
 				return (free(tmp), 1);
 			free(cmds->cmd_and_path);
+			cmds->cmd_and_path = NULL;
 			i++;
 		}
 		free(tmp);
 	}
 	else
-	{
-		cmds->cmd_and_path = ft_strdup(cmds->value[0]);
-		return (1);
-	}
+		return (cmds->cmd_and_path = ft_strdup(cmds->value[0]), 1);
 	return (0);
 }
 

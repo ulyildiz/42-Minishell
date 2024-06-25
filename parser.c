@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/24 18:55:47 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/25 19:17:05 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,7 @@ int parser(t_main *shell, t_tokens *t, size_t i)
 		}
 	}
 	rdr_position(cmds);
+	cmds->next = NULL;
 	return (free_tokens(shell), 1);
 }
 

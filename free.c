@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:46 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/24 19:40:11 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/25 12:23:39 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,17 +69,18 @@ void	free_command(t_main *shell)
 			free_double(tmp->value);
 		if (tmp->rdrs)
 			free_double(tmp->rdrs);
-		free(tmp->cmd_and_path);
+		if (tmp->cmd_and_path)
+			free(tmp->cmd_and_path);
 		free(tmp);
 	}
 	shell->cmd = NULL;
 }
 
-void	main_free(t_main *shell)
+/* void	main_free(t_main *shell)
 {
 	free_env(shell->envs);
 	free_tokens(shell);
 	free_command(shell);
 	free_double(shell->paths);
 	free(shell->cmd_line);
-}
+} */
