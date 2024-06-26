@@ -4,16 +4,16 @@ SRC =	src/main.c \
 		src/shell/shell.c \
 		src/free/free.c \
 		src/main_structure/lexer/lexer.c \
+		src/main_structure/lexer/utils/lexer_utils.c \
+		src/main_structure/lexer/utils/lexer_utils2.c \
 		src/main_structure/expander/expander.c \
+		src/main_structure/expander/utils/expander_utils.c \
 		src/main_structure/parser/parser.c \
+		src/main_structure/parser/utils/parser_utils.c \
 		src/main_structure/executer/executer.c \
+		src/main_structure/executer/utils/executer_utils.c \
 		src/utils/utils.c \
-		src/utils/lexer_utils.c \
 		src/utils/syntax_check.c \
-		src/utils/lexer_utils2.c \
-		src/utils/parser_utils.c \
-		src/utils/expander_utils.c \
-		src/utils/executer_utils.c \
 
 OBJ = $(SRC:.c=.o)
 CC = cc

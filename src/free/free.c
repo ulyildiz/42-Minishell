@@ -6,10 +6,9 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 07:29:22 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/14 07:32:47 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/26 14:46:06 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "functions.h"
 
@@ -18,6 +17,8 @@ void	free_double(char **arr)
 	size_t	i;
 
 	i = 0;
+	if (!arr)
+		return ;
 	while (arr[i])
 		free(arr[i++]);
 	free(arr);
@@ -25,7 +26,7 @@ void	free_double(char **arr)
 
 void	free_env(t_env *env)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	while (env)
 	{
@@ -55,14 +56,13 @@ void	free_command(t_command *cmd)
 {
 	t_command	*tmp;
 
-	while(cmd)
+	while (cmd)
 	{
 		tmp = cmd;
 		cmd = cmd->next;
 		if (tmp->value)
 			free_double(tmp->value);
 		free(tmp->cmd_and_path);
-/* 		free(tmp->cmd_and_path); */
 		free(tmp);
 	}
 }

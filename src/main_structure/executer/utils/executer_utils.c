@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executer_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/26 12:49:03 by ysarac            #+#    #+#             */
+/*   Updated: 2024/06/26 16:16:41 by ysarac           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "functions.h"
 
@@ -116,34 +127,84 @@ void	cd(t_command *cmds, t_main *shell)
 
 void	pwd(t_command *cmds, t_main *shell)
 {
-	t_env	*pwd;
-
-	pwd = find_env(shell->envs, "PWD");
+	char *pwd;
+	
+	pwd = getcwd(NULL, 0);
 	if (pwd != NULL)
 	{
-		ft_putstr_fd(pwd->value, cmds->fd[1]);
+		ft_putstr_fd(pwd, cmds->fd[1]);
 		ft_putstr_fd("\n", cmds->fd[1]);
-		// normal bash ile karşılaştırdım newline atıyor rdr de bile
-	} // olmama durumunu kontrol etmelisin
+	}
+	else
+	{
+		ft_putstr_fd("pwd not set", cmds->fd[1]);
+		ft_putstr_fd("\n", cmds->fd[1]);
+	}
+	free(pwd);
+	//d0nE
 }
 
 void	env(t_command *cmds, t_main *shell)
 {
-	t_env	*env;
+	t_env	*export;
+	t_env	*copy;
+	t_env	*tmp;
+	int		i;
+	char	**str;
 
-	env = shell->envs;
-	while (env != NULL)
+	
+	copy = shell->envs;
+	export = NULL;
+	while (copy)
 	{
-		if (env->name != 0)
+		tmp = (t_env *)malloc(sizeof(t_env));
+		if (!tmp)
+			return (free_env(export));
+		tmp->name = ft_strdup(copy->name);
+		if (!tmp->name)
+			return (free(tmp), free_env(export));
+		tmp->value = ft_strdup(copy->value);
+		if (!tmp->value)
+			return (free(tmp->name), free(tmp), free_env(export));
+		tmp->next = NULL;
+		list_add_back(&export, tmp);
+		copy = copy->next;
+	}
+	i = 1;
+	while (cmds->value[i])
+	{
+		str = ft_split(cmds->value[i], '=');
+		if (str[0] && find_env(export, str[0]) != NULL)
 		{
-			ft_putstr_fd(env->name, cmds->fd[1]);
-			ft_putstr_fd("=", cmds->fd[1]);
+			if (str[1])
+				find_env(export, str[0])->value = str[1];
 		}
-		if (env->value != NULL)
-			ft_putstr_fd(env->value, cmds->fd[1]);
+		else if (str[0] && find_env(export, str[0]) == NULL)
+		{
+			tmp = (t_env *)malloc(sizeof(t_env));
+			if (!tmp)
+				return ;
+			tmp->name = str[0];
+			tmp->value = "\0";
+			tmp->next = NULL;
+			if (str[1])
+			{
+				tmp->value = str[1];
+			}
+			list_add_back(&export, tmp);
+		}
+		i++;
+	}
+	while (export)
+	{
+		ft_putstr_fd(export->name, cmds->fd[1]);
+		if (export->value != NULL && export->value[0] != '\0')
+		{
+			ft_putstr_fd("=", cmds->fd[1]);
+			ft_putstr_fd(export->value, cmds->fd[1]);
+		}
 		ft_putstr_fd("\n", cmds->fd[1]);
-		// eğer value ya sahip olmayan nameler varsa = den sonra direkt newline atmıyordu ondan if dışında
-		env = env->next;
+		export = export->next;
 	}
 }
 

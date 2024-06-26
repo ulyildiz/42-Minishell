@@ -5,11 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/14 07:28:35 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/14 07:28:35 by ysarac           ###   ########.fr       */
+/*   Created: 2024/06/26 12:43:09 by ysarac            #+#    #+#             */
+/*   Updated: 2024/06/26 14:47:19 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "functions.h"
 
@@ -42,26 +41,40 @@ size_t	wordlen(const char *str)
 
 char	**get_cmd(t_env *env)
 {
-	char **path;
+	char **path = NULL;
 	char **path2;
+	t_env	*tmp;
 	int i;
 
 	i = 0;
-	path = ft_split(find_env(env, "PATH")->value, ':');
-	if (!path)
-		return (perror("Path init 1"), NULL);
-	while (path[i] != NULL)
-		i++;
+	tmp = find_env(env, "PATH");
+	if (tmp)
+	{
+		path = ft_split(tmp->value, ':');
+		if (!path)
+			return (perror("Path init 1"), NULL);
+		while (path[i] != NULL)
+			i++;
+	}
 	path2 = (char **)ft_calloc(i + 2, sizeof(char *));
 	if (!path2)
 		return (perror("Path init 2"), free_double(path), NULL);
 	i = -1;
-	while (path[++i] != NULL)
-		path2[i] = path[i];
-	free(path);
-	path2[i] = ft_strdup(find_env(env, "PWD")->value);
-	if (!path2[i])
-		return (perror("Path init 3"), free_double(path2), NULL);
+	if (path)
+	{
+		while (path[++i] != NULL)
+			path2[i] = path[i];
+		free(path);
+	}
+	else
+		++i;
+	tmp = find_env(env, "PWD");
+	if (tmp)
+	{
+		path2[i] = ft_strdup(tmp->value);
+		if (!path2[i])
+			return (perror("Path init 3"), free_double(path2), NULL);
+	}
 	return (path2);
 }
 

@@ -6,19 +6,18 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:28:23 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/14 09:27:02 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/26 12:34:33 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FUNCTIONS_H
-#define FUNCTIONS_H
+# define FUNCTIONS_H
 
 /********************************   Includes   ********************************/
 
-#include "defines.h"
+# include "defines.h"
 
 /********************************   Funtions   ********************************/
-
 
 // preparing functions
 int			initialize(t_main *shell, char **env);
@@ -32,7 +31,8 @@ int			token_check(t_main *shell);
 void		listing_squote(t_main *shell, char *tmp, size_t *j, char *token);
 void		listing_dquote(t_main *shell, char *tmp, size_t *j, char *token);
 void		listing_token(t_main *shell, char *tmp, size_t *j, char *token);
-void		listing_rdr(t_main *shell, char *tmp, size_t *j, size_t *i, char *token);
+void		listing_rdr(t_main *shell, char *tmp, size_t *j, size_t *i,
+				char *token);
 
 // free		functions
 void		free_env(t_env *shell);

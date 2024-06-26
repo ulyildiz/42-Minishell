@@ -6,12 +6,11 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:38 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/14 09:08:18 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/26 12:45:02 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
-
 
 static int	line_read(t_main *shell)
 {

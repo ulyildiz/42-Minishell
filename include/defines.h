@@ -6,34 +6,34 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:20:44 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/14 11:02:51 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/26 12:38:08 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEFINES_H
-#define DEFINES_H
-
-/********************************   Defines   *********************************/
-
-typedef int	t_bool;
-#define TRUE	1
-#define FALSE	0
+# define DEFINES_H
 
 /********************************   Includes   ********************************/
 
-#include "libft.h"
-#include <stdio.h>
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <unistd.h>
+# include "libft.h"
+# include <stdio.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <errno.h>
+# include <fcntl.h>
+# include <unistd.h>
 
-/********************************   Enumaretes   *******************************/
+/* ******************************    Defines     **************************** */
+
+typedef int	t_bool;
+# define TRUE	1
+# define FALSE	0
+
+/* ******************************   Enumaretes   ***************************  */
 typedef enum e_token_types
 {
 	CMD,
@@ -75,7 +75,7 @@ typedef enum e_is_rdr
 	L_RDR_H
 }	t_is_rdr;
 
-/*********************************   Structs   ********************************/
+/* *******************************   Structs   ****************************** */
 
 typedef struct s_tokens
 {
@@ -124,6 +124,5 @@ typedef struct s_build
 	char	*name;
 	void	(*func)(t_command *cmds, t_main *shell);
 }	t_build;
-
 
 #endif

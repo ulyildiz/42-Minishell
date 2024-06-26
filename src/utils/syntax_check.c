@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 15:19:36 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/11 15:19:36 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/26 12:40:41 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,5 @@ int	token_check(t_main *shell)
 	}
 	return (1);
 }
-
 
 // = syntax düzelt

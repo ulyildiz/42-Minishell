@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor.c                                         :+:      :+:    :+:   */
+/*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/13 12:04:34 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:34:49 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ int	executor(t_main *shell)
 {
 	t_command	*cmds;
 	int			i;
+	t_bool		moment;
 
 	i = 0;
 	cmds = shell->cmd;
@@ -128,6 +129,9 @@ int	executor(t_main *shell)
 		return (0);
 	if (!set_fd(cmds))
 		return (free_double(shell->paths), 0);
+	moment = FALSE;
+	if(cmds->next)
+		moment = TRUE;
 	while (cmds != NULL)
 	{
 		if (is_builtin(cmds, shell))
