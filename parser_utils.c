@@ -6,26 +6,13 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:31 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/05/23 11:33:31 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/27 18:30:29 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 #include "42-libft/libft.h"
 #include <stdlib.h>
-
-/* int	need_remove(char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while(s[i])
-	{
-		if (!is_whitespace(s[i++]))
-			return (0);
-	}
-	return (1);
-} */
 
 int	is_token(t_tokens *t)
 {
@@ -44,11 +31,13 @@ size_t	rdr_count(char **str)
 	len = 0;
 	while (str[i])
 	{
-		if (!ft_strncmp(str[i], "<", 1) && ft_strlen(str[i]) == 1)
+		if (!ft_strncmp(str[i], "<", 1) && ft_strlen(str[i]) == 1 && i++)
 			len++;
-		else if (!ft_strncmp(str[i], ">", 1) && ft_strlen(str[i]) == 1)
+		else if (!ft_strncmp(str[i], ">", 1) && ft_strlen(str[i]) == 1 && i++)
 			len++;
-		else if (!ft_strncmp(str[i], ">>", 2) && ft_strlen(str[i]) == 2)
+		else if (!ft_strncmp(str[i], ">>", 2) && ft_strlen(str[i]) == 2 && i++)
+			len++;
+		else if (!ft_strncmp(str[i], "<<", 2) && ft_strlen(str[i]) == 2 && i++)
 			len++;
 		i++;
 	}

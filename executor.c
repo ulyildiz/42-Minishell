@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/25 12:59:58 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/27 20:33:25 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	opens(t_command *cmd, size_t *i)
 	{
 		fd = open(cmd->rdrs[++(*i)], O_CREAT | O_APPEND | O_WRONLY, 0777);
 		if (fd == -1)
-			return (perror(cmd->rdrs[(*i)]), -1);
+			return (perror(cmd->rdrs[(*i)]), cmd->ifo++, -1);
 		if (cmd->fd[1] != STDOUT_FILENO)
 			close(cmd->fd[1]);
 		cmd->fd[1] = fd;
@@ -36,7 +36,7 @@ static int	opens(t_command *cmd, size_t *i)
 	{
 		fd = open(cmd->rdrs[++(*i)], O_RDONLY, 0777);
 		if (fd == -1)
-			return (perror(cmd->rdrs[(*i)]), -1);
+			return (perror(cmd->rdrs[(*i)]), cmd->ifo++, -1);
 		if (cmd->fd[0] != STDIN_FILENO)
 			close(cmd->fd[0]);
 		cmd->fd[0] = fd;
@@ -45,7 +45,7 @@ static int	opens(t_command *cmd, size_t *i)
 	{
 		fd = open(cmd->rdrs[++(*i)], O_CREAT | O_TRUNC | O_WRONLY, 0777);
 		if (fd == -1)
-			return (perror(cmd->rdrs[(*i)]), -1);
+			return (perror(cmd->rdrs[(*i)]), cmd->ifo++, -1);
 		if (cmd->fd[1] != STDOUT_FILENO)
 			close(cmd->fd[1]);
 		cmd->fd[1] = fd;
@@ -61,13 +61,13 @@ static int	redirection_touch(t_command *cmd)
 	while (cmd->rdrs[i])
 	{
 		if (opens(cmd, &i) == -1)
-			return (0);
+			return (1);
 		i++;
 	}
 	return (1);
 }
 
-int	set_fd(t_command *cmd, int *i) //fdleri dinamik yapmayı dene
+int	set_fd(t_command *cmd, int *i)
 {
 	int	fd[2];
 
@@ -83,7 +83,7 @@ int	set_fd(t_command *cmd, int *i) //fdleri dinamik yapmayı dene
 		if (cmd->rdrs)
 		{
 			if (!redirection_touch(cmd))
-				return (1);
+				return (0);
 		}
 		(*i)++;
 		cmd = cmd->next;
@@ -132,6 +132,13 @@ static void	official_executer(t_command *cmds, t_main *shell, int i, t_bool is_s
 	}
 }
 
+/* int	single_cmd()
+{
+
+} */
+
+
+
 int	executor(t_main *shell)
 {
 	t_command	*cmds;
@@ -148,15 +155,17 @@ int	executor(t_main *shell)
 		return (free_double(shell->paths), close_all(cmds, i), 1);
 	while (cmds != NULL)
 	{
-		if (is_builtin(cmds, shell))
-			;
-		else if (accessibility(cmds, shell))
-			official_executer(cmds, shell, i ,FALSE);
-		else
+		if (cmds->ifo == 0)
 		{
-			ft_putstr_fd("ft_sh: command not found: ", 2);
-			ft_putstr_fd(cmds->value[0], 2);
-			ft_putchar_fd('\n', 2);
+			if (!is_builtin(cmds, shell))
+				;
+			else if (accessibility(cmds, shell))
+				official_executer(cmds, shell, i ,FALSE);
+			else
+			{
+				ft_putstr_fd("ft_sh: command not found: ", 2);
+				ft_putendl_fd(cmds->value[0], 2);
+			}
 		}
 		if (cmds->fd[1] != STDOUT_FILENO)
 			close(cmds->fd[1]);
@@ -168,3 +177,85 @@ int	executor(t_main *shell)
 		;
 	return (free_double(shell->paths), free_command(shell), 1);
 }
+ /*static void	official_executer(t_command *cmds, t_main *shell, int i, t_bool cmd_num)
+{
+	t_command *tmp;
+
+	if (!cmd_num)
+		cmds->pid = fork();
+	if (cmds->pid == -1)
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
+	else if (cmds->pid == 0)
+	{
+		printf("a\n");
+		dup2(cmds->fd[1], STDOUT_FILENO);
+		dup2(cmds->fd[0], STDIN_FILENO);
+		tmp = cmds->next;
+		close_all(tmp, i);
+		execve(cmds->cmd_and_path, cmds->value, shell->env_for_execve_function);
+		perror("execve");
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
+{
+	if (cmd_num)
+	{
+		cmds->pid = fork();
+		printf("b\n");
+		if (cmds->pid == -1)
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+		else if (cmds->pid != 0)
+			return ;
+	}
+	if (cmds->ifo == 0)
+	{
+		if (!is_builtin(cmds, shell, cmd_num))
+			;
+		else if (accessibility(cmds, shell))
+			official_executer(cmds, shell, i, cmd_num);
+		else
+		{
+			ft_putstr_fd("ft_sh: command not found: ", 2);
+			ft_putendl_fd(cmds->value[0], 2);
+		}
+	}
+}
+
+int	executor(t_main *shell)
+{
+	t_command	*cmds;
+	t_bool		cmd_num = FALSE;
+	int			i;
+
+	i = 0;
+	cmds = shell->cmd;
+	if (shell->control == 0)
+		return (1);
+	if (cmds->next != NULL)
+		cmd_num = TRUE;
+	shell->paths = get_cmd(shell->envs);
+	if (!shell->paths)
+		return (0);
+	if (set_fd(cmds, &i))
+		return (free_double(shell->paths), close_all(cmds, i), 1);
+	while (cmds != NULL)
+	{
+		run_command(shell, cmds, i, cmd_num);
+		if (cmds->fd[1] != STDOUT_FILENO)
+			close(cmds->fd[1]);
+		if (cmds->fd[0] != STDIN_FILENO)
+			close(cmds->fd[0]);
+		cmds = cmds->next;
+	}
+	while (wait(NULL) != -1)
+		;
+	return (free_double(shell->paths), free_command(shell), 1);
+}*/

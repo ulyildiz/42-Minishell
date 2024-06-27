@@ -25,9 +25,7 @@ typedef enum e_token_types
 	RDR_IN,
 	RDR_D_IN,
 	RDR_OUT,
-	HEREDOC,
-	D_QUOTE,
-	QUOTE
+	HEREDOC
 }				t_token_types;
 
 typedef enum e_is_expendable
@@ -61,6 +59,7 @@ typedef struct s_command
 	int					fd[2];
 	t_is_pipe			where_p;
 	int					pid;
+	int					ifo; //is_file_opened
 	struct s_command	*prev;
 	struct s_command	*next;
 }	t_command;

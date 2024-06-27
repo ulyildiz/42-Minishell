@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:26 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/26 08:32:53 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/27 16:27:54 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 
 static int	last_things(t_main *shell)
 {
-	is_expendable(shell->token);
 	if (!token_check(shell))
 		return (shell->control = 0, 1);
 	return (1);

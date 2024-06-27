@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/27 14:07:28 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/27 18:36:56 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static size_t	lenght_to_token(t_tokens *lst)
 		}
 		lst = lst->next;
 	}
-	return (printf("len = %zu\n", len), len);
+	return (len);
 }
 
 static int	rdr_position(t_command *cmds)
@@ -106,6 +106,7 @@ static t_command	*cmd_struct_create(t_tokens *token)
 	cmd->value = (char **)ft_calloc((i + 1), sizeof(char *));
 	if (!cmd->value)
 		return (free(cmd), NULL);
+	cmd->ifo = 0;
 	cmd->where_p = NONE_P;
 	cmd->fd[0] = STDIN_FILENO;
 	cmd->fd[1] = STDOUT_FILENO;
@@ -140,7 +141,7 @@ char *remove_quotes(const char *str, t_bool in_s, t_bool in_d)
 	i = 0;
 	len = ft_strlen(str);
 	result = (char *)ft_calloc(len + 1, sizeof(char));
-	if (!result)
+	if (!result || !str)
 		return (NULL);
 	while (i < len)
 	{
@@ -158,6 +159,7 @@ char *remove_quotes(const char *str, t_bool in_s, t_bool in_d)
 		}
 		result[j++] = str[i++];
 	}
+	result[j] = '\0';
 	return (result);
 }
 
@@ -166,6 +168,8 @@ static int handle_command(t_command **cmds, t_tokens **t, size_t *i)
 	t_bool in_q;
 	size_t j;
 	size_t start;
+	char *substr;
+	char *cleaned_substr;
 
 	j = 0;
 	in_q = FALSE;
@@ -182,12 +186,15 @@ static int handle_command(t_command **cmds, t_tokens **t, size_t *i)
 				break;
 			j++;
 		}
-		char *substr = ft_substr((*t)->value, start, j - start);
-		char *cleaned_substr = remove_quotes(substr, FALSE, FALSE);
-		(*cmds)->value[(*i)] = cleaned_substr;
-		free(substr);
-		if (!(*cmds)->value[(*i)++])
-			return (0);
+		if (j != start)
+		{
+			substr = ft_substr((*t)->value, start, j - start);
+			cleaned_substr = remove_quotes(substr, FALSE, FALSE);
+			(*cmds)->value[(*i)] = cleaned_substr;
+			free(substr);
+			if (!(*cmds)->value[(*i)++])
+				return (0);
+		}
 	}
 	*t = (*t)->next;
 	return (1);
