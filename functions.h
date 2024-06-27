@@ -56,7 +56,6 @@ char		*append_literal(char *tmp, char *token_value, size_t *start,
 				size_t *i);
 //parser
 int			parser(t_main *shell, t_tokens *t, size_t i);
-void		remove_quotes(t_tokens **token);
 int			is_token(t_tokens *t);
 size_t		rdr_count(char **str);
 int			is_rdr(char *strs);

@@ -18,6 +18,7 @@ int	main(int ac, char **av, char **env)
 {
 	t_main	shell;
 
+	//signal_reciever(1);
 	av = (void *)av;
 	if (ac >= 2)
 		return (ft_putstr_fd("Too much argument.\n", 2), 1);

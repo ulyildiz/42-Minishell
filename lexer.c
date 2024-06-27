@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:26 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/25 20:23:58 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/26 08:32:53 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,15 @@ static void	looping(t_main *shell, char *tmp, size_t input_len, size_t *j)
 		else if (shell->cmd_line[i] == '>' && !shell->in_s && !shell->in_d)
 			listing_rdr(shell, tmp, j, &i, ">");
 		else if (shell->cmd_line[i] == '"' && !shell->in_s)
-			shell->in_d = !shell->in_d;/* listing_dquote(shell, tmp, j, "\""); */
+		{
+			shell->in_d = !shell->in_d;
+			tmp[(*j)++] = shell->cmd_line[i];
+		}
 		else if (shell->cmd_line[i] == '\'' && !shell->in_d)
-			shell->in_s = !shell->in_s;/* listing_squote(shell, tmp, j, "'");*/
+		{
+			shell->in_s = !shell->in_s;
+			tmp[(*j)++] = shell->cmd_line[i];
+		}
 		else
 			tmp[(*j)++] = shell->cmd_line[i];
 		i++;

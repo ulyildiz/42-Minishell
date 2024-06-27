@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/25 19:17:05 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/27 14:07:28 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,48 +24,33 @@ static size_t	lenght_to_token(t_tokens *lst)
 	len = 0;
 	while (lst && !is_token(lst))
 	{
-		if (lst && lst->is_expend == NONE)
-		{
-			i = 0;
-			while (lst->value[i])
-			{
-				while (lst->value[i] && is_whitespace(lst->value[i]))
-					i++;
-				while (lst->value[i] && !is_whitespace(lst->value[i]))
-					i++;
-				len++;
-				while (lst->value[i] && is_whitespace(lst->value[i]))
-					i++;
-			}
-		}
-		else
-			len++;
-		lst = lst->next;
-	}
-	return (len);
-}
-/* 		while (lst && lst->is_expend != NONE)
-		{
-			lst = lst->next;
-			if (lst && lst->is_expend == NONE)
-			{
-		//		printf("%s\n", lst->value);
-				len++;
-			}
-		}
-		while (lst && lst->value[i])
+		i = 0;
+		while (lst->value[i])
 		{
 			while (lst->value[i] && is_whitespace(lst->value[i]))
 				i++;
 			while (lst->value[i] && !is_whitespace(lst->value[i]))
+			{
+				if (lst->value[i] == '\'')
+				{
+					i++;
+					while (lst->value[i] && lst->value[i] != '\'')
+						i++;
+				}	
+				else if (lst->value[i] == '"')
+				{
+					i++;
+					while (lst->value[i] && lst->value[i] != '"')
+						i++;
+				}
 				i++;
+			}
 			len++;
-			while (lst->value[i] && is_whitespace(lst->value[i]))
-				i++;
 		}
-		if (lst)
-			lst = lst->next; */ // ltt emin olunca sil
-
+		lst = lst->next;
+	}
+	return (printf("len = %zu\n", len), len);
+}
 
 static int	rdr_position(t_command *cmds)
 {
@@ -143,23 +128,67 @@ static int handle_token(t_command **cmds, t_tokens **t, size_t *i)
 	return (1);
 }
 
+
+char *remove_quotes(const char *str, t_bool in_s, t_bool in_d)
+{
+	size_t	len;
+	char	*result;
+	size_t	i;
+	size_t	j;
+	
+	j = 0;
+	i = 0;
+	len = ft_strlen(str);
+	result = (char *)ft_calloc(len + 1, sizeof(char));
+	if (!result)
+		return (NULL);
+	while (i < len)
+	{
+		if (str[i] == '\'' && !in_d)
+		{
+			in_s = !in_s;
+			i++;
+			continue ;
+		}
+		else if (str[i] == '"' && !in_s)
+		{
+			in_d = !in_d;
+			i++;
+			continue ;
+		}
+		result[j++] = str[i++];
+	}
+	return (result);
+}
+
 static int handle_command(t_command **cmds, t_tokens **t, size_t *i)
 {
-	char	**ar;
-	size_t	j;
+	t_bool in_q;
+	size_t j;
+	size_t start;
 
-	if ((*t)->is_expend == NONE)
+	j = 0;
+	in_q = FALSE;
+	while ((*t)->value[j])
 	{
-		j = 0;
-		ar = ft_split((*t)->value, ' ');
-		if (!ar)
+		while ((*t)->value[j] && is_whitespace((*t)->value[j]) && !in_q)
+			j++;
+		start = j;
+		while ((*t)->value[j])
+		{
+			if (((*t)->value[j] == '"' || (*t)->value[j] == '\'') && !in_q)
+				in_q = !in_q;
+			else if (is_whitespace((*t)->value[j]) && !in_q)
+				break;
+			j++;
+		}
+		char *substr = ft_substr((*t)->value, start, j - start);
+		char *cleaned_substr = remove_quotes(substr, FALSE, FALSE);
+		(*cmds)->value[(*i)] = cleaned_substr;
+		free(substr);
+		if (!(*cmds)->value[(*i)++])
 			return (0);
-		while (ar[j])
-			(*cmds)->value[(*i)++] = ar[j++];
-		free(ar);
 	}
-	else
-		(*cmds)->value[(*i)++] = ft_strdup((*t)->value);
 	*t = (*t)->next;
 	return (1);
 }
@@ -167,7 +196,7 @@ static int handle_command(t_command **cmds, t_tokens **t, size_t *i)
 int parser(t_main *shell, t_tokens *t, size_t i)
 {
 	t_command *cmds;
-    
+	
 	if (shell->control == 0)
 		return (1);
 	cmds = cmd_struct_create(t);
@@ -224,4 +253,4 @@ int parser(t_main *shell, t_tokens *t, size_t i)
 		printf("value = %s - prev = %p - next = %p\n", shell->cmd->value[0],
 				shell->cmd->prev, shell->cmd->next);
 		shell->cmd = shell->cmd->next;
-	} */
+	} */				

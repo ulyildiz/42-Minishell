@@ -45,7 +45,6 @@ static char	*expand_variable(char *tmp, const char *token_value, size_t *i,
 	while (ft_isalpha(token_value[*i + j]))
 		j++;
 	new_tmp = ft_strndup(&token_value[*i], j);
-	printf("token_v = %s\n", new_tmp);
 	expnd_value = find_env(env, new_tmp);
 	if (expnd_value)
 	{

@@ -31,7 +31,7 @@ static int	line_read(t_main *shell)
 void	start_shell(t_main *shell)
 {
 	int			i;
-	t_tokens	*t;
+	//t_tokens	*t;
 
 	while (1)
 	{
@@ -44,14 +44,6 @@ void	start_shell(t_main *shell)
 			break ;
 		if (!expender(shell))
 			break ;
-		t = shell->token;
-		while(t)
-		{
-			printf("-%s -> expend_va = %d -> type_va = %d\n", t->value,
-					t->is_expend, t->type);
-			t = t->next;
-		}
-		printf("\n");
 		if (!parser(shell, shell->token, 0))
 			break ;
 		if (!executor(shell))
@@ -59,3 +51,12 @@ void	start_shell(t_main *shell)
 		shell->control = 1;
 	}
 }
+
+/* 		t = shell->token;
+		while(t)
+		{
+			printf("-%s -> expend_va = %d -> type_va = %d\n", t->value,
+					t->is_expend, t->type);
+			t = t->next;
+		}
+		printf("\n"); */

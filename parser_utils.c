@@ -14,7 +14,7 @@
 #include "42-libft/libft.h"
 #include <stdlib.h>
 
-int	need_remove(char *s)
+/* int	need_remove(char *s)
 {
 	size_t	i;
 
@@ -25,38 +25,7 @@ int	need_remove(char *s)
 			return (0);
 	}
 	return (1);
-}
-
-void	remove_quotes(t_tokens **token)
-{
-	t_tokens	*tmp;
-	t_tokens	*prev;
-	t_tokens	*current;
-
-	current = *token;
-	prev = NULL;
-	while (current)
-	{
-		if (need_remove(current->value) || (current->is_expend == NONE &&
-			(current->type == QUOTE || current->type == D_QUOTE)))
-		{
-			tmp = current;
-			if (prev)
-				prev->next = current->next;
-			else
-				*token = current->next;
-			current = current->next;
-			free(tmp->value);
-			free(tmp);
-			//tmp = NULL; //?
-		}
-		else
-		{
-			prev = current;
-			current = current->next;
-		}
-	}
-}
+} */
 
 int	is_token(t_tokens *t)
 {
