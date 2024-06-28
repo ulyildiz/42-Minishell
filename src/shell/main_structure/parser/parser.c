@@ -6,7 +6,7 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/28 13:40:47 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/28 13:55:09 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,7 @@ static int handle_command(t_command **cmds, t_tokens **t, size_t *i)
 			free(substr);
 			if (!(*cmds)->value[(*i)++])
 				return (0);
+		
 		}
 	}
 	*t = (*t)->next;
