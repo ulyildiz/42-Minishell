@@ -32,5 +32,6 @@ void	deleteNode(t_env **head, char *key)
 
 void	unset(t_command *cmds, t_main *shell)
 {
-	deleteNode(&shell->envs, cmds->value[1]);
+	if (cmds->value[1] != NULL)
+		deleteNode(&shell->envs, cmds->value[1]);
 }
