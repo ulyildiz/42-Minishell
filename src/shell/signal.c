@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 13:11:28 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/28 13:11:29 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/28 21:52:49 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 void	parent_sigint(int sig)
 {
 	sig = 0;
+	
 }
 
 void	signal_reciever(int flag)

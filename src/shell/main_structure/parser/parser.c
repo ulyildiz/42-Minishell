@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/28 16:59:50 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/28 21:58:18 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,33 +231,6 @@ int parser(t_main *shell, t_tokens *t, size_t i)
 	cmds->next = NULL;
 	return (free_tokens(shell), 1);
 }
-
-/* 	t_command *tmp = shell->cmd;
-	while (tmp)
-	{
-		i = 0;
-		while (tmp->value[i])
-		{
-			printf("/%s/", tmp->value[i]);
-			i++;
-		}
-		printf("\n");
-		printf("/where_p = %d - where_r = %d\n", tmp->where_p, tmp->where_r);
-		if(tmp)
-			tmp = tmp->next;
-	} */
-/* 		i = 0;
-		while (t && !is_token(t->type))
-		{
-			cmds->value[i++] = t->value;
-			t = t->next;
-		}
-		if (t)
-			t = t->next;
-		cmds->next = cmd_struct_create(t);
-		if (cmds->next)
-			cmds->next->prev = cmds;
-		cmds = cmds->next; */
 
 /* 	while (shell->cmd)
 	{

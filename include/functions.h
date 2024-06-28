@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   functions.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:28:23 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/28 13:16:48 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/29 00:11:15 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int			is_whitespace(char c);
 size_t		t_lst_size(t_tokens *t);
 void		syntax_message(int flag);
 void		signal_reciever(int flag);
+int			update_env(t_main *shell);
 
 // expender functions
 int			expender(t_main *shell);

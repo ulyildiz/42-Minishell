@@ -3,14 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 12:43:09 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/26 14:47:19 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/29 00:49:03 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+
+int	env_len(t_main *shell)
+{
+	t_env	*tmp;
+	int		i;
+
+	i = 0;
+	tmp = shell->envs;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	return (i);
+}
+
+int	update_env(t_main *shell) // env_for_execve_function güncellemek için ama exporta eklenmedi
+{
+	char	**new_env;
+	t_env	*tmp;
+	size_t	i;
+
+	i = 0;
+	new_env = (char **)ft_calloc(env_len(shell) + 1, sizeof(char *));
+	if (!new_env)
+		return (perror("Update env"), 0);
+	tmp = shell->envs;
+	while (tmp)
+	{
+		new_env[i] = ft_strjoin(tmp->name, "=");
+		if (!new_env[i])
+			return (free_double(new_env), 0);
+		new_env[i] = ft_strjoin(new_env[i], tmp->value);
+		if (!new_env[i])
+			return (free_double(new_env), 0);
+		i++;
+		tmp = tmp->next;
+	}
+	new_env[i] = NULL;
+	if (shell->env_for_execve_function)
+		free_double(shell->env_for_execve_function);
+	shell->env_for_execve_function = new_env;
+	return (1);	
+}
 
 void	list_add_back(t_env **lst, t_env *tmp)
 {

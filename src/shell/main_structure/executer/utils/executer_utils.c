@@ -6,18 +6,35 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 12:49:03 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/28 16:59:15 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 01:07:33 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+#include <errno.h>
+#include <sys/stat.h>
+
+
 
 int	accessibility(t_command *cmds, t_main *shell)
 {
 	size_t	i;
 	char	*tmp;
-
+	struct stat	buf;
+	
 	i = 0;
+
+	if (stat(cmds->value[0], &buf) == 0)
+	{
+		if (buf.st_mode & S_IXUSR)
+		{
+			cmds->cmd_and_path = ft_strdup(cmds->value[0]);
+			return (1);
+		}
+		else
+			return (perror("Stat"), 0);
+	}
+
 	if (access(cmds->value[0], X_OK) != 0)
 	{
 		tmp = ft_strjoin("/", cmds->value[0]);

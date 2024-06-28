@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:52:43 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/28 12:58:56 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/29 00:46:18 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	initialize(t_main *shell, char **env)
 	if (!init_env(shell, env))
 		return (free(shell->prompt), 0);
 	shell->control = 1;
-	shell->env_for_execve_function = env;
+	shell->env_for_execve_function = NULL;
+	if (!update_env(shell))
+		(free_env(shell->envs), 0);
 	return (1);
 }

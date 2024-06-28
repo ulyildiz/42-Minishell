@@ -1,6 +1,10 @@
 
 #include "functions.h"
 
+/*
+** update_env yi  envye ekleme yaptığın yerde kullan.
+*/
+
 static t_env	*sort_export(t_env *lst, int (*cmp)(int, int))
 {
 	char	*swap_name;
