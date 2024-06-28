@@ -3,84 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:31 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/05/23 11:33:31 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/28 13:17:42 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 
-int	need_remove(char *s)
+
+
+int	is_token(t_tokens *t)
 {
+	if (t->type == PIPE && (t->is_expend != WITHIN_D_Q
+			&& t->is_expend != WITHIN_Q))
+		return (1);
+	return (0);
+}
+
+size_t	rdr_count(char **str)
+{
+	size_t	len;
 	size_t	i;
 
 	i = 0;
-	while(s[i])
+	len = 0;
+	while (str[i])
 	{
-		if (!is_whitespace(s[i++]))
-			return (0);
+		if (!ft_strncmp(str[i], "<", 1) && ft_strlen(str[i]) == 1 && i++)
+			len++;
+		else if (!ft_strncmp(str[i], ">", 1) && ft_strlen(str[i]) == 1 && i++)
+			len++;
+		else if (!ft_strncmp(str[i], ">>", 2) && ft_strlen(str[i]) == 2 && i++)
+			len++;
+		else if (!ft_strncmp(str[i], "<<", 2) && ft_strlen(str[i]) == 2 && i++)
+			len++;
+		i++;
 	}
-	return (1);
+	len *= 2;
+	return (len);
 }
 
-void	remove_quotes(t_tokens **token)
+int	is_rdr(char *strs)
 {
-	t_tokens	*tmp;
-	t_tokens	*prev;
-	t_tokens	*current;
+	int	i;
 
-	current = *token;
-	prev = NULL;
-	while (current)
+	i = 0;
+	while (strs[i])
 	{
-		if (need_remove(current->value) || (current->is_expend == NONE &&
-			(current->type == QUOTE || current->type == D_QUOTE)))
-		{
-			tmp = current;
-			if (prev)
-				prev->next = current->next;
-			else
-				*token = current->next;
-			current = current->next;
-			free(tmp->value);
-			free(tmp);
-		}
-		else
-		{
-			prev = current;
-			current = current->next;
-		}
+		if (strs[i] == '<')
+			return (1);
+		if (strs[i] == '>')
+			return (1);
+		i++;
 	}
-}
-
-void	for_prev(t_command *cmds, t_token_types type)
-{
-	if (cmds->where_p == L_P && type == PIPE)
-		cmds->where_p = B_P;
-	else if (type == PIPE)
-		cmds->where_p = R_P;
-	else if (type == RDR_IN)
-		cmds->where_r = R_RDR_IN;
-	else if (type == RDR_D_IN)
-		cmds->where_r = R_D_RDR_IN;
-	else if (type == RDR_OUT)
-		cmds->where_r = R_RDR_OUT;
-	else if (type == HEREDOC)
-		cmds->where_r = R_RDR_H;
-}
-
-void	for_itself(t_command *cmds, t_token_types type)
-{
-	if (type == PIPE)
-		cmds->where_p = L_P;
-	else if (type == RDR_IN)
-		cmds->where_r = L_RDR_IN;
-	else if (type == RDR_D_IN)
-		cmds->where_r = L_D_RDR_IN;
-	else if (type == RDR_OUT)
-		cmds->where_r = L_RDR_OUT;
-	else if (type == HEREDOC)
-		cmds->where_r = L_RDR_H;
+	return (0);
 }

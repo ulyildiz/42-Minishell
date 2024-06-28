@@ -2,6 +2,7 @@ NAME = minishell
 SRC =	src/main.c \
 		src/initialize/initialize.c \
 		src/shell/shell.c \
+		src/shell/signal.c \
 		src/utils/free/free.c \
 		src/shell/main_structure/lexer/lexer.c \
 		src/shell/main_structure/lexer/utils/lexer_utils.c \

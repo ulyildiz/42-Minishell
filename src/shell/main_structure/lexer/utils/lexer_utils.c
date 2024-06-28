@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:23 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/05/23 11:33:23 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/28 13:01:22 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,6 @@ static t_token_types	identify_t(const char *arr)
 		return (RDR_D_IN);
 	else if (ft_strlen(arr) == 1 && *arr == '>')
 		return (RDR_IN);
-	else if (*arr == '\'')
-		return (QUOTE);
-	else if (*arr == '\"')
-		return (D_QUOTE);
 	return (CMD);
 }
 
@@ -42,44 +38,6 @@ static int	token_add_back(t_tokens **list, t_tokens *new)
 		tmp = tmp->next;
 	tmp->next = new;
 	return (1);
-}
-
-void	is_expendable(t_tokens *lst)
-{
-	t_tokens	*tmp;
-
-	tmp = lst;
-	while (tmp)
-	{
-		while (tmp && (tmp->type != D_QUOTE && tmp->type != QUOTE))
-			tmp = tmp->next;
-		if (tmp && tmp->type == D_QUOTE && tmp->is_expend == NONE)
-		{
-			lst = tmp->next;
-			tmp = tmp->next;
-			while (tmp && tmp->type != D_QUOTE)
-				tmp = tmp->next;
-			while (tmp && lst && lst != tmp)
-			{
-				lst->is_expend = WITHIN_D_Q;
-				lst = lst->next;
-			}
-		}
-		else if (tmp && tmp->type == QUOTE && tmp->is_expend == NONE)
-		{
-			lst = tmp->next;
-			tmp = tmp->next;
-			while (tmp && tmp->type != QUOTE)
-				tmp = tmp->next;
-			while (tmp && lst && lst != tmp)
-			{
-				lst->is_expend = WITHIN_Q;
-				lst = lst->next;
-			}
-		}
-		if (tmp)
-			tmp = tmp->next;
-	}
 }
 
 static t_tokens	*create_token(char	*arr)

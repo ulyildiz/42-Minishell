@@ -4,6 +4,7 @@
         "stdio.h": "c",
         "functions.h": "c",
         "libft.h": "c",
-        "defines.h": "c"
+        "defines.h": "c",
+        "history.h": "c"
     }
 }

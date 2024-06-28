@@ -6,7 +6,7 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:28:23 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/26 12:34:33 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/28 13:16:48 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void		start_shell(t_main *shell);
 // lexer	functions
 int			lexer(t_main *shell);
 int			tlist(t_tokens **head, char *arr);
-void		is_expendable(t_tokens *lst);
 int			token_check(t_main *shell);
 void		listing_squote(t_main *shell, char *tmp, size_t *j, char *token);
 void		listing_dquote(t_main *shell, char *tmp, size_t *j, char *token);
@@ -37,9 +36,8 @@ void		listing_rdr(t_main *shell, char *tmp, size_t *j, size_t *i,
 // free		functions
 void		free_env(t_env *shell);
 void		free_double(char **arr);
-void		free_tokens(t_tokens *tokens, int flag);
-void		free_command(t_command *cmd);
-void		main_free(t_main *shell);
+void		free_tokens(t_main *shell);
+void		free_command(t_main *shell);
 
 // utils	functions
 char		**get_cmd(t_env *env);
@@ -51,6 +49,7 @@ size_t		wordlen(const char *str);
 int			is_whitespace(char c);
 size_t		t_lst_size(t_tokens *t);
 void		syntax_message(int flag);
+void		signal_reciever(int flag);
 
 // expender functions
 int			expender(t_main *shell);
@@ -60,13 +59,13 @@ char		*append_literal(char *tmp, char *token_value, size_t *start,
 				size_t *i);
 // parser   functions
 int			parser(t_main *shell, t_tokens *t, size_t i);
-void		remove_quotes(t_tokens **token);
-void		for_prev(t_command *cmds, t_token_types type);
-void		for_itself(t_command *cmds, t_token_types type);
+int			is_token(t_tokens *t);
+size_t		rdr_count(char **str);
+int			is_rdr(char *strs);
 
 // executer functions
 int			executor(t_main *shell);
-int			is_builtin(t_command *cmds, t_main *shell);
+int			is_builtin(t_command *cmds, t_main *shell, t_bool cmd_num);
 int			accessibility(t_command *cmds, t_main *shell);
 void		close_fd(t_command *cmds, int flag);
 

@@ -6,7 +6,7 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:26 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/14 11:12:05 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/28 13:00:33 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 
 static int	last_things(t_main *shell)
 {
-	is_expendable(shell->token);
 	if (!token_check(shell))
 		return (shell->control = 0, 1);
 	return (1);
 }
+
 
 static void	looping(t_main *shell, char *tmp, size_t input_len, size_t *j)
 {
@@ -35,9 +35,15 @@ static void	looping(t_main *shell, char *tmp, size_t input_len, size_t *j)
 		else if (shell->cmd_line[i] == '>' && !shell->in_s && !shell->in_d)
 			listing_rdr(shell, tmp, j, &i, ">");
 		else if (shell->cmd_line[i] == '"' && !shell->in_s)
-			listing_dquote(shell, tmp, j, "\"");
+		{
+			shell->in_d = !shell->in_d;
+			tmp[(*j)++] = shell->cmd_line[i];
+		}
 		else if (shell->cmd_line[i] == '\'' && !shell->in_d)
-			listing_squote(shell, tmp, j, "'");
+		{
+			shell->in_s = !shell->in_s;
+			tmp[(*j)++] = shell->cmd_line[i];
+		}
 		else
 			tmp[(*j)++] = shell->cmd_line[i];
 		i++;
@@ -64,7 +70,7 @@ int	lexer(t_main *shell)
 		tmp[j] = '\0';
 		tlist(&shell->token, tmp);
 	}
-	return (last_things(shell));
+	return (free(tmp), last_things(shell));
 }
 
 /* 	t_tokens *t;

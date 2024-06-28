@@ -6,11 +6,12 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/26 14:34:49 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/28 13:08:32 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+
 
 static int	opens(t_command *cmd, size_t *i)
 {
@@ -20,7 +21,7 @@ static int	opens(t_command *cmd, size_t *i)
 	{
 		fd = open(cmd->rdrs[++(*i)], O_CREAT | O_APPEND | O_WRONLY, 0777);
 		if (fd == -1)
-			return (perror(cmd->rdrs[(*i)]), -1);
+			return (perror(cmd->rdrs[(*i)]), cmd->ifo++, -1);
 		if (cmd->fd[1] != STDOUT_FILENO)
 			close(cmd->fd[1]);
 		cmd->fd[1] = fd;
@@ -29,8 +30,8 @@ static int	opens(t_command *cmd, size_t *i)
 	{
 		fd = open(cmd->rdrs[++(*i)], O_RDONLY, 0777);
 		if (fd == -1)
-			return (perror(cmd->rdrs[(*i)]), -1);
-		if (cmd->fd[0] != STDOUT_FILENO)
+			return (perror(cmd->rdrs[(*i)]), cmd->ifo++, -1);
+		if (cmd->fd[0] != STDIN_FILENO)
 			close(cmd->fd[0]);
 		cmd->fd[0] = fd;
 	}
@@ -38,7 +39,7 @@ static int	opens(t_command *cmd, size_t *i)
 	{
 		fd = open(cmd->rdrs[++(*i)], O_CREAT | O_TRUNC | O_WRONLY, 0777);
 		if (fd == -1)
-			return (perror(cmd->rdrs[(*i)]), -1);
+			return (perror(cmd->rdrs[(*i)]), cmd->ifo++, -1);
 		if (cmd->fd[1] != STDOUT_FILENO)
 			close(cmd->fd[1]);
 		cmd->fd[1] = fd;
@@ -54,22 +55,22 @@ static int	redirection_touch(t_command *cmd)
 	while (cmd->rdrs[i])
 	{
 		if (opens(cmd, &i) == -1)
-			return (0);
+			return (1);
 		i++;
 	}
 	return (1);
 }
 
-int	set_fd(t_command *cmd)
+int	set_fd(t_command *cmd, int *i)
 {
 	int	fd[2];
 
 	while (cmd)
 	{
-		if (cmd->where_p == R_P || cmd->where_p == B_P)
+		if (cmd->where_p == R_P)
 		{
 			if (pipe(fd) == -1)
-				return (perror("pipe"), 0);
+				return (perror("Pipe"), 1);
 			cmd->fd[1] = fd[1];
 			cmd->next->fd[0] = fd[0];
 		}
@@ -78,14 +79,34 @@ int	set_fd(t_command *cmd)
 			if (!redirection_touch(cmd))
 				return (0);
 		}
+		(*i)++;
 		cmd = cmd->next;
 	}
-	return (1);
+	return (0);
 }
 
-static void	official_executer(t_command *cmds, t_main *shell, int i, t_bool is_single)
+void	close_all(t_command *cmds, int i)
 {
-	cmds->pid = fork();
+	int	count;
+
+	count = 0;
+	while (cmds && i > count)
+	{
+		if (cmds->fd[1] != STDOUT_FILENO)
+			close(cmds->fd[1]);
+		if (cmds->fd[0] != STDIN_FILENO)
+			close(cmds->fd[0]);
+		count++;
+		cmds = cmds->next;
+	}
+}
+
+static void	official_executer(t_command *cmds, t_main *shell, int i, t_bool cmd_num)
+{
+	t_command *tmp;
+
+	if (!cmd_num)
+		cmds->pid = fork();
 	if (cmds->pid == -1)
 	{
 		perror("fork");
@@ -93,77 +114,74 @@ static void	official_executer(t_command *cmds, t_main *shell, int i, t_bool is_s
 	}
 	else if (cmds->pid == 0)
 	{
-		if (is_single == FALSE)
-		{
-			dup2(cmds->fd[1], STDOUT_FILENO);
-			dup2(cmds->fd[0], STDIN_FILENO);
-			t_command *tmp = cmds;
-			tmp = tmp->next;
-			while (tmp)
-			{
-				if (tmp->fd[0] != STDIN_FILENO)
-					close(tmp->fd[0]);
-				if (tmp->fd[1] != STDOUT_FILENO)
-					close(tmp->fd[1]);
-				tmp = tmp->next;
-			}
-		}
+		dup2(cmds->fd[1], STDOUT_FILENO);
+		dup2(cmds->fd[0], STDIN_FILENO);
+		tmp = cmds->next;
+		close_all(tmp, i);
 		execve(cmds->cmd_and_path, cmds->value, shell->env_for_execve_function);
 		perror("execve");
 		exit(EXIT_FAILURE);
 	}
 }
 
+void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
+{
+	if (cmd_num)
+	{
+		cmds->pid = fork();
+		if (cmds->pid == -1)
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+		else if (cmds->pid != 0)
+			return ;
+	}
+	if (cmds->ifo == 0)
+	{
+		if (!is_builtin(cmds, shell, cmd_num))
+			;
+		else if (accessibility(cmds, shell))
+			official_executer(cmds, shell, i, cmd_num);
+		else
+		{
+			ft_putstr_fd("ft_sh: command not found: ", 2);
+			ft_putendl_fd(cmds->value[0], 2);
+			if (cmd_num)
+				exit(1);
+		}
+	}
+}
+
 int	executor(t_main *shell)
 {
 	t_command	*cmds;
+	t_bool		cmd_num = FALSE;
 	int			i;
-	t_bool		moment;
 
 	i = 0;
 	cmds = shell->cmd;
 	if (shell->control == 0)
 		return (1);
+	if (cmds->next != NULL)
+		cmd_num = TRUE;
 	shell->paths = get_cmd(shell->envs);
 	if (!shell->paths)
 		return (0);
-	if (!set_fd(cmds))
-		return (free_double(shell->paths), 0);
-	moment = FALSE;
-	if(cmds->next)
-		moment = TRUE;
+	if (set_fd(cmds, &i))
+		return (free_double(shell->paths), close_all(cmds, i), 1);
 	while (cmds != NULL)
 	{
-		if (is_builtin(cmds, shell))
-			;
-		else if (accessibility(cmds, shell))
-			official_executer(cmds, shell, i, FALSE);
-		else
-		{
-			if (cmds->fd[1] != STDOUT_FILENO) // kapatıp çıkacaksak tüm pipeler kapnmalı
-				close(cmds->fd[1]);
-			if (cmds->fd[0] != STDIN_FILENO)
-				close(cmds->fd[0]);
-			while (wait(NULL) != -1)
-				;
-			ft_putstr_fd("ft_sh: command not found: ", 2);
-			ft_putstr_fd(cmds->value[0], 2);
-			ft_putchar_fd('\n', 2);
-			free_double(shell->paths);
-			return (1); // return atma olmayan komuttan sonraki komutta çalışıyor // gerekli mi?
-		}
+		run_command(shell, cmds, i, cmd_num);
 		if (cmds->fd[1] != STDOUT_FILENO)
 			close(cmds->fd[1]);
 		if (cmds->fd[0] != STDIN_FILENO)
 			close(cmds->fd[0]);
-		i++;
 		cmds = cmds->next;
 	}
 	while (wait(NULL) != -1)
-	{
 		;
-	}
-	return (free_double(shell->paths), /* free_command(shell->cmd), */ 1);
+	return (free_double(shell->paths), free_command(shell), 1);
 }
 
 /* 		if (i == 0 && cmds->fd[1] != STDOUT_FILENO)

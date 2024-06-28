@@ -6,7 +6,7 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:20:44 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/26 12:38:08 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/28 13:15:39 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,7 @@ typedef enum e_token_types
 	RDR_IN,
 	RDR_D_IN,
 	RDR_OUT,
-	HEREDOC,
-	D_QUOTE,
-	QUOTE
+	HEREDOC
 }				t_token_types;
 
 typedef enum e_is_expendable
@@ -58,22 +56,9 @@ typedef enum e_is_pipe
 {
 	NONE_P,
 	L_P,
-	R_P,
-	B_P
+	R_P
 }	t_is_pipe;
 
-typedef enum e_is_rdr
-{
-	NONE_RDR,
-	R_RDR_IN,
-	R_D_RDR_IN,
-	R_RDR_OUT,
-	R_RDR_H,
-	L_RDR_IN,
-	L_D_RDR_IN,
-	L_RDR_OUT,
-	L_RDR_H
-}	t_is_rdr;
 
 /* *******************************   Structs   ****************************** */
 
@@ -92,8 +77,8 @@ typedef struct s_command
 	char				*cmd_and_path;
 	int					fd[2];
 	t_is_pipe			where_p;
-	t_is_rdr			where_r;
 	int					pid;
+	int					ifo; //is_file_opened
 	struct s_command	*prev;
 	struct s_command	*next;
 }	t_command;

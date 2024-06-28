@@ -6,19 +6,11 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:52:43 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/14 07:34:21 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/28 12:58:56 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
-
-static int	prompt(t_main *shell)
-{
-	shell->prompt = ft_strdup("ft_sh-> ");
-	if (!shell->prompt)
-		return (0);
-	return (1);
-}
 
 static int	init_env(t_main *shell, char **env)
 {
@@ -51,10 +43,8 @@ int	initialize(t_main *shell, char **env)
 	shell->paths = NULL;
 	shell->envs = NULL;
 	shell->cmd_line = NULL;
-	shell->prompt = NULL;
+	shell->prompt = "ft_sh-> ";
 	shell->paths = NULL;
-	if (!prompt(shell))
-		return (0);
 	if (!init_env(shell, env))
 		return (free(shell->prompt), 0);
 	shell->control = 1;

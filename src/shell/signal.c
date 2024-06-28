@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/14 06:33:08 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/28 12:57:46 by ysarac           ###   ########.fr       */
+/*   Created: 2024/06/28 13:11:28 by ysarac            #+#    #+#             */
+/*   Updated: 2024/06/28 13:11:29 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "functions.h"
+#include <signal.h>
+#include <stdio.h>
+#include <readline/readline.h>
 
-int	main(int ac, char **av, char **env)
+void	parent_sigint(int sig)
 {
-	t_main	shell;
+	sig = 0;
+}
 
-	signal_reciever(1);
-	av = (void *)av;
-	if (ac >= 2)
-		return (ft_putstr_fd("Too much argument.", 2), 1);
-	if (!initialize(&shell, env))
-		return (perror("Initialize"), 1);
-	start_shell(&shell);
-	return (0);
+void	signal_reciever(int flag)
+{
+	if (flag == 1)
+	{
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, parent_sigint);
+	}
+	else if (flag == 2)
+	{
+		;
+	}
 }
