@@ -2,18 +2,26 @@ NAME = minishell
 SRC =	src/main.c \
 		src/initialize/initialize.c \
 		src/shell/shell.c \
-		src/free/free.c \
-		src/main_structure/lexer/lexer.c \
-		src/main_structure/lexer/utils/lexer_utils.c \
-		src/main_structure/lexer/utils/lexer_utils2.c \
-		src/main_structure/expander/expander.c \
-		src/main_structure/expander/utils/expander_utils.c \
-		src/main_structure/parser/parser.c \
-		src/main_structure/parser/utils/parser_utils.c \
-		src/main_structure/executer/executer.c \
-		src/main_structure/executer/utils/executer_utils.c \
+		src/utils/free/free.c \
+		src/shell/main_structure/lexer/lexer.c \
+		src/shell/main_structure/lexer/utils/lexer_utils.c \
+		src/shell/main_structure/lexer/utils/lexer_utils2.c \
+		src/shell/main_structure/expander/expander.c \
+		src/shell/main_structure/expander/utils/expander_utils.c \
+		src/shell/main_structure/parser/parser.c \
+		src/shell/main_structure/parser/utils/parser_utils.c \
+		src/shell/main_structure/executer/executer.c \
+		src/shell/main_structure/executer/utils/executer_utils.c \
 		src/utils/utils.c \
 		src/utils/syntax_check.c \
+		src/shell/builtins/utils/builtins_utils.c \
+		src/shell/builtins/echo/echo.c \
+		src/shell/builtins/cd/cd.c \
+		src/shell/builtins/pwd/pwd.c \
+		src/shell/builtins/export/export.c \
+		src/shell/builtins/unset/unset.c \
+		src/shell/builtins/env/env.c \
+		src/shell/builtins/exit/exit.c \
 
 OBJ = $(SRC:.c=.o)
 CC = cc

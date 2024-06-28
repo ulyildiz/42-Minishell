@@ -70,4 +70,14 @@ int			is_builtin(t_command *cmds, t_main *shell);
 int			accessibility(t_command *cmds, t_main *shell);
 void		close_fd(t_command *cmds, int flag);
 
+// builtins functions
+void		echo(t_command *cmds, t_main *shell);
+void		cd(t_command *cmds, t_main *shell);
+void		pwd(t_command *cmds, t_main *shell);
+void		env(t_command *cmds, t_main *shell);
+void		unset(t_command *cmds, t_main *shell);
+void		export(t_command *cmds, t_main *shell);
+void		exit_cmd(t_command *cmds, t_main *shell);
+
+
 #endif
