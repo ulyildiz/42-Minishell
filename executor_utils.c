@@ -287,7 +287,7 @@ void	exit_cmd(t_command *cmds, t_main *shell)
 	exit(0);
 }
 
-int	is_builtin(t_command *cmds, t_main *shell)
+int	is_builtin(t_command *cmds, t_main *shell, t_bool cmd_num)
 {
 	int				i;
 	static t_build	commands[] = {{"echo", echo}, {"cd", cd}, {"pwd", pwd},
@@ -301,7 +301,9 @@ int	is_builtin(t_command *cmds, t_main *shell)
 				ft_strlen(cmds->value[0])) == 0) // ana value küçültülüyor 
 		{
 			commands[i].func(cmds, shell);
-			return (0);
+			if (cmd_num)
+				exit(1);
+			
 		}
 		i++;
 	}

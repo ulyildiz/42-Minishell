@@ -47,6 +47,7 @@ size_t		wordlen(const char *str);
 int			is_whitespace(char c);
 size_t		t_lst_size(t_tokens *t);
 void		syntax_message(int flag);
+void		signal_reciever(int flag);
 
 // expender
 int			expender(t_main *shell);
@@ -62,7 +63,7 @@ int			is_rdr(char *strs);
 
 // executer
 int			executor(t_main *shell);
-int			is_builtin(t_command *cmds, t_main *shell);
+int			is_builtin(t_command *cmds, t_main *shell, t_bool cmd_num);
 int			accessibility(t_command *cmds, t_main *shell);
 
 #endif

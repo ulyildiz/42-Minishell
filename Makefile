@@ -12,6 +12,7 @@ SRC =	executor_utils.c \
 		parser_utils.c \
 		parser.c \
 		shell.c \
+		signals.c \
 		syntax_check.c \
 		utils.c
 OBJ = $(SRC:.c=.o)
