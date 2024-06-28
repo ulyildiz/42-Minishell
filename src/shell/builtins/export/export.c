@@ -31,7 +31,7 @@ int	ascending(int a, int b)
 	return (a <= b);
 }
 void	export(t_command *cmds, t_main *shell)
-{
+{ // a = b - a =b
 	t_env	*export;
 	t_env	*copy;
 	t_env	*tmp;
@@ -42,6 +42,13 @@ void	export(t_command *cmds, t_main *shell)
 	i = 1;
 	while (cmds->value[i])
 	{
+		//printf("cmds->value[i] = %s\n", cmds->value[i]);
+		if (cmds->value[i][0] == '=')
+		{
+			ft_putstr_fd("invalid identifier\n",cmds->fd[1]);
+			i++;
+			continue;
+		}
 		str = ft_split(cmds->value[i], '=');
 		if (str[0] && find_env(shell->envs, str[0]) != NULL)
 		{
@@ -96,7 +103,9 @@ void	export(t_command *cmds, t_main *shell)
 		if (env->value != NULL && env->value[0] != '\0')
 		{
 			ft_putstr_fd("=", cmds->fd[1]);
-			ft_putstr_fd(env->value, cmds->fd[1]);;
+			ft_putstr_fd("\"",cmds->fd[1]);
+			ft_putstr_fd(env->value, cmds->fd[1]);
+			ft_putstr_fd("\"",cmds->fd[1]);
 		}
 		ft_putstr_fd("\n", cmds->fd[1]);
 		env = env->next;

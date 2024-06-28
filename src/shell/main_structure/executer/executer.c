@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/28 13:08:32 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/28 16:16:46 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ int	executor(t_main *shell)
 	}
 	while (wait(NULL) != -1)
 		;
-	return (free_double(shell->paths), free_command(shell), 1);
+	return (free_double(shell->paths),/*  free_command(shell), */ 1);
 }
 
 /* 		if (i == 0 && cmds->fd[1] != STDOUT_FILENO)
