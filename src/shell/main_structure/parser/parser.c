@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/28 14:01:10 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:59:50 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ static t_command	*cmd_struct_create(t_tokens *token)
 	cmd->fd[0] = STDIN_FILENO;
 	cmd->fd[1] = STDOUT_FILENO;
 	cmd->rdrs = NULL;
+	cmd->cmd_and_path = NULL;
 	return (cmd);
 }
 
