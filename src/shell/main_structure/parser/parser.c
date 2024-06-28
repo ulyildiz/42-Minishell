@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/28 13:55:09 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/28 14:01:10 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,8 @@ char *remove_quotes(const char *str, t_bool in_s, t_bool in_d)
 
 static int handle_command(t_command **cmds, t_tokens **t, size_t *i)
 {
-	t_bool in_q;
+	t_bool in_d;
+	t_bool	in_s;
 	size_t j;
 	size_t f;
 	size_t start;
@@ -170,27 +171,24 @@ static int handle_command(t_command **cmds, t_tokens **t, size_t *i)
 
 	j = 0;
 	f = 0;
-	in_q = FALSE;
+	in_d = FALSE;
+	in_s = FALSE;
 	while ((*t)->value[j])
 	{
-		while ((*t)->value[j] && is_whitespace((*t)->value[j]) && !in_q)
+		while ((*t)->value[j] && is_whitespace((*t)->value[j]) && !in_d && !in_s)
 			j++;
 		start = j;
 		while ((*t)->value[j])
 		{
-			if (((*t)->value[j] == '"' || (*t)->value[j] == '\'') && !in_q)
-				in_q = !in_q;
-			else if (is_whitespace((*t)->value[j]) && !in_q)
-			{
-				printf("-%s-\n", &(*t)->value[j]);
+			if ((*t)->value[j] == '\'' && !in_d)
+				in_s = !in_s;
+			if ((*t)->value[j] == '"' && !in_s)
+				in_d = !in_d;
+			else if (is_whitespace((*t)->value[j]) && !in_d && !in_s)
 				break;
-			}
 			j++;
 		}
-/* 		f = j;
-		while ((*t)->value[j + f] && is_whitespace((*t)->value[j + f]) && !in_q)
-			f++; */
-		if (j != start/*  && (*t)->value[j] */)
+		if (j != start)
 		{
 			substr = ft_substr((*t)->value, start, j - start - f);
 			cleaned_substr = remove_quotes(substr, FALSE, FALSE);

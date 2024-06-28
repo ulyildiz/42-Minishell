@@ -1,10 +1,11 @@
 {
-    "files.associations": {
-        "function.h": "c",
-        "stdio.h": "c",
-        "functions.h": "c",
-        "libft.h": "c",
-        "defines.h": "c",
-        "history.h": "c"
-    }
+  "files.associations": {
+    "function.h": "c",
+    "stdio.h": "c",
+    "functions.h": "c",
+    "libft.h": "c",
+    "defines.h": "c",
+    "history.h": "c"
+  },
+  "C_Cpp_Runner.msvcBatchPath": ""
 }
