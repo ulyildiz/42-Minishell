@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/28 11:01:13 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/28 12:47:35 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ void	close_all(t_command *cmds, int i)
 	}
 	else if (cmds->pid == 0)
 	{
-		printf("a\n");
 		dup2(cmds->fd[1], STDOUT_FILENO);
 		dup2(cmds->fd[0], STDIN_FILENO);
 		tmp = cmds->next;
@@ -136,7 +135,6 @@ void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
 	if (cmd_num)
 	{
 		cmds->pid = fork();
-		printf("b\n");
 		if (cmds->pid == -1)
 		{
 			perror("fork");
@@ -150,10 +148,7 @@ void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
 		if (!is_builtin(cmds, shell, cmd_num))
 			;
 		else if (accessibility(cmds, shell))
-		{
-			printf("x\n");
 			official_executer(cmds, shell, i, cmd_num);
-		}
 		else
 		{
 			ft_putstr_fd("ft_sh: command not found: ", 2);

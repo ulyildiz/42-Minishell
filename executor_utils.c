@@ -303,7 +303,8 @@ int	is_builtin(t_command *cmds, t_main *shell, t_bool cmd_num)
 			commands[i].func(cmds, shell);
 			if (cmd_num)
 				exit(1);
-			
+			else
+				return (0);
 		}
 		i++;
 	}
