@@ -87,5 +87,6 @@ void cd(t_command *cmds, t_main *shell)
         if (path)
             free(path);
     }
+    //d0nE
 }
 

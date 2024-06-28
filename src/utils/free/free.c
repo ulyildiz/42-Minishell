@@ -33,7 +33,8 @@ void	free_env(t_env *env)
 		tmp = env;
 		env = env->next;
 		free(tmp->name);
-		free(tmp->value);
+		if (tmp->value && tmp->value[0] != '\0' )
+			free(tmp->value);
 		free(tmp);
 	}
 }

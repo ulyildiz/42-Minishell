@@ -35,6 +35,7 @@ void	export(t_command *cmds, t_main *shell)
 	t_env	*export;
 	t_env	*copy;
 	t_env	*tmp;
+	t_env	*env;
 	int		i;
 	char	**str;
 
@@ -64,36 +65,42 @@ void	export(t_command *cmds, t_main *shell)
 		}
 		i++;
 	}
-	copy = shell->envs;
-	export = NULL;
-	while (copy)
-	{
-		tmp = (t_env *)malloc(sizeof(t_env));
-		if (!tmp)
-			return (free_env(export));
-		tmp->name = ft_strdup(copy->name);
-		if (!tmp->name)
-			return (free(tmp), free_env(export));
-		tmp->value = ft_strdup(copy->value);
-		if (!tmp->value)
-			return (free(tmp->name), free(tmp), free_env(export));
-		tmp->next = NULL;
-		list_add_back(&export, tmp);
-		copy = copy->next;
-	}
+		export = NULL;
+    copy = shell->envs;
+    while (copy) {
+        tmp = (t_env *)malloc(sizeof(t_env));
+        if (!tmp)
+            return free_env(export);
+        tmp->next = NULL;
+        if (copy->name)
+		{
+            tmp->name = ft_strdup(copy->name);
+            if (!tmp->name)
+                return (free_env(export), free(tmp));
+        }
+        if (copy->value)
+		{
+            tmp->value = ft_strdup(copy->value);
+            if (!tmp->value)
+                return (free(tmp->name),free(tmp), free_env(export));
+        }
+        list_add_back(&export, tmp);
+        copy = copy->next;
+    }
 	export = sort_export(export, ascending);
-	while (export)
+	env = export;
+	while (env && cmds->value[1] == NULL)
 	{
 		ft_putstr_fd("declare -x ", cmds->fd[1]);
-		ft_putstr_fd(export->name, cmds->fd[1]);
-		if (export->value != NULL && export->value[0] != '\0')
+		ft_putstr_fd(env->name, cmds->fd[1]);
+		if (env->value != NULL && env->value[0] != '\0')
 		{
 			ft_putstr_fd("=", cmds->fd[1]);
-			ft_putstr_fd("\"", cmds->fd[1]);
-			ft_putstr_fd(export->value, cmds->fd[1]);
-			ft_putstr_fd("\"", cmds->fd[1]);
+			ft_putstr_fd(env->value, cmds->fd[1]);;
 		}
 		ft_putstr_fd("\n", cmds->fd[1]);
-		export = export->next;
+		env = env->next;
 	}
+	free_env(export);
+	//probably d0nE
 }
