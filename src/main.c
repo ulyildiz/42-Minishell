@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:33:08 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/28 21:51:29 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 02:15:16 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(int ac, char **av, char **env)
 	signal_reciever(1);
 	av = (void *)av;
 	if (ac >= 2)
-		return (ft_putstr_fd("Too much argument.", 2), 1);
+		return (ft_putendl_fd("Too much argument.", 2), 1);
 	if (!initialize(&shell, env))
 		return (perror("Initialize"), 1);
 	start_shell(&shell);

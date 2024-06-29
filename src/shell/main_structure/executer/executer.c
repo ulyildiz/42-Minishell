@@ -6,12 +6,11 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/29 01:11:16 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 05:18:58 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
-
 
 static int	opens(t_command *cmd, size_t *i)
 {
@@ -114,6 +113,7 @@ static void	official_executer(t_command *cmds, t_main *shell, int i, t_bool cmd_
 	}
 	else if (cmds->pid == 0)
 	{
+		signal_reciever(2);
 		dup2(cmds->fd[1], STDOUT_FILENO);
 		dup2(cmds->fd[0], STDIN_FILENO);
 		tmp = cmds->next;
@@ -136,6 +136,7 @@ void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
 		}
 		else if (cmds->pid != 0)
 			return ;
+		signal_reciever(2);
 	}
 	if (cmds->ifo == 0)
 	{
@@ -183,16 +184,3 @@ int	executor(t_main *shell)
 		;
 	return (free_double(shell->paths),/*  free_command(shell), */ 1);
 }
-
-/* 		if (i == 0 && cmds->fd[1] != STDOUT_FILENO)
-		{
-			dup2(cmds->fd[1], STDOUT_FILENO);
-			close(cmds->next->fd[0]);
-		}
-		else if (i > 0)
-		{
-			dup2(cmds->fd[1], STDOUT_FILENO);
-			close(cmds->prev->fd[1]);
-			dup2(cmds->fd[0], STDIN_FILENO);
-			close(cmds->fd[0]);
-		} */
