@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 11:34:26 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 17:05:23 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	dollar_expend(t_main *shell, t_tokens *token, t_env *env)
 	while (token->value[i])
 	{
 		if (token->value[i] == '$' && !shell->in_s)
-			tmp = handle_dollar_sign(tmp, token->value, &i, env);
+			tmp = handle_dollar_sign(tmp, token->value, &i, shell);
 		else
 		{
 			start = i;
@@ -37,7 +37,6 @@ static int	dollar_expend(t_main *shell, t_tokens *token, t_env *env)
 			}
 			tmp = append_literal(tmp, token->value, &start, &i);
 		}
-		printf("-%s-\n", tmp);
 		if (!tmp)
 			return (perror("Dollar Expend"), 0);
 	}

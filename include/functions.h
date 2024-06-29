@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:28:23 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 15:00:47 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 16:04:54 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void		disable_echo_control_chars();
 // expender functions
 int			expender(t_main *shell);
 char		*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
-				t_env *env);
+				t_main *shell);
 char		*append_literal(char *tmp, char *token_value, size_t *start,
 				size_t *i);
 

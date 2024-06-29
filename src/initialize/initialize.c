@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:52:43 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 08:15:01 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 16:59:32 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	initialize(t_main *shell, char **env)
 	shell->cmd_line = NULL;
 	shell->prompt = "ft_sh-> ";
 	shell->paths = NULL;
+	shell->exit_status = 0;
 	if (!init_env(shell, env))
 		return (0);
 	shell->control = 1;

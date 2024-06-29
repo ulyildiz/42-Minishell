@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:05:33 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 11:29:00 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 17:08:06 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,16 @@ static char	*expand_dollar_dollar(char *tmp)
 	return (new_tmp);
 }
 
-static char	*expand_dollar_question(char *tmp)
+static char	*expand_dollar_question(char *tmp, t_main *shell)
 {
-	return (ft_strappend(tmp, "0", 1));
+	char	*code;
+
+	code = ft_itoa(shell->exit_status);
+	if (!code)
+		return (NULL);
+	tmp = ft_strappend(tmp, code, ft_strlen(code));
+	free(code);
+	return (tmp);
 }
 
 static char	*expand_variable(char *tmp, const char *token_value, size_t *i,
@@ -63,7 +70,7 @@ char	*append_literal(char *tmp, char *token_value, size_t *start, size_t *i)
 }
 
 char	*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
-		t_env *env)
+		t_main *shell)
 {
 	if (token_value[*i + 1] == '$')
 	{
@@ -72,7 +79,7 @@ char	*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
 	}
 	else if (token_value[*i + 1] == '?')
 	{
-		tmp = expand_dollar_question(tmp);
+		tmp = expand_dollar_question(tmp, shell);
 		*i += 2;
 	}
 	else if (token_value[*i + 1] == '\0')
@@ -82,7 +89,7 @@ char	*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
 	}
 	else if (ft_isalpha(token_value[*i + 1]))
 	{
-		tmp = expand_variable(tmp, token_value, i, env);
+		tmp = expand_variable(tmp, token_value, i, shell->envs);
 	}
 /* 	else
 	{
