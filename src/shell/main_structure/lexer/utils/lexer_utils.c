@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:23 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/28 13:01:22 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/29 08:40:14 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ static t_tokens	*create_token(char	*arr)
 	if (!new)
 		return (NULL);
 	new->value = ft_strdup(arr);
+	if (!new->value)
+		return (free(new), NULL);
 	new->is_expend = NONE;
 	new->type = identify_t(arr);
 	return (new);

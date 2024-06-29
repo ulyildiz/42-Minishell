@@ -13,6 +13,7 @@ SRC =	src/main.c \
 		src/shell/main_structure/parser/utils/parser_utils.c \
 		src/shell/main_structure/executer/executer.c \
 		src/shell/main_structure/executer/utils/executer_utils.c \
+		src/utils/exits.c \
 		src/utils/utils.c \
 		src/utils/syntax_check.c \
 		src/shell/builtins/utils/builtins_utils.c \

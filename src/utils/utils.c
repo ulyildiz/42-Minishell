@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 12:43:09 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 00:49:03 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 08:16:34 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	update_env(t_main *shell) // env_for_execve_function güncellemek için ama 
 		new_env[i] = ft_strjoin(tmp->name, "=");
 		if (!new_env[i])
 			return (free_double(new_env), 0);
-		new_env[i] = ft_strjoin(new_env[i], tmp->value);
+		new_env[i] = ft_strappend(new_env[i], tmp->value, ft_strlen(tmp->value));
 		if (!new_env[i])
 			return (free_double(new_env), 0);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:38 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/28 23:47:11 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 08:17:05 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,11 @@ static int	line_read(t_main *shell)
 {
 	shell->cmd_line = readline(shell->prompt);
 	if (!shell->cmd_line)
-		return (clear_history(), perror("Readline"), 2);
+	{
+		free_env(shell->envs);
+		free_double(shell->env_for_execve_function);
+		return (rl_clear_history(), perror("Readline"), 2);
+	}
 	else if (!is_space(shell->cmd_line))
 		return (free(shell->cmd_line), 0);
 	add_history(shell->cmd_line);
@@ -26,7 +30,6 @@ static int	line_read(t_main *shell)
 void	start_shell(t_main *shell)
 {
 	int			i;
-//	t_tokens	*t;
 
 	while (1)
 	{

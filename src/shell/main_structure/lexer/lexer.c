@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:26 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/28 13:00:33 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/29 08:22:34 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,3 @@ int	lexer(t_main *shell)
 /* 	int i = 0;
 	while (arr[i])
 		printf("-%s-\n", arr[i++]); */
-
-/* 		else if (shell->cmd_line[i] == '<' && shell->cmd_line[i + 1] == '<'
-				&& !shell->in_s && !shell->in_d)
-			listing_token(shell, tmp, j, "<<");
-		else if (shell->cmd_line[i] == '>' && shell->cmd_line[i + 1] == '>'
-				&& !shell->in_s && !shell->in_d) 
-			listing_token(shell, tmp, j, ">>"); */

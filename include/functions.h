@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:28:23 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 00:11:15 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 08:34:14 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,10 @@ void		start_shell(t_main *shell);
 int			lexer(t_main *shell);
 int			tlist(t_tokens **head, char *arr);
 int			token_check(t_main *shell);
-void		listing_squote(t_main *shell, char *tmp, size_t *j, char *token);
-void		listing_dquote(t_main *shell, char *tmp, size_t *j, char *token);
 void		listing_token(t_main *shell, char *tmp, size_t *j, char *token);
 void		listing_rdr(t_main *shell, char *tmp, size_t *j, size_t *i,
 				char *token);
+void		exit_in_lexer(t_main *shell);
 
 // free		functions
 void		free_env(t_env *shell);
@@ -51,6 +50,7 @@ size_t		t_lst_size(t_tokens *t);
 void		syntax_message(int flag);
 void		signal_reciever(int flag);
 int			update_env(t_main *shell);
+void		disable_echo_control_chars();
 
 // expender functions
 int			expender(t_main *shell);

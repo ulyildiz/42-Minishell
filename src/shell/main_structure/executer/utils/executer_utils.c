@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 12:49:03 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 04:07:52 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 08:08:25 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,15 @@
 #include <sys/stat.h>
 
 
-/* int	accessibility(t_command *cmds, t_main *shell)
-{
-	if ()
-}
-
- */
 int	accessibility(t_command *cmds, t_main *shell)
 {
 	size_t	i;
 	char	*tmp;
 	struct stat	buf;
-	
+
+		
 	i = 0;
+	cmds->cmd_and_path = NULL;
 	if (access(cmds->value[0], F_OK) != 0)
 	{
 		tmp = ft_strjoin("/", cmds->value[0]);

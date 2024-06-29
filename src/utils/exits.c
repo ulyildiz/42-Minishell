@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   exits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/14 06:33:08 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 06:13:38 by ulyildiz         ###   ########.fr       */
+/*   Created: 2024/06/29 08:28:02 by ulyildiz          #+#    #+#             */
+/*   Updated: 2024/06/29 08:37:07 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+#include <errno.h>
 
-int	main(int ac, char **av, char **env)
+void	exit_in_lexer(t_main *shell)
 {
-	t_main	shell;
-
-	signal_reciever(1);
-	disable_echo_control_chars();
-	av = (void *)av;
-	if (ac >= 2)
-		return (ft_putendl_fd("Too much argument.", 2), 1);
-	if (!initialize(&shell, env))
-		return (perror("Initialize"), 1);
-	start_shell(&shell);
-	return (0);
+	free_env(shell->envs);
+	free_double(shell->env_for_execve_function);
+	free_tokens(shell);
+	free(shell->cmd_line);
+	strerror(ENOMEM);
+	exit(ENOMEM);
 }
