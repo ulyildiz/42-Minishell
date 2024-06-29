@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/29 07:29:50 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 14:10:53 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,6 @@ void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
 			official_executer(cmds, shell, i, cmd_num);
 		else
 		{
-			ft_putstr_fd("ft_sh: command not found: ", 2);
-			ft_putendl_fd(cmds->value[0], 2);
 			if (cmd_num)
 				exit(1);
 		}

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expender_utils.c                                   :+:      :+:    :+:   */
+/*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:05:33 by ysarac            #+#    #+#             */
-/*   Updated: 2024/05/21 16:31:11 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 11:29:00 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*expand_variable(char *tmp, const char *token_value, size_t *i,
 
 	j = 0;
 	(*i)++;
-	while (ft_isalpha(token_value[*i + j]))
+	while (ft_isalpha(token_value[*i + j])) // $A3 gibi durumda ne yapıcak
 	{
 		j++;
 	}

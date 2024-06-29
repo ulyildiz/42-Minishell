@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:28:23 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 08:34:14 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 15:00:47 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int			token_check(t_main *shell);
 void		listing_token(t_main *shell, char *tmp, size_t *j, char *token);
 void		listing_rdr(t_main *shell, char *tmp, size_t *j, size_t *i,
 				char *token);
-void		exit_in_lexer(t_main *shell);
+void		exit_in_lex_ex(t_main *shell);
 
 // free		functions
 void		free_env(t_env *shell);
@@ -58,17 +58,18 @@ char		*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
 				t_env *env);
 char		*append_literal(char *tmp, char *token_value, size_t *start,
 				size_t *i);
+
 // parser   functions
 int			parser(t_main *shell, t_tokens *t, size_t i);
 int			is_token(t_tokens *t);
 size_t		rdr_count(char **str);
 int			is_rdr(char *strs);
+void		exit_in_parser(t_main *shell);
 
 // executer functions
 int			executor(t_main *shell);
 int			is_builtin(t_command *cmds, t_main *shell, t_bool cmd_num);
 int			accessibility(t_command *cmds, t_main *shell);
-void		close_fd(t_command *cmds, int flag);
 
 // builtins functions
 void		echo(t_command *cmds, t_main *shell);

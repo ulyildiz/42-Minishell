@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 12:43:09 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 08:16:34 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 11:04:11 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,8 @@ size_t	is_space(char *s)
 
 t_env	*find_env(t_env *envs, char *wanted)
 {
+	if (!wanted)
+		return (NULL);
 	while (envs)
 	{
 		if (!ft_strncmp(envs->name, wanted, ft_strlen(wanted)))

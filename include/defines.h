@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:20:44 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/28 13:15:39 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/29 15:00:25 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ typedef struct s_main
 	t_command	*cmd;
 	t_bool		in_s;
 	t_bool		in_d;
+	int			exit_status;
 	int			control;
 	char		**paths;
 	char		*prompt;

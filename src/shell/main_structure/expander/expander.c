@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 10:29:41 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 11:34:26 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static int	dollar_expend(t_main *shell, t_tokens *token, t_env *env)
 			}
 			tmp = append_literal(tmp, token->value, &start, &i);
 		}
+		printf("-%s-\n", tmp);
 		if (!tmp)
 			return (perror("Dollar Expend"), 0);
 	}
@@ -87,12 +88,12 @@ int	expender(t_main *shell)
 		if (ft_strnstr(t->value, "$", ft_strlen(t->value)))
 		{
 			if (!dollar_expend(shell, t, shell->envs))
-				return (0); // expenderıexit dene
+				return (exit_in_lex_ex(shell), 0); // expenderıexit dene detaylıca
 		}
 		if (ft_strnstr(t->value, "~", ft_strlen(t->value)))
 		{
 			if (!home_expend(shell, t, shell->envs))
-				return (0);
+				return (exit_in_lex_ex(shell), 0);
 		}
 		t = t->next;
 	}
