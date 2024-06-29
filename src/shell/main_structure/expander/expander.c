@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/28 13:02:18 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/06/29 10:29:41 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	expender(t_main *shell)
 		if (ft_strnstr(t->value, "$", ft_strlen(t->value)))
 		{
 			if (!dollar_expend(shell, t, shell->envs))
-				return (0);
+				return (0); // expenderıexit dene
 		}
 		if (ft_strnstr(t->value, "~", ft_strlen(t->value)))
 		{
