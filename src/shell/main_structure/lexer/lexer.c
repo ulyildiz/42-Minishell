@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:26 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/29 08:22:34 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 17:20:30 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 static int	last_things(t_main *shell)
 {
 	if (!token_check(shell))
-		return (shell->control = 0, 1);
+	{
+		shell->control = 0;
+		shell->exit_status = 258;
+	}
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 12:49:03 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 17:03:29 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 18:09:11 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void error_handler(t_command *cmds, int flag, t_main *shell)
 		ft_putendl_fd(": Is a directory", 2);
 		shell->exit_status = 126;
 	}
-	printf("exit status: %d\n", shell->exit_status);
 }
 
 int accessibility(t_command *cmds, t_main *shell)
@@ -48,7 +47,6 @@ int accessibility(t_command *cmds, t_main *shell)
 	struct stat	buf;
 
 	i = -1;
-	cmds->cmd_and_path = NULL;
 	if (access(cmds->value[0], F_OK) != 0)
 	{
 		if (ft_strchr(cmds->value[0], '/') || cmds->value[0][0] == '.')
@@ -62,6 +60,7 @@ int accessibility(t_command *cmds, t_main *shell)
 			if (access(cmds->cmd_and_path, X_OK) == 0)
 				return (free(tmp), 1);
 			free(cmds->cmd_and_path);
+			cmds->cmd_and_path = NULL;
 		}
 		free(tmp);
 		return (error_handler(cmds, 1, shell), 0);

@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:33:08 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 17:07:52 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 18:00:08 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	main(int ac, char **av, char **env)
 	t_main	shell;
 
 	signal_reciever(1);
-	disable_echo_control_chars();
+	/* disable_echo_control_chars(); */
 	av = (void *)av;
 	if (ac >= 2)
 		return (ft_putendl_fd("Too much argument.", 2), 1);

@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/29 14:10:53 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 18:18:01 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,18 +109,23 @@ static void	official_executer(t_command *cmds, t_main *shell, int i, t_bool cmd_
 	if (cmds->pid == -1)
 	{
 		perror("fork");
-		exit(EXIT_FAILURE);
+		exit(EXIT_FAILURE); // Neleri freelememiz lazım eğer fork başarısız olursa. parent mi giriyor child mi
 	}
 	else if (cmds->pid == 0)
 	{
 		signal_reciever(2);
+		//rl_clear_history();
 		dup2(cmds->fd[1], STDOUT_FILENO);
+		if (cmds->fd[1] != STDOUT_FILENO)
+			close(cmds->fd[1]);
 		dup2(cmds->fd[0], STDIN_FILENO);
+		if (cmds->fd[0] != STDIN_FILENO)
+			close(cmds->fd[0]);
 		tmp = cmds->next;
 		close_all(tmp, i);
 		execve(cmds->cmd_and_path, cmds->value, shell->env_for_execve_function);
 		perror("execve");
-		exit(EXIT_FAILURE);
+		exit_for_fork(shell);
 	}
 }
 
@@ -147,7 +152,7 @@ void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
 		else
 		{
 			if (cmd_num)
-				exit(1);
+				exit_for_fork(shell);
 		}
 	}
 }
@@ -178,7 +183,7 @@ int	executor(t_main *shell)
 			close(cmds->fd[0]);
 		cmds = cmds->next;
 	}
-	while (wait(NULL) != -1)
+	while (wait(&shell->exit_status) != -1)
 		;
-	return (free_double(shell->paths), free_command(shell), 1);
+	return (free_double(shell->paths), free(shell->cmd_line), free_command(shell), 1);
 }

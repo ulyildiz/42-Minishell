@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:28:23 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 16:04:54 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 17:31:49 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void		syntax_message(int flag);
 void		signal_reciever(int flag);
 int			update_env(t_main *shell);
 void		disable_echo_control_chars();
+void		exit_for_fork(t_main *shell);
 
 // expender functions
 int			expender(t_main *shell);

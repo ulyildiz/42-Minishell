@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 13:11:28 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 06:17:59 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/06/29 17:59:55 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ void	parent_sigint(int sig)
 	rl_redisplay();
 }
 
-void disable_echo_control_chars()
+/* void disable_echo_control_chars()
 {
 	struct termios tty;
 
 	tcgetattr(STDIN_FILENO, &tty);
 	tty.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &tty);
-}
+} */
 
 void	signal_reciever(int flag)
 {
