@@ -35,7 +35,7 @@ int	ascending(int a, int b)
 	return (a <= b);
 }
 void	export(t_command *cmds, t_main *shell)
-{ // a = b - a =b
+{
 	t_env	*export;
 	t_env	*copy;
 	t_env	*tmp;
@@ -46,7 +46,7 @@ void	export(t_command *cmds, t_main *shell)
 	i = 1;
 	while (cmds->value[i])
 	{
-		//printf("cmds->value[i] = %s\n", cmds->value[i]);
+		printf("cmds->value[i] = %s\n", cmds->value[i]);
 		if (cmds->value[i][0] == '=')
 		{
 			ft_putstr_fd("invalid identifier\n",cmds->fd[1]);

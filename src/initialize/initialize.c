@@ -15,22 +15,25 @@
 static int	init_env(t_main *shell, char **env)
 {
 	t_env	*tmp;
-	char	**s;
+	size_t	i;
 
 	shell->envs = NULL;
 	while (*env)
 	{
+		i = 0;
 		tmp = (t_env *)malloc(sizeof(t_env));
 		if (!tmp)
 			return (free_env(shell->envs), 0);
-		s = ft_split(*env, '=');
-		if (!s)
+		while ((*env)[i] &&(*env)[i] != '=')
+			i++;
+		tmp->name = ft_substr(*env, 0, i);
+		if (!tmp->name)
 			return (free(tmp), free_env(shell->envs), 0);
-		tmp->name = s[0];
-		tmp->value = s[1];
+		tmp->value = ft_substr(*env, ++i, ft_strlen(&(*env)[i]));
+		if (!tmp->value)
+			return (free(tmp->value), free(tmp), free_env(shell->envs), 0);
 		tmp->next = NULL;
 		list_add_back(&(shell->envs), tmp);
-		free(s);
 		env++;
 	}
 	return (1);

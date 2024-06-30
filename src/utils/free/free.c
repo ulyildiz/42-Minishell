@@ -33,12 +33,11 @@ void	free_env(t_env *env)
 		tmp = env;
 		env = env->next;
 		free(tmp->name);
-		if (tmp->value && tmp->value[0] != '\0' )
-			free(tmp->value);
+		if (tmp->value && tmp->value[0] != '\0')
+			free(tmp->value); //linuxta 1 byte leake sebep oluyor büyük ihtimalle içinde null char olan envler freelenmicek
 		free(tmp);
 	}
 }
-
 
 void	free_tokens(t_main *shell)
 {
@@ -72,7 +71,7 @@ void	free_command(t_main *shell)
 		if (tmp->rdrs)
 			free_double(tmp->rdrs);
 		if (tmp->cmd_and_path)
-			free(tmp->cmd_and_path); // yanlış komutta free ediliyor
+			free(tmp->cmd_and_path);
 		free(tmp);
 	}
 	shell->cmd = NULL;

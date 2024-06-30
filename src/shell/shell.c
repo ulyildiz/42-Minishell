@@ -17,6 +17,7 @@ static int	line_read(t_main *shell)
 	shell->cmd_line = readline(shell->prompt);
 	if (!shell->cmd_line)
 	{
+		
 		free_env(shell->envs);
 		free_double(shell->env_for_execve_function);
 		return (rl_clear_history(), 2);
