@@ -1,1 +1,8 @@
-echo mer > a | cat > a
+# HEREDOC
+    yapılmadı
+
+# Access
+    düzünde execi çalıştırmıpor permission denied yiyor
+
+# Exit Status
+    düzgün değil WIEXIT macroları bak
