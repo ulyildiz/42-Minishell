@@ -24,7 +24,6 @@ void	listing_token(t_main *shell, char *tmp, size_t *j, char *token)
 	if (!tlist(&shell->token, token))
 		return (free(tmp), exit_in_lex_ex(shell));
 }
-// 0 j 1 i
 
 void	listing_rdr(t_main *shell, size_t *j, size_t *i, char *token)
 {

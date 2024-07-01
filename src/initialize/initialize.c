@@ -18,7 +18,8 @@ t_env	*find_env(t_env *envs, char *wanted)
 		return (NULL);
 	while (envs)
 	{
-		if (!ft_strncmp(envs->name, wanted, ft_strlen(wanted)))
+		if (!ft_strncmp(envs->name, wanted, ft_strlen(wanted)) && \
+		!ft_strncmp(envs->name, wanted, ft_strlen(envs->name)))
 			return (envs);
 		envs = envs->next;
 	}

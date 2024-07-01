@@ -16,8 +16,8 @@ int	main(int ac, char **av, char **env)
 {
 	t_main	shell;
 
-	//signal_reciever(1);
-	/* disable_echo_control_chars(); */
+	signal_reciever(1);
+	disable_echo_control_chars();
 	av = (void *)av;
 	if (ac >= 2)
 		return (ft_putendl_fd("Too much argument.", 2), 1);
