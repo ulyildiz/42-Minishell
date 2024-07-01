@@ -16,7 +16,7 @@ int	main(int ac, char **av, char **env)
 {
 	t_main	shell;
 
-	signal_reciever(1);
+	//signal_reciever(1);
 	/* disable_echo_control_chars(); */
 	av = (void *)av;
 	if (ac >= 2)

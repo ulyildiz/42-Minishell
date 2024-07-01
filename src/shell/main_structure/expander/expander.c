@@ -12,11 +12,10 @@
 
 #include "functions.h"
 
-static int	dollar_expend(t_main *shell, t_tokens *token, t_env *env)
+static int	dollar_expend(t_main *shell, t_tokens *token, char	*tmp)
 {
 	size_t	i;
 	size_t	start;
-	char	*tmp;
 
 	i = 0;
 	tmp = ft_strdup("");
@@ -29,8 +28,7 @@ static int	dollar_expend(t_main *shell, t_tokens *token, t_env *env)
 			start = i;
 			while (token->value[i] && !(token->value[i] == '$' && !shell->in_s))
 			{
-				i++;
-				if (token->value[i] == '\'' && !shell->in_d)
+				if (token->value[++i] == '\'' && !shell->in_d)
 					shell->in_s = !shell->in_s;
 				if (token->value[i] == '"' && !shell->in_s)
 					shell->in_d = !shell->in_d;
@@ -63,9 +61,8 @@ static int	home_expend(t_main *shell, t_tokens *token, t_env *env)
 			tmp = ft_strappend(tmp, &token->value[i], 1);
 		if (token->value[i] == '\'' && !shell->in_d)
 			shell->in_s = !shell->in_s;
-		if (token->value[i] == '"' && !shell->in_s)
+		if (token->value[i++] == '"' && !shell->in_s)
 			shell->in_d = !shell->in_d;
-		i++;
 	}
 	token->value = tmp;
 	if (!token->value)
@@ -76,9 +73,11 @@ static int	home_expend(t_main *shell, t_tokens *token, t_env *env)
 int	expender(t_main *shell)
 {
 	t_tokens	*t;
+	char		*tmp;
 
 	if (shell->control == 0)
 		return (1);
+	tmp = NULL;
 	t = shell->token;
 	while (t)
 	{
@@ -86,7 +85,7 @@ int	expender(t_main *shell)
 		shell->in_s = FALSE;
 		if (ft_strnstr(t->value, "$", ft_strlen(t->value)))
 		{
-			if (!dollar_expend(shell, t, shell->envs))
+			if (!dollar_expend(shell, t, tmp))
 				return (exit_in_lex_ex(shell), 0); // expenderıexit dene detaylıca
 		}
 		if (ft_strnstr(t->value, "~", ft_strlen(t->value)))

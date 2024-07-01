@@ -24,6 +24,7 @@ void cd(t_command *cmds, t_main *shell)
         pwd->next = NULL;
         list_add_back(&shell->envs, pwd);
     }
+    
     if (cmds->value[1] != NULL)
     {
         if (cmds->value[1][0] != '-')
@@ -43,6 +44,8 @@ void cd(t_command *cmds, t_main *shell)
             else
                 return (ft_putstr_fd("OLDPWD not set\n", cmds->fd[1]));
         }
+        else
+            return;// buraya bak 
     }
     else
     {

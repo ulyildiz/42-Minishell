@@ -54,6 +54,6 @@ void	exit_for_fork(t_main *shell)
 	free_double(shell->paths);
 	free_double(shell->env_for_execve_function);
 	free(shell->cmd_line);
-	rl_clear_history();
+	clear_history();
 	exit(EXIT_SUCCESS); // değişken olabilir
 }

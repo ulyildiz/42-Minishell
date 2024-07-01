@@ -26,10 +26,10 @@ static int	init_env(t_main *shell, char **env)
 			return (free_env(shell->envs), 0);
 		while ((*env)[i] &&(*env)[i] != '=')
 			i++;
-		tmp->name = ft_substr(*env, 0, i);
+		tmp->name = ft_substr(*env, 0, i++);
 		if (!tmp->name)
 			return (free(tmp), free_env(shell->envs), 0);
-		tmp->value = ft_substr(*env, ++i, ft_strlen(&(*env)[i]));
+		tmp->value = ft_substr(*env, i, ft_strlen(&(*env)[i]));
 		if (!tmp->value)
 			return (free(tmp->value), free(tmp), free_env(shell->envs), 0);
 		tmp->next = NULL;

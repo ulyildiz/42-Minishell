@@ -1,10 +1,11 @@
 
+
 #include "functions.h"
 
 void	pwd(t_command *cmds, t_main *shell)
 {
 	char *pwd;
-	
+	shell = (void *)shell;
 	pwd = getcwd(NULL, 0);
 	if (pwd != NULL)
 	{

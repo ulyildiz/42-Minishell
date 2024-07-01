@@ -8,26 +8,21 @@ void	deleteNode(t_env **head, char *key)
 
 	temp = *head;
 	prev = NULL;
-	// Silinecek düğümün baş düğüm olup olmadığını kontrol et
 	if (temp != NULL && ft_strncmp(temp->name, key, ft_strlen(temp->name)) == 0)
 	{
-		*head = temp->next; // Baş düğümü değiştir
-		free(temp);         // Eski baş düğümü serbest bırak
-		return ;
+		*head = temp->next;
+		return (free(temp));
 	}
-	// Silinecek düğümü bulana kadar listede gez
 	while (temp != NULL && ft_strncmp(temp->name, key,
 			ft_strlen(temp->name)) != 0)
 	{
 		prev = temp;
 		temp = temp->next;
 	}
-	// Eğer düğüm bulunamadıysa
 	if (temp == NULL)
 		return ;
-	// Düğümü listeden çıkar
 	prev->next = temp->next;
-	free(temp); // Belleği serbest bırak
+	free(temp);
 }
 
 void	unset(t_command *cmds, t_main *shell)

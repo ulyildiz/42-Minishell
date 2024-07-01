@@ -27,7 +27,7 @@ SRC =	src/main.c \
 
 OBJ = $(SRC:.c=.o)
 CC = cc
-CFLAGS = -I ./include -I ./42-Libft # -Wall -Wextra -Werror
+CFLAGS = -I ./include -I ./42-Libft -Wall -Wextra -Werror
 LIBFT = 42-libft
 LIBFT_A = $(LIBFT)/libft.a
 

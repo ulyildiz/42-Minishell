@@ -20,7 +20,7 @@ static int	line_read(t_main *shell)
 		
 		free_env(shell->envs);
 		free_double(shell->env_for_execve_function);
-		return (rl_clear_history(), 2);
+		return (clear_history(), 2);
 	}
 	else if (!is_space(shell->cmd_line))
 		return (free(shell->cmd_line), 0);
