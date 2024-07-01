@@ -54,7 +54,7 @@ static int	quote_check(t_tokens *t, t_bool in_s, t_bool in_d)
 
 	i = 0;
 	d_c = 0;
-	s_c	= 0;
+	s_c = 0;
 	while (t->value[i])
 	{
 		if (t->value[i] == '\'' && !in_d)

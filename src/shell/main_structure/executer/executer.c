@@ -3,48 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/29 18:18:01 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/01 14:27:42 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
-
-static int	opens(t_command *cmd, size_t *i)
-{
-	int	fd;
-
-	if (!ft_strncmp(cmd->rdrs[*i], ">>", 2))
-	{
-		fd = open(cmd->rdrs[++(*i)], O_CREAT | O_APPEND | O_WRONLY, 0777);
-		if (fd == -1)
-			return (perror(cmd->rdrs[(*i)]), cmd->ifo++, -1);
-		if (cmd->fd[1] != STDOUT_FILENO)
-			close(cmd->fd[1]);
-		cmd->fd[1] = fd;
-	}
-	else if (!ft_strncmp(cmd->rdrs[*i], "<", 1))
-	{
-		fd = open(cmd->rdrs[++(*i)], O_RDONLY, 0777);
-		if (fd == -1)
-			return (perror(cmd->rdrs[(*i)]), cmd->ifo++, -1);
-		if (cmd->fd[0] != STDIN_FILENO)
-			close(cmd->fd[0]);
-		cmd->fd[0] = fd;
-	}
-	else if (!ft_strncmp(cmd->rdrs[*i], ">", 1))
-	{
-		fd = open(cmd->rdrs[++(*i)], O_CREAT | O_TRUNC | O_WRONLY, 0777);
-		if (fd == -1)
-			return (perror(cmd->rdrs[(*i)]), cmd->ifo++, -1);
-		if (cmd->fd[1] != STDOUT_FILENO)
-			close(cmd->fd[1]);
-		cmd->fd[1] = fd;
-	}
-	return (0);
-}
 
 static int	redirection_touch(t_command *cmd)
 {
@@ -84,37 +50,24 @@ int	set_fd(t_command *cmd, int *i)
 	return (0);
 }
 
-void	close_all(t_command *cmds, int i)
+// Neleri freelememiz lazım eğer fork
+//başarısız olursa. parent mi giriyor child mi
+static void	official_executer(t_command *cmds, t_main *shell, int i,
+	t_bool cmd_num)
 {
-	int	count;
-
-	count = 0;
-	while (cmds && i > count)
-	{
-		if (cmds->fd[1] != STDOUT_FILENO)
-			close(cmds->fd[1]);
-		if (cmds->fd[0] != STDIN_FILENO)
-			close(cmds->fd[0]);
-		count++;
-		cmds = cmds->next;
-	}
-}
-
-static void	official_executer(t_command *cmds, t_main *shell, int i, t_bool cmd_num)
-{
-	t_command *tmp;
+	t_command	*tmp;
 
 	if (!cmd_num)
 		cmds->pid = fork();
 	if (cmds->pid == -1)
 	{
 		perror("fork");
-		exit(EXIT_FAILURE); // Neleri freelememiz lazım eğer fork başarısız olursa. parent mi giriyor child mi
+		exit(EXIT_FAILURE);
 	}
 	else if (cmds->pid == 0)
 	{
 		signal_reciever(2);
-		//rl_clear_history();
+		rl_clear_history();
 		dup2(cmds->fd[1], STDOUT_FILENO);
 		if (cmds->fd[1] != STDOUT_FILENO)
 			close(cmds->fd[1]);
@@ -157,12 +110,9 @@ void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
 	}
 }
 
-int	executor(t_main *shell)
+int	executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i)
 {
-	t_command	*cmds;
-	t_bool		cmd_num = FALSE;
-	int			i;
-
+	cmd_num = FALSE;
 	i = 0;
 	cmds = shell->cmd;
 	if (shell->control == 0)
@@ -185,5 +135,6 @@ int	executor(t_main *shell)
 	}
 	while (wait(&shell->exit_status) != -1)
 		;
-	return (free_double(shell->paths), free(shell->cmd_line), free_command(shell), 1);
+	return (free_double(shell->paths), free(shell->cmd_line), \
+	free_command(shell), 1);
 }

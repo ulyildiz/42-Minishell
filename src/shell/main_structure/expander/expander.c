@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 17:05:23 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/01 13:31:38 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,21 @@ static int	dollar_expend(t_main *shell, t_tokens *token, char	*tmp)
 	return (free(token->value), token->value = tmp, 1);
 }
 
-static int	home_expend(t_main *shell, t_tokens *token, t_env *env)
+static int	home_expend(t_main *shell, t_tokens *token, char *tmp, size_t i)
 {
-	char	*tmp;
-	size_t	i;
-
 	i = 0;
 	tmp = ft_strdup("");
 	while (token->value[i] && tmp)
 	{
-		if(token->value[i] == '~' && !shell->in_s && !shell->in_d)
+		if (token->value[i] == '~' && !shell->in_s && !shell->in_d)
 		{
-			if ((i > 0 && !is_whitespace(token->value[i - 1])) || (!is_whitespace(token->value[i + 1]) && token->value[i + 1] != '\0' && token->value[i + 1] != '/'))
+			if ((i > 0 && !is_whitespace(token->value[i - 1])) || \
+			(!is_whitespace(token->value[i + 1]) && token->value[i + 1] != '\0'
+					&& token->value[i + 1] != '/'))
 				tmp = ft_strappend(tmp, "~", 1);
 			else
-				tmp = ft_strappend(tmp, find_env(env,"HOME")->value, ft_strlen(find_env(env,"HOME")->value));
+				tmp = ft_strappend(tmp, find_env(shell->envs, "HOME")->value,
+						ft_strlen(find_env(shell->envs, "HOME")->value));
 		}
 		else
 			tmp = ft_strappend(tmp, &token->value[i], 1);
@@ -86,18 +86,18 @@ int	expender(t_main *shell)
 		if (ft_strnstr(t->value, "$", ft_strlen(t->value)))
 		{
 			if (!dollar_expend(shell, t, tmp))
-				return (exit_in_lex_ex(shell), 0); // expenderıexit dene detaylıca
+				return (exit_in_lex_ex(shell), 0);
 		}
 		if (ft_strnstr(t->value, "~", ft_strlen(t->value)))
 		{
-			if (!home_expend(shell, t, shell->envs))
+			if (!home_expend(shell, t, NULL, 0))
 				return (exit_in_lex_ex(shell), 0);
 		}
 		t = t->next;
 	}
 	return (1);
 }
-
+// expenderıexit dene detaylıca
 /* 	t = shell->token;
 	while (t)
 	{

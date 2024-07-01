@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   exits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/29 08:28:02 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/29 17:37:48 by ulyildiz         ###   ########.fr       */
+/*   Created: 2024/07/01 13:18:56 by ysarac            #+#    #+#             */
+/*   Updated: 2024/07/01 13:18:56 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 #include <errno.h>
-#include <stdio.h>
 #include <readline/readline.h>
+#include <stdio.h>
 
 void	exit_in_lex_ex(t_main *shell)
 {
@@ -55,5 +55,6 @@ void	exit_for_fork(t_main *shell)
 	free_double(shell->env_for_execve_function);
 	free(shell->cmd_line);
 	clear_history();
-	exit(EXIT_SUCCESS); // değişken olabilir
+	exit(EXIT_SUCCESS);
 }
+	// değişken olabilir

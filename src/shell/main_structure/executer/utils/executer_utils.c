@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 12:49:03 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 18:09:11 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/01 14:29:15 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 
-void error_handler(t_command *cmds, int flag, t_main *shell)
+void	error_handler(t_command *cmds, int flag, t_main *shell)
 {
 	ft_putstr_fd("ft_sh: ", 2);
 	ft_putstr_fd(cmds->value[0], 2);
@@ -24,12 +24,12 @@ void error_handler(t_command *cmds, int flag, t_main *shell)
 		shell->exit_status = 127;
 	}
 	else if (flag == 2)
-    {
+	{
 		ft_putendl_fd(": No such file or directory", 2);
 		shell->exit_status = 127;
 	}
 	else if (flag == 3)
-    {
+	{
 		ft_putendl_fd(": Permission denied", 2);
 		shell->exit_status = 126;
 	}
@@ -40,7 +40,8 @@ void error_handler(t_command *cmds, int flag, t_main *shell)
 	}
 }
 
-int accessibility(t_command *cmds, t_main *shell)
+//Direkt exit yapılabilir. perror(Access)
+int	accessibility(t_command *cmds, t_main *shell)
 {
 	size_t		i;
 	char		*tmp;
@@ -53,7 +54,7 @@ int accessibility(t_command *cmds, t_main *shell)
 			return (error_handler(cmds, 2, shell), 0);
 		tmp = ft_strjoin("/", cmds->value[0]);
 		if (!tmp)
-			return (perror("Access"), 0); //Direkt exit yapılabilir.
+			return (perror("Access"), 0);
 		while (shell->paths[++i])
 		{
 			cmds->cmd_and_path = ft_strjoin(shell->paths[i], tmp);
@@ -71,7 +72,8 @@ int accessibility(t_command *cmds, t_main *shell)
 		{
 			if (S_ISDIR(buf.st_mode) && ft_strchr(cmds->value[0], '/'))
 				return (error_handler(cmds, 4, shell), 0);
-			if ((S_IRWXU & buf.st_mode) && cmds->value[0][0] == '.' && cmds->value[0][1] == '/')
+			if ((S_IRWXU & buf.st_mode) && \
+			cmds->value[0][0] == '.' && cmds->value[0][1] == '/')
 				return (error_handler(cmds, 3, shell), 0);
 			if (S_ISREG(buf.st_mode) || !access(cmds->value[0], X_OK))
 				return (error_handler(cmds, 1, shell), 0);
@@ -80,4 +82,20 @@ int accessibility(t_command *cmds, t_main *shell)
 			return (error_handler(cmds, 2, shell), 0);
 	}
 	return (cmds->cmd_and_path = ft_strdup(cmds->value[0]), 1);
+}
+
+void	close_all(t_command *cmds, int i)
+{
+	int	count;
+
+	count = 0;
+	while (cmds && i > count)
+	{
+		if (cmds->fd[1] != STDOUT_FILENO)
+			close(cmds->fd[1]);
+		if (cmds->fd[0] != STDIN_FILENO)
+			close(cmds->fd[0]);
+		count++;
+		cmds = cmds->next;
+	}
 }

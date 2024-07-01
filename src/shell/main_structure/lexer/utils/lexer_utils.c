@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:23 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/29 08:40:14 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/01 13:16:03 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,14 @@ int	tlist(t_tokens **head, char *arr)
 	else
 		token_add_back(head, new);
 	return (1);
+}
+
+void	syntax_message(int flag)
+{
+	if (flag == 1)
+		ft_putstr_fd("Syntax error near unexpected pipe token\n", 2);
+	else if (flag == 2)
+		ft_putstr_fd("Syntax error near unexpected redirection token\n", 2);
+	else if (flag == 3)
+		ft_putstr_fd("Syntax error unclosed quote.\n", 2);
 }

@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/01 13:05:17 by ysarac            #+#    #+#             */
+/*   Updated: 2024/07/01 13:05:21 by ysarac           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "functions.h"
 
-static void index_counter(size_t *i, size_t *j, int *newline, t_command *cmds)
+static void	index_counter(size_t *i, size_t *j, int *newline, t_command *cmds)
 {
 	(*i) = 1;
 	(*newline) = 1;

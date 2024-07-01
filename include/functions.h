@@ -28,8 +28,7 @@ int			lexer(t_main *shell);
 int			tlist(t_tokens **head, char *arr);
 int			token_check(t_main *shell);
 void		listing_token(t_main *shell, char *tmp, size_t *j, char *token);
-void		listing_rdr(t_main *shell, char *tmp, size_t *j, size_t *i,
-				char *token);
+void		listing_rdr(t_main *shell, size_t *j, size_t *i, char *token);
 void		exit_in_lex_ex(t_main *shell);
 
 // free		functions
@@ -43,14 +42,13 @@ char		**get_cmd(t_env *env);
 void		list_add_back(t_env **lst, t_env *tmp);
 size_t		is_space(char *s);
 t_env		*find_env(t_env *envs, char *wanted);
-size_t		wordcount(char *s);
 size_t		wordlen(const char *str);
 int			is_whitespace(char c);
 size_t		t_lst_size(t_tokens *t);
 void		syntax_message(int flag);
 void		signal_reciever(int flag);
 int			update_env(t_main *shell);
-void		disable_echo_control_chars();
+void		disable_echo_control_chars(void);
 void		exit_for_fork(t_main *shell);
 
 // expender functions
@@ -66,20 +64,28 @@ int			is_token(t_tokens *t);
 size_t		rdr_count(char **str);
 int			is_rdr(char *strs);
 void		exit_in_parser(t_main *shell);
-
+char		*allocate_result(const char *str);
+void		toggle_quote(char c, t_bool *in_s, t_bool *in_d);
+int			rdr_position(t_command *cmds);
+char		*remove_quotes(const char *str, t_bool in_s, t_bool in_d);
+char		*extract_cleaned_substr(const char *value, size_t start, size_t end);
+size_t		length_to_token(t_tokens *lst);
+size_t		find_word_end(const char *value, size_t start, t_bool *in_d,
+					t_bool *in_s);
 // executer functions
-int			executor(t_main *shell);
+int			executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i);
 int			is_builtin(t_command *cmds, t_main *shell, t_bool cmd_num);
 int			accessibility(t_command *cmds, t_main *shell);
+int			opens(t_command *cmd, size_t *i);
+void		close_all(t_command *cmds, int i);
 
 // builtins functions
-void		echo(t_command *cmds, t_main *shell);
 void		cd(t_command *cmds, t_main *shell);
 void		pwd(t_command *cmds, t_main *shell);
 void		env(t_command *cmds, t_main *shell);
+void		echo(t_command *cmds, t_main *shell);
 void		unset(t_command *cmds, t_main *shell);
 void		export(t_command *cmds, t_main *shell);
 void		exit_cmd(t_command *cmds, t_main *shell);
-
 
 #endif

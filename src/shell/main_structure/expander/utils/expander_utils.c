@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:05:33 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 17:08:06 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/01 13:26:37 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "functions.h"
 
@@ -38,6 +37,7 @@ static char	*expand_dollar_question(char *tmp, t_main *shell)
 	return (tmp);
 }
 
+// $A3 gibi durumda ne yapıcak
 static char	*expand_variable(char *tmp, const char *token_value, size_t *i,
 		t_env *env)
 {
@@ -47,7 +47,7 @@ static char	*expand_variable(char *tmp, const char *token_value, size_t *i,
 
 	j = 0;
 	(*i)++;
-	while (ft_isalpha(token_value[*i + j])) // $A3 gibi durumda ne yapıcak
+	while (ft_isalpha(token_value[*i + j]))
 	{
 		j++;
 	}
@@ -91,10 +91,11 @@ char	*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
 	{
 		tmp = expand_variable(tmp, token_value, i, shell->envs);
 	}
+	return (tmp);
+}
+
 /* 	else
 	{
 		tmp = ft_strappend(tmp, "$", 1); //bak
 		(*i)++;
 	} */
-	return (tmp);
-}

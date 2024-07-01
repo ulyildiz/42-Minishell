@@ -12,8 +12,6 @@
 
 #include "functions.h"
 
-
-
 int	is_token(t_tokens *t)
 {
 	if (t->type == PIPE && (t->is_expend != WITHIN_D_Q
@@ -59,4 +57,22 @@ int	is_rdr(char *strs)
 		i++;
 	}
 	return (0);
+}
+
+char	*allocate_result(const char *str)
+{
+	size_t	len;
+	char	*result;
+
+	len = strlen(str);
+	result = (char *)calloc(len + 1, sizeof(char));
+	return (result);
+}
+
+void	toggle_quote(char c, t_bool *in_s, t_bool *in_d)
+{
+	if (c == '\'' && !(*in_d))
+		*in_s = !(*in_s);
+	else if (c == '"' && !(*in_s))
+		*in_d = !(*in_d);
 }

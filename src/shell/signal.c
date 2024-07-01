@@ -21,14 +21,13 @@ void	parent_sigint(int sig)
 	(void)sig;
 	printf("\n");
 	rl_on_new_line();
-	rl_reset_terminal("");
-	//rl_replace_line("", 0);
+	rl_replace_line("", 0);
 	rl_redisplay();
 }
 
-void disable_echo_control_chars()
+void	disable_echo_control_chars(void)
 {
-	struct termios tty;
+	struct termios	tty;
 
 	tcgetattr(STDIN_FILENO, &tty);
 	tty.c_lflag &= ~ECHOCTL;
@@ -42,7 +41,7 @@ void	signal_reciever(int flag)
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, parent_sigint);
 	}
-	else if (flag == 2) // for child
+	else if (flag == 2)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGINT, SIG_DFL);

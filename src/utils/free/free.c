@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/14 07:29:22 by ysarac            #+#    #+#             */
-/*   Updated: 2024/06/29 18:05:16 by ulyildiz         ###   ########.fr       */
+/*   Created: 2024/07/01 13:07:29 by ysarac            #+#    #+#             */
+/*   Updated: 2024/07/01 13:07:29 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,14 @@ void	free_env(t_env *env)
 		tmp = env;
 		env = env->next;
 		free(tmp->name);
-		if (tmp->value && tmp->value[0] != '\0')
-			free(tmp->value); //linuxta 1 byte leake sebep oluyor büyük ihtimalle içinde null char olan envler freelenmicek
+		if (tmp->value)
+			free(tmp->value);
 		free(tmp);
 	}
 }
+
+// linuxta 1 byte leake sebep oluyor büyük 
+//ihtimalle içinde null char olan envler freelenmicek
 
 void	free_tokens(t_main *shell)
 {
@@ -62,7 +65,7 @@ void	free_command(t_main *shell)
 	t_command	*cmd;
 
 	cmd = shell->cmd;
-	while(cmd)
+	while (cmd)
 	{
 		tmp = cmd;
 		cmd = cmd->next;

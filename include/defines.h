@@ -59,7 +59,6 @@ typedef enum e_is_pipe
 	R_P
 }	t_is_pipe;
 
-
 /* *******************************   Structs   ****************************** */
 
 typedef struct s_tokens
@@ -97,6 +96,7 @@ typedef struct s_main
 	t_command	*cmd;
 	t_bool		in_s;
 	t_bool		in_d;
+	char 		*tmp;
 	int			exit_status;
 	int			control;
 	char		**paths;
