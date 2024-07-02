@@ -35,7 +35,7 @@ void		exit_in_lex_ex(t_main *shell);
 void		free_env(t_env *shell);
 void		free_double(char **arr);
 void		free_tokens(t_main *shell);
-void		free_command(t_main *shell);
+void		free_command(t_main *shell, t_command *tp);
 
 // utils	functions
 char		**get_cmd(t_env *env);
@@ -63,7 +63,6 @@ int			parser(t_main *shell, t_tokens *t, size_t i);
 int			is_token(t_tokens *t);
 size_t		rdr_count(char **str);
 int			is_rdr(char *strs);
-void		exit_in_parser(t_main *shell);
 char		*allocate_result(const char *str);
 void		toggle_quote(char c, t_bool *in_s, t_bool *in_d);
 int			rdr_position(t_command *cmds);
@@ -77,6 +76,8 @@ int			executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i);
 int			accessibility(t_command *cmds, t_main *shell);
 int			opens(t_command *cmd, size_t *i);
 void		close_all(t_command *cmds, int i);
+void		wait_forks(t_main *shell, t_command *cmd);
+int			heredocs(t_command *cmd);
 
 // builtins functions
 void		cd(t_command *cmds, t_main *shell);

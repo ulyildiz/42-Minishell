@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/01 19:30:19 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/02 20:43:43 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,11 @@ static t_command	*cmd_struct_create(t_tokens *token)
 	cmd->where_p = NONE_P;
 	cmd->fd[0] = STDIN_FILENO;
 	cmd->fd[1] = STDOUT_FILENO;
+	cmd->pid = -1;
 	cmd->rdrs = NULL;
 	cmd->cmd_and_path = NULL;
+	cmd->next = NULL;
+	cmd->prev = NULL;
 	return (cmd);
 }
 

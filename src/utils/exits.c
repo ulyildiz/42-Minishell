@@ -20,11 +20,12 @@ void	exit_in_lex_ex(t_main *shell)
 	free_env(shell->envs);
 	free_double(shell->env_for_execve_function);
 	free_tokens(shell);
+	rl_clear_history();
 	free(shell->cmd_line);
-	exit(ENOMEM);
+	exit(shell->exit_status);
 }
 
-void	exit_in_parser(t_main *shell)
+/* void	exit_in_parser(t_main *shell)
 {
 	free_env(shell->envs);
 	free_double(shell->env_for_execve_function);
@@ -32,9 +33,9 @@ void	exit_in_parser(t_main *shell)
 	free_command(shell);
 	free(shell->cmd_line);
 	exit(ENOMEM);
-}
+} */
 
-void	main_exit(t_main *shell)
+/* void	main_exit(t_main *shell)
 {
 	free_env(shell->envs);
 	free_double(shell->env_for_execve_function);
@@ -44,17 +45,17 @@ void	main_exit(t_main *shell)
 		free_command(shell);
 	free(shell->cmd_line);
 	exit(ENOMEM);
-}
+} */
 
 void	exit_for_fork(t_main *shell)
 {
-	free_command(shell);
+	free_command(shell, NULL);
 	free_tokens(shell);
 	free_env(shell->envs);
 	free_double(shell->paths);
 	free_double(shell->env_for_execve_function);
 	free(shell->cmd_line);
-	clear_history();
-	exit(EXIT_SUCCESS);
+	rl_clear_history();
+	exit(shell->exit_status);
 }
 	// değişken olabilir

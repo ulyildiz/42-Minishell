@@ -59,12 +59,15 @@ void	free_tokens(t_main *shell)
 	shell->token = NULL;
 }
 
-void	free_command(t_main *shell)
+void	free_command(t_main *shell, t_command *tp)
 {
 	t_command	*tmp;
 	t_command	*cmd;
 
-	cmd = shell->cmd;
+	if (!tp)
+		cmd = shell->cmd;
+	else
+		cmd = tp;
 	while (cmd)
 	{
 		tmp = cmd;
@@ -77,9 +80,10 @@ void	free_command(t_main *shell)
 			free(tmp->cmd_and_path);
 		free(tmp);
 	}
-	shell->cmd = NULL;
+	if (!tp)
+		shell->cmd = NULL;
 }
-
+/* 
 void	main_free(t_main *shell)
 {
 	free_env(shell->envs);
@@ -87,3 +91,4 @@ void	main_free(t_main *shell)
 	free_command(shell);
 	free(shell->cmd_line);
 }
+ */

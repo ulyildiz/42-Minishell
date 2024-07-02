@@ -3,35 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/01 14:27:42 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/02 20:47:18 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 
-static int	redirection_touch(t_command *cmd)
+static int	redirection_touch(t_main *shell, t_command *cmd)
 {
 	size_t	i;
+	t_command *tmp;
 
 	i = 0;
+	tmp = NULL;
 	while (cmd->rdrs[i])
 	{
+		tmp = cmd;
 		if (opens(cmd, &i) == -1)
+		{
+			printf("a\n");
+			if (cmd->next)
+				cmd->next->prev = cmd->prev;
+			printf("a\n");
+			if (cmd->prev)
+				cmd->prev->next = cmd->next;
+			printf("a\n");
+			printf("%p\n", cmd->prev->next);
+			free_command(shell, cmd);
 			return (1);
+		}
 		i++;
 	}
 	return (1);
 }
 
-int	set_fd(t_command *cmd, int *i)
+int	set_fd(t_main *shell, t_command *cmd, int *i)
 {
 	int	fd[2];
 
+/* 	if (!heredocs(cmd))
+		return (1); */
 	while (cmd)
 	{
+		printf("s\n");
 		if (cmd->where_p == R_P)
 		{
 			if (pipe(fd) == -1)
@@ -41,11 +58,13 @@ int	set_fd(t_command *cmd, int *i)
 		}
 		if (cmd->rdrs)
 		{
-			if (!redirection_touch(cmd))
+			if (!redirection_touch(shell, cmd))
 				return (0);
 		}
 		(*i)++;
+		printf("d\n");
 		cmd = cmd->next;
+		printf("d\n");
 	}
 	return (0);
 }
@@ -57,6 +76,7 @@ static void	official_executer(t_command *cmds, t_main *shell, int i,
 {
 	t_command	*tmp;
 
+	printf("as\n");
 	if (!cmd_num)
 		cmds->pid = fork();
 	if (cmds->pid == -1)
@@ -67,7 +87,7 @@ static void	official_executer(t_command *cmds, t_main *shell, int i,
 	else if (cmds->pid == 0)
 	{
 		signal_reciever(2);
-		clear_history();
+		rl_clear_history();
 		dup2(cmds->fd[1], STDOUT_FILENO);
 		if (cmds->fd[1] != STDOUT_FILENO)
 			close(cmds->fd[1]);
@@ -78,8 +98,10 @@ static void	official_executer(t_command *cmds, t_main *shell, int i,
 		close_all(tmp, i);
 		execve(cmds->cmd_and_path, cmds->value, shell->env_for_execve_function);
 		perror("execve");
+		shell->exit_status = 1;
 		exit_for_fork(shell);
 	}
+	signal_reciever(3);
 }
 
 void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
@@ -93,7 +115,7 @@ void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
 			exit(EXIT_FAILURE);
 		}
 		else if (cmds->pid != 0)
-			return ;
+			return (signal_reciever(3));
 		signal_reciever(2);
 	}
 	if (cmds->ifo == 0)
@@ -104,26 +126,31 @@ void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
 			official_executer(cmds, shell, i, cmd_num);
 		else
 		{
+			shell->exit_status = 127;
 			if (cmd_num)
 				exit_for_fork(shell);
 		}
 	}
 }
 
+#include <assert.h>
+
 int	executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i)
 {
-	cmd_num = FALSE;
 	i = 0;
 	cmds = shell->cmd;
 	if (shell->control == 0)
 		return (1);
-	if (cmds->next != NULL)
-		cmd_num = TRUE;
 	shell->paths = get_cmd(shell->envs);
 	if (!shell->paths)
 		return (0);
-	if (set_fd(cmds, &i))
+	if (set_fd(shell, cmds, &i))
 		return (free_double(shell->paths), close_all(cmds, i), 1);
+	cmds = shell->cmd;
+	//printf("%p\n", cmds->next);
+	assert(cmds->next == NULL);
+	if (!cmds->next)
+		cmd_num = TRUE;
 	while (cmds != NULL)
 	{
 		run_command(shell, cmds, i, cmd_num);
@@ -133,8 +160,7 @@ int	executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i)
 			close(cmds->fd[0]);
 		cmds = cmds->next;
 	}
-	while (wait(&shell->exit_status) != -1)
-		;
+	wait_forks(shell, shell->cmd);
 	return (free_double(shell->paths), free(shell->cmd_line), \
-	free_command(shell), 1);
+	free_command(shell, NULL), 1);
 }

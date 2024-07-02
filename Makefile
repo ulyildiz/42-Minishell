@@ -16,6 +16,7 @@ SRC =   src/main.c \
         src/shell/main_structure/executer/executer.c \
         src/shell/main_structure/executer/utils/executer_utils.c \
         src/shell/main_structure/executer/utils/executer_utils2.c \
+		src/shell/main_structure/executer/utils/heredoc.c \
         src/utils/exits.c \
         src/utils/utils.c \
         src/utils/syntax_check.c \

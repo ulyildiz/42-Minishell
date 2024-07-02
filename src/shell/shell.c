@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:38 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/01 19:06:51 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/02 16:00:58 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	line_read(t_main *shell)
 	{
 		free_env(shell->envs);
 		free_double(shell->env_for_execve_function);
-		return (clear_history(), 2);
+		return (rl_clear_history(), 2);
 	}
 	else if (!is_space(shell->cmd_line))
 		return (free(shell->cmd_line), 0);
@@ -58,6 +58,7 @@ void	start_shell(t_main *shell)
 			break ;
 		if (!executor(shell, shell->cmd, FALSE, 0))
 			break ;
+		signal_reciever(1);
 		shell->control = 1;
 	}
 }
