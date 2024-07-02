@@ -1,95 +1,86 @@
-
 #include "functions.h"
+
+
+char *get_oldpwd_path(t_command *cmds, t_env *oldpwd)
+{
+	char *path;
+
+    if (oldpwd)
+	{
+        path = ft_strdup(oldpwd->value);
+        if (!path)
+            ft_putstr_fd("Error duplicating OLDPWD value\n", cmds->fd[1]);
+        return (ft_putendl_fd(path, cmds->fd[1]),path);
+    }
+	else
+        return (ft_putstr_fd("OLDPWD not set\n", cmds->fd[1]), NULL);
+}
+
+char *get_home_path(t_command *cmds, t_env *home)
+{
+	char *path;
+
+    if (home) 
+	{
+        path = ft_strdup(home->value);
+        if (!path)
+            ft_putstr_fd("Error duplicating HOME value\n", cmds->fd[1]);
+        return (path);
+    }
+	else
+        return (ft_putstr_fd("HOME not set\n", cmds->fd[1]),NULL);
+}
+
+char	*get_cmd_path(t_command *cmds, t_env *pwd)
+{
+    char	*path;
+
+	path  = append_path(pwd->value, cmds->value[1]);
+    if (!path) 
+        ft_putstr_fd("Error generating path from command\n", cmds->fd[1]);
+    return (path);
+}
+
+char *get_path(t_command *cmds, t_env *pwd, t_env *oldpwd, t_env *home)
+{
+	char	*path;
+
+	path = NULL;
+    if (cmds->value[1] != NULL)
+	{
+        if (cmds->value[1][0] != '-')
+            path = get_cmd_path(cmds, pwd); 
+		else if (cmds->value[1][0] == '-')
+            path = get_oldpwd_path(cmds, oldpwd);
+    }
+	else
+        path = get_home_path(cmds, home);
+    return (path);
+}
 
 void cd(t_command *cmds, t_main *shell)
 {
     t_env *pwd;
     t_env *oldpwd;
-    char *path;
-	char *tmp;
+    t_env *home;
+	char *path;
 
-    pwd = find_env(shell->envs, "PWD");
-    oldpwd = find_env(shell->envs, "OLDPWD");
+	pwd = update_or_create_env(&shell->envs, "PWD", getcwd(NULL, 0));
+	oldpwd = find_env(shell->envs, "OLDPWD");
+	home = find_env(shell->envs, "HOME");
     if (!pwd)
-    {
-        pwd = (t_env *)malloc(sizeof(t_env));
-        if (!pwd)
-            return;
-        pwd->name = ft_strdup("PWD");
-        if (!pwd->name)
-            return(free(pwd));
-        pwd->value = getcwd(NULL, 0);
-        if (!pwd->value)
-            return(free(pwd),free(pwd->name));
-        pwd->next = NULL;
-        list_add_back(&shell->envs, pwd);
+		return;
+    path = get_path(cmds, pwd, oldpwd, home);
+    if (!path)
+		return;
+    if (chdir(path) == 0)
+	{
+        if (!update_or_create_env(&shell->envs, "OLDPWD", pwd->value))
+            return (free(path),perror("update_or_create_env failed"));
+        if (!update_or_create_env(&shell->envs, "PWD", getcwd(NULL, 0))) 
+            return (free(path),perror("update_or_create_env failed"));
     }
-    
-    if (cmds->value[1] != NULL)
-    {
-        if (cmds->value[1][0] != '-')
-        {
-            path = ft_strjoin(pwd->value, "/");
-            if (!path)
-                return;
-            tmp = ft_strappend(path, cmds->value[1], ft_strlen(cmds->value[1]));
-            if (!tmp)
-                return(free(path));
-            path = tmp;
-        }
-        else if (cmds->value[1][0] == '-')
-        {
-            if (oldpwd)
-                path = ft_strdup(oldpwd->value);
-            else
-                return (ft_putstr_fd("OLDPWD not set\n", cmds->fd[1]));
-        }
-        else
-            return;// buraya bak 
-    }
-    else
-    {
-        if (find_env(shell->envs, "HOME") != NULL)
-            path = ft_strdup(find_env(shell->envs, "HOME")->value);
-        else
-            return (ft_putstr_fd("HOME not set\n", cmds->fd[1]));
-    }
-    if (path && chdir(path) == 0)
-    {
-        if (!oldpwd)
-        {
-            oldpwd = (t_env *)malloc(sizeof(t_env));
-            if (!oldpwd)
-                return (free(path), perror("malloc failed"));
-            oldpwd->name = ft_strdup("OLDPWD");
-            if (!oldpwd->name)
-                return(free(path),free(oldpwd));
-            oldpwd->value = ft_strdup(pwd->value);
-            if (!oldpwd->value)
-                return(free(path), free(oldpwd), free(oldpwd->name));
-            oldpwd->next = NULL;
-            list_add_back(&shell->envs, oldpwd);
-        }
-        else
-        {
-            free(oldpwd->value);
-            oldpwd->value = ft_strdup(pwd->value);
-            if (!oldpwd->value)
-                return (free(path), perror("ft_strdup failed"));
-        }
-        free(pwd->value);
-        pwd->value = getcwd(NULL, 0);
-        if (!pwd->value)
-            return (free(path), perror("getcwd failed"));
-
-        free(path);
-    }
-    else
-    {
+	else
         perror("cd");
-        if (path)
-            free(path);
-    }
-    //d0nE
+    free(path);
 }
-

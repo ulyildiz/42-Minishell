@@ -74,7 +74,6 @@ size_t		find_word_end(const char *value, size_t start, t_bool *in_d,
 					t_bool *in_s);
 // executer functions
 int			executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i);
-int			is_builtin(t_command *cmds, t_main *shell, t_bool cmd_num);
 int			accessibility(t_command *cmds, t_main *shell);
 int			opens(t_command *cmd, size_t *i);
 void		close_all(t_command *cmds, int i);
@@ -87,5 +86,14 @@ void		echo(t_command *cmds, t_main *shell);
 void		unset(t_command *cmds, t_main *shell);
 void		export(t_command *cmds, t_main *shell);
 void		exit_cmd(t_command *cmds, t_main *shell);
+
+// builtins utils functions
+int			is_builtin(t_command *cmds, t_main *shell, t_bool cmd_num);
+t_env		*sort_export(t_env *lst, int (*cmp)(int, int));
+int			ascending(int a, int b);
+char		*append_path(char *base,char *append);
+t_env		*update_or_create_env(t_env **envs, char *name, char *value);
+int			set_env_value(t_env *env, char *value);
+t_env		*create_env(char *name, char *value);
 
 #endif

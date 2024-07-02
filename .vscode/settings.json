@@ -12,7 +12,13 @@
     "unistd.h": "c",
     "types.h": "c",
     "wait.h": "c",
-    "readline.h": "c"
+    "readline.h": "c",
+    "__bit_reference": "c",
+    "bitset": "c",
+    "__memory": "c",
+    "limits": "c",
+    "ratio": "c",
+    "tuple": "c"
   },
   "C_Cpp_Runner.msvcBatchPath": "",
   "C_Cpp_Runner.cCompilerPath": "clang",

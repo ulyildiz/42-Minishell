@@ -36,11 +36,9 @@ int	rdr_position(t_command *cmds)
 {
 	char	**tmp;
 	size_t	i;
-	size_t	j;
 	size_t	f;
 
 	i = 0;
-	j = 0;
 	f = 0;
 	if (rdr_count(cmds->value) <= 0)
 		return (0);

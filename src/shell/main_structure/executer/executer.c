@@ -67,7 +67,7 @@ static void	official_executer(t_command *cmds, t_main *shell, int i,
 	else if (cmds->pid == 0)
 	{
 		signal_reciever(2);
-		rl_clear_history();
+		clear_history();
 		dup2(cmds->fd[1], STDOUT_FILENO);
 		if (cmds->fd[1] != STDOUT_FILENO)
 			close(cmds->fd[1]);

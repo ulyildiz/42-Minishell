@@ -12,6 +12,37 @@
 
 #include "functions.h"
 
+t_env	*sort_export(t_env *lst, int (*cmp)(int, int))
+{
+	char	*swap_name;
+	char	*swap_value;
+	t_env	*tmp;
+
+	tmp = lst;
+	while (lst->next != NULL)
+	{
+		if (((*cmp)(lst->name[0], lst->next->name[0])) == 0)
+		{
+			swap_name = lst->name;
+			swap_value = lst->value;
+			lst->name = lst->next->name;
+			lst->value = lst->next->value;
+			lst->next->name = swap_name;
+			lst->next->value = swap_value;
+			lst = tmp;
+		}
+		else
+			lst = lst->next;
+	}
+	lst = tmp;
+	return (lst);
+}
+
+int	ascending(int a, int b)
+{
+	return (a <= b);
+}
+
 int	is_builtin(t_command *cmds, t_main *shell, t_bool cmd_num)
 {
 	int				i;

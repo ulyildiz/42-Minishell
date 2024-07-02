@@ -1,119 +1,107 @@
-
 #include "functions.h"
 
-/*
-** update_env yi  envye ekleme yaptığın yerde kullan.
-*/
-
-static t_env	*sort_export(t_env *lst, int (*cmp)(int, int))
+static void add_new_env(t_env **envs, char **str)
 {
-	char	*swap_name;
-	char	*swap_value;
 	t_env	*tmp;
 
-	tmp = lst;
-	while (lst->next != NULL)
-	{
-		if (((*cmp)(lst->name[0], lst->next->name[0])) == 0)
-		{
-			swap_name = lst->name;
-			swap_value = lst->value;
-			lst->name = lst->next->name;
-			lst->value = lst->next->value;
-			lst->next->name = swap_name;
-			lst->next->value = swap_value;
-			lst = tmp;
-		}
-		else
-			lst = lst->next;
-	}
-	lst = tmp;
-	return (lst);
+	tmp = (t_env *)malloc(sizeof(t_env));
+    if (!tmp)
+		return;
+    tmp->name = str[0];
+	tmp->value = "\0";
+	if (str[1])
+		tmp->value = ft_strjoin(tmp->value, str[1]);
+    tmp->next = NULL;
+    list_add_back(envs, tmp);
 }
-int	ascending(int a, int b)
+
+static void process_commands(t_command *cmds, t_main *shell)
 {
-	return (a <= b);
-}
-void	export(t_command *cmds, t_main *shell)
-{
-	t_env	*export;
-	t_env	*copy;
-	t_env	*tmp;
-	t_env	*env;
-	int		i;
 	char	**str;
+	int		i;
+	t_env	*env_var;
 
 	i = 1;
-	while (cmds->value[i])
+    while (cmds->value[i])
 	{
-		printf("cmds->value[i] = %s\n", cmds->value[i]);
-		if (cmds->value[i][0] == '=')
+        if (cmds->value[i][0] == '=')
 		{
-			ft_putstr_fd("invalid identifier\n",cmds->fd[1]);
-			i++;
-			continue;
-		}
-		str = ft_split(cmds->value[i], '=');
-		if (str[0] && find_env(shell->envs, str[0]) != NULL)
+            ft_putstr_fd("invalid identifier\n", cmds->fd[1]);
+            i++;
+            continue;
+        }
+        str = ft_split(cmds->value[i], '=');
+        env_var = find_env(shell->envs, str[0]);
+        if (str[0] && env_var != NULL)
 		{
-			if (str[1])
-				find_env(shell->envs, str[0])->value = str[1];
-		}
-		else if (str[0] && find_env(shell->envs, str[0]) == NULL)
-		{
-			tmp = (t_env *)malloc(sizeof(t_env));
-			if (!tmp)
-				return ;
-			tmp->name = str[0];
-			tmp->value = "\0";
-			tmp->next = NULL;
-			if (str[1])
-			{
-				tmp->value = ft_strjoin("\"", str[1]);
-				tmp->value = ft_strappend(tmp->value, "\"", 1);
-			}
-			list_add_back(&(shell->envs), tmp);
-		}
-		i++;
-	}
-		export = NULL;
-    copy = shell->envs;
-    while (copy) {
+            if (str[1])
+                env_var->value = str[1];
+        }
+		else if (str[0] && env_var == NULL)
+            add_new_env(&(shell->envs), str);
+        i++;
+    }
+}
+
+static void copy_env(t_env **export, t_env *src)
+{
+	t_env	*tmp;
+
+    while (src)
+	{
         tmp = (t_env *)malloc(sizeof(t_env));
         if (!tmp)
-            return free_env(export);
+            return(free_env(*export));
         tmp->next = NULL;
-        if (copy->name)
+        if (src->name)
 		{
-            tmp->name = ft_strdup(copy->name);
+            tmp->name = ft_strdup(src->name);
             if (!tmp->name)
-                return (free_env(export), free(tmp));
+                return(free(tmp),free_env(*export));
         }
-        if (copy->value)
+        if (src->value)
 		{
-            tmp->value = ft_strdup(copy->value);
-            if (!tmp->value)
-                return (free(tmp->name),free(tmp), free_env(export));
+            tmp->value = ft_strdup(src->value);
+            if (!tmp->value) 
+                return(free(tmp->name),free(tmp),free_env(*export));
         }
-        list_add_back(&export, tmp);
-        copy = copy->next;
+		else
+            tmp->value = "\0";
+        list_add_back(export, tmp);
+        src = src->next;
     }
-	export = sort_export(export, ascending);
-	env = export;
-	while (env && cmds->value[1] == NULL)
+}
+
+static void print_export(t_env *env, int fd)
+{
+    while (env)
 	{
-		ft_putstr_fd("declare -x ", cmds->fd[1]);
-		ft_putstr_fd(env->name, cmds->fd[1]);
-		if (env->value != NULL && env->value[0] != '\0')
+        ft_putstr_fd("declare -x ", fd);
+        ft_putstr_fd(env->name, fd);
+        if (env->value != NULL && env->value[0] != '\0')
 		{
-			ft_putstr_fd("=", cmds->fd[1]);
-			ft_putstr_fd("\"",cmds->fd[1]);
-			ft_putstr_fd(env->value, cmds->fd[1]);
-			ft_putstr_fd("\"",cmds->fd[1]);
-		}
-		ft_putstr_fd("\n", cmds->fd[1]);
-		env = env->next;
-	}
-	free_env(export);
-	//probably d0nE
+            ft_putstr_fd("=", fd);
+            ft_putstr_fd("\"", fd);
+            ft_putstr_fd(env->value, fd);
+            ft_putstr_fd("\"", fd);
+        }
+        ft_putstr_fd("\n", fd);
+        env = env->next;
+    }
+}
+
+void export(t_command *cmds, t_main *shell)
+{
+	t_env	*export;
+
+	export = NULL;
+    process_commands(cmds, shell);
+    if (update_env(shell) == 0)
+        return;
+    copy_env(&export, shell->envs);
+	export = sort_export(export, ascending);
+    if (cmds->value[1] == NULL)
+        print_export(export, cmds->fd[1]);
+    update_env(shell);
+    free_env(export);
 }
