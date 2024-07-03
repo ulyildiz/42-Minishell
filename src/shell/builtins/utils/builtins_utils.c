@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 17:30:01 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/06/29 17:32:00 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/03 10:38:17 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ int	is_builtin(t_command *cmds, t_main *shell, t_bool cmd_num)
 {
 	int				i;
 	static t_build	commands[] = {{"echo", echo}, {"cd", cd}, {"pwd", pwd},
-			{"env", env}, {"unset", unset}, {"export", export}, {"exit",
-			exit_cmd}, {NULL, NULL}};
+	{"env", env}, {"unset", unset}, {"export", export}, {"exit", exit_cmd},
+	{NULL, NULL}};
 
 	i = 0;
 	while (commands[i].name)

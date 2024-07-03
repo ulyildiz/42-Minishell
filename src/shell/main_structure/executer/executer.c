@@ -6,33 +6,30 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/02 20:47:18 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/03 10:36:17 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 
-static int	redirection_touch(t_main *shell, t_command *cmd)
+static int	redirection_touch(t_main *shell, t_command **cmd)
 {
-	size_t	i;
-	t_command *tmp;
+	size_t		i;
+	t_command	*tmp;
 
 	i = 0;
 	tmp = NULL;
-	while (cmd->rdrs[i])
+	while ((*cmd)->rdrs[i])
 	{
-		tmp = cmd;
-		if (opens(cmd, &i) == -1)
+		tmp = *cmd;
+		if (opens(*cmd, &i) == -1)
 		{
-			printf("a\n");
-			if (cmd->next)
-				cmd->next->prev = cmd->prev;
-			printf("a\n");
-			if (cmd->prev)
-				cmd->prev->next = cmd->next;
-			printf("a\n");
-			printf("%p\n", cmd->prev->next);
-			free_command(shell, cmd);
+			if ((*cmd)->next)
+				(*cmd)->next->prev = (*cmd)->prev;
+			if ((*cmd)->prev)
+				(*cmd)->prev->next = (*cmd)->next;
+			*cmd = (*cmd)->next;
+			free_command(shell, tmp);
 			return (1);
 		}
 		i++;
@@ -44,27 +41,26 @@ int	set_fd(t_main *shell, t_command *cmd, int *i)
 {
 	int	fd[2];
 
-/* 	if (!heredocs(cmd))
-		return (1); */
+	if (!heredocs(cmd))
+		return (1);
 	while (cmd)
 	{
-		printf("s\n");
 		if (cmd->where_p == R_P)
 		{
 			if (pipe(fd) == -1)
 				return (perror("Pipe"), 1);
 			cmd->fd[1] = fd[1];
-			cmd->next->fd[0] = fd[0];
+			if (cmd->next)
+				cmd->next->fd[0] = fd[0];
 		}
 		if (cmd->rdrs)
 		{
-			if (!redirection_touch(shell, cmd))
+			if (!redirection_touch(shell, &cmd))
 				return (0);
 		}
 		(*i)++;
-		printf("d\n");
-		cmd = cmd->next;
-		printf("d\n");
+		if (cmd)
+			cmd = cmd->next;
 	}
 	return (0);
 }
@@ -76,7 +72,6 @@ static void	official_executer(t_command *cmds, t_main *shell, int i,
 {
 	t_command	*tmp;
 
-	printf("as\n");
 	if (!cmd_num)
 		cmds->pid = fork();
 	if (cmds->pid == -1)
@@ -133,8 +128,6 @@ void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
 	}
 }
 
-#include <assert.h>
-
 int	executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i)
 {
 	i = 0;
@@ -147,8 +140,6 @@ int	executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i)
 	if (set_fd(shell, cmds, &i))
 		return (free_double(shell->paths), close_all(cmds, i), 1);
 	cmds = shell->cmd;
-	//printf("%p\n", cmds->next);
-	assert(cmds->next == NULL);
 	if (!cmds->next)
 		cmd_num = TRUE;
 	while (cmds != NULL)

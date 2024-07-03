@@ -45,6 +45,14 @@ void	disable_echo_control_chars(void)
 	tcsetattr(STDIN_FILENO, TCSANOW, &tty);
 }
 
+void	heredoc_sigint(int sig)
+{
+	(void)sig;
+	
+	ft_putchar_fd('\n', 1);
+	exit(0);
+}
+
 void	signal_reciever(int flag)
 {
 	if (flag == 1)
@@ -65,6 +73,6 @@ void	signal_reciever(int flag)
 	else if (flag == 4)
 	{
 		signal(SIGQUIT, SIG_DFL);
-		signal(SIGINT, SIG_DFL);
+		signal(SIGINT, heredoc_sigint);
 	}
 }
