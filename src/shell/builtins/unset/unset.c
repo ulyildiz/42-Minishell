@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/03 17:58:29 by ysarac            #+#    #+#             */
+/*   Updated: 2024/07/03 17:59:14 by ysarac           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "functions.h"
 
-void	deleteNode(t_env **head, char *key)
+void	deletenode(t_env **head, char *key)
 {
 	t_env	*temp;
 	t_env	*prev;
@@ -27,13 +38,14 @@ void	deleteNode(t_env **head, char *key)
 
 void	unset(t_command *cmds, t_main *shell)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	while (cmds->value[i] != NULL)
 	{
-		deleteNode(&shell->envs, cmds->value[i]);
+		deletenode(&shell->envs, cmds->value[i]);
 		i++;
 	}
-	//d0nE
 }
+
+// d0nE

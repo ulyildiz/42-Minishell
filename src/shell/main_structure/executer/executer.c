@@ -3,14 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/03 10:36:17 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/03 22:21:04 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+
+void	free_c(t_command *c)
+{
+	if (c->cmd_and_path)
+		free(c->cmd_and_path);
+	if (c->value)
+		free_double(c->value);
+	if (c->rdrs)
+		free_double(c->rdrs);
+	free(c);
+}
+
+static void	deletenode(t_command **head, t_command *key_point)
+{
+	if (!head || !*head || !key_point)
+		return ;
+	if (*head == key_point)
+	{
+		*head = key_point->next;
+		if (*head)
+			(*head)->prev = NULL;
+		free_c(key_point);
+		return ;
+	}
+	if (key_point->prev)
+		key_point->prev->next = key_point->next;
+	if (key_point->next)
+		key_point->next->prev = key_point->prev;
+	free_c(key_point);
+}
 
 static int	redirection_touch(t_main *shell, t_command **cmd)
 {
@@ -24,13 +54,9 @@ static int	redirection_touch(t_main *shell, t_command **cmd)
 		tmp = *cmd;
 		if (opens(*cmd, &i) == -1)
 		{
-			if ((*cmd)->next)
-				(*cmd)->next->prev = (*cmd)->prev;
-			if ((*cmd)->prev)
-				(*cmd)->prev->next = (*cmd)->next;
 			*cmd = (*cmd)->next;
-			free_command(shell, tmp);
-			return (1);
+			deletenode(&shell->cmd, tmp);
+			return (0);
 		}
 		i++;
 	}
@@ -41,7 +67,7 @@ int	set_fd(t_main *shell, t_command *cmd, int *i)
 {
 	int	fd[2];
 
-	if (!heredocs(cmd))
+	if (!heredocs(shell, cmd))
 		return (1);
 	while (cmd)
 	{
@@ -66,9 +92,9 @@ int	set_fd(t_main *shell, t_command *cmd, int *i)
 }
 
 // Neleri freelememiz lazım eğer fork
-//başarısız olursa. parent mi giriyor child mi
+// başarısız olursa. parent mi giriyor child mi
 static void	official_executer(t_command *cmds, t_main *shell, int i,
-	t_bool cmd_num)
+		t_bool cmd_num)
 {
 	t_command	*tmp;
 
@@ -113,18 +139,14 @@ void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
 			return (signal_reciever(3));
 		signal_reciever(2);
 	}
-	if (cmds->ifo == 0)
+	if (!is_builtin(cmds, shell, cmd_num))
+		;
+	else if (accessibility(cmds, shell))
+		official_executer(cmds, shell, i, cmd_num);
+	else
 	{
-		if (!is_builtin(cmds, shell, cmd_num))
-			;
-		else if (accessibility(cmds, shell))
-			official_executer(cmds, shell, i, cmd_num);
-		else
-		{
-			shell->exit_status = 127;
-			if (cmd_num)
-				exit_for_fork(shell);
-		}
+		if (cmd_num)
+			exit_for_fork(shell);
 	}
 }
 
@@ -140,7 +162,7 @@ int	executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i)
 	if (set_fd(shell, cmds, &i))
 		return (free_double(shell->paths), close_all(cmds, i), 1);
 	cmds = shell->cmd;
-	if (!cmds->next)
+	if (cmds && cmds->next)
 		cmd_num = TRUE;
 	while (cmds != NULL)
 	{
@@ -152,6 +174,6 @@ int	executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i)
 		cmds = cmds->next;
 	}
 	wait_forks(shell, shell->cmd);
-	return (free_double(shell->paths), free(shell->cmd_line), \
-	free_command(shell, NULL), 1);
+	return (free_double(shell->paths), free(shell->cmd_line),
+		free_command(shell, NULL), 1);
 }

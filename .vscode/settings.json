@@ -29,7 +29,8 @@
     "optional": "c",
     "system_error": "c",
     "type_traits": "c",
-    "vector": "c"
+    "vector": "c",
+    "locale": "c"
   },
   "C_Cpp_Runner.msvcBatchPath": "",
   "C_Cpp_Runner.cCompilerPath": "clang",

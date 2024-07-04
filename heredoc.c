@@ -6,46 +6,24 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:44:12 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/04 07:12:11 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/04 07:03:48 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 #include <readline/readline.h>
 
-char	*heredoc_expander(char *str, t_main *shell)
-{
-	char	*tmp;
-	size_t	i;
-	size_t	start;
-
-	i = 0;
-	tmp = ft_strdup("");
-	while (str[i] && tmp)
-	{
-		if (str[i] == '$')
-		{
-			start = i;
-			tmp = handle_dollar_sign(tmp, str, &i, shell);
-		}
-		else
-		{
-			tmp = ft_strappend(tmp, &str[i], 1);
-		}
-		i++;
-	}
-	return (tmp);
-}
 // close_all();
 
-int	here_loop(t_main *shell, int *fd, t_command *cmd, char *delimeter)
+int	here_loop(int *fd, t_command *cmd, char *delimeter)
 {
+	int		pid;
 	char	*line;
 
-	cmd->pid = fork();
-	if (cmd->pid == -1)
+	pid = fork();
+	if (pid == -1)
 		return (perror("fork"), exit(EXIT_FAILURE), 0);
-	else if (cmd->pid == 0)
+	else if (pid == 0)
 	{
 		signal_reciever(4);
 		close(fd[0]);
@@ -55,42 +33,24 @@ int	here_loop(t_main *shell, int *fd, t_command *cmd, char *delimeter)
 			if (!line)
 			{
 				close(fd[1]);
-				shell->exit_status = 0;
-				exit_for_fork(shell);
+				exit(0);
 			}
-			if (!ft_strncmp(line, delimeter, ft_strlen(line))
-				&& !ft_strncmp(line, delimeter, ft_strlen(delimeter)))
+			else if (!ft_strncmp(line, delimeter, ft_strlen(delimeter)))
 			{
 				free(line);
 				close(fd[1]);
-				shell->exit_status = 0;
-				exit_for_fork(shell);
+				exit(0);
 			}
-			line = heredoc_expander(line, shell);
 			ft_putendl_fd(line, fd[1]);
 			free(line);
 		}
 	}
 	else
-		close(fd[1]);
-	return (1);
-}
-
-int	wait_heredoc(t_main *shell, t_command *cmd)
-{
-	int	status;
-
-	waitpid(cmd->pid, &status, 0);
-	if (WIFEXITED(status))
 	{
-		if (WEXITSTATUS(status) == 1)
-			return (shell->exit_status = 1, SIGINT);
-		else
-			shell->exit_status = WEXITSTATUS(status);
+		close(fd[1]);
+		waitpid(pid, NULL, 0); // sinyalle çıkarken 1 ile çıkıyor
 	}
-	while (wait(NULL) != -1)
-		;
-	return (0);
+	return (1);
 }
 
 int	check_heredoc(t_command *cmd)
@@ -120,11 +80,12 @@ int	check_heredoc(t_command *cmd)
 	return (1);
 }
 
-int	heredocs(t_main *shell, t_command *cmd)
+int	heredocs(t_command *cmd)
 {
 	int	fd[2];
 	int	i;
 
+	printf("%p\n", cmd);
 	if (check_heredoc(cmd) == 0)
 		return (1);
 	while (cmd)
@@ -136,15 +97,12 @@ int	heredocs(t_main *shell, t_command *cmd)
 			{
 				if (pipe(fd) == -1)
 					return (0);
-				here_loop(shell, fd, cmd, cmd->rdrs[++i]);
-				if (wait_heredoc(shell, cmd) == SIGINT)
-					return (0);
 				if (cmd->fd[0] != STDIN_FILENO)
 					close(cmd->fd[0]);
+				here_loop(fd, cmd, cmd->rdrs[++i]);
 				cmd->fd[0] = fd[0];
 			}
 		}
-		cmd->pid = -1;
 		cmd = cmd->next;
 	}
 	return (1);

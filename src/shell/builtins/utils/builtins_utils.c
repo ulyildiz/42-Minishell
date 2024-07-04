@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 17:30:01 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/03 10:38:17 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/04 07:09:29 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,16 @@ int	is_builtin(t_command *cmds, t_main *shell, t_bool cmd_num)
 {
 	int				i;
 	static t_build	commands[] = {{"echo", echo}, {"cd", cd}, {"pwd", pwd},
-	{"env", env}, {"unset", unset}, {"export", export}, {"exit", exit_cmd},
-	{NULL, NULL}};
+	{"env", env}, {"unset", unset}, {"export", export}, {"exit",
+		exit_cmd}, {NULL, NULL}};
 
 	i = 0;
 	while (commands[i].name)
 	{
-		if (ft_strncmp(ft_strlower(cmds->value[0]), commands[i].name,
-				ft_strlen(cmds->value[0])) == 0) // ana value küçültülüyor 
+		if (!ft_strncmp(ft_strlower(cmds->value[0]), commands[i].name,
+				ft_strlen(cmds->value[0]))
+			&& !ft_strncmp(ft_strlower(cmds->value[0]), commands[i].name,
+				ft_strlen(commands[i].name)))
 		{
 			commands[i].func(cmds, shell);
 			if (cmd_num)

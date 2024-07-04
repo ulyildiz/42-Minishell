@@ -50,6 +50,7 @@ void		signal_reciever(int flag);
 int			update_env(t_main *shell);
 void		disable_echo_control_chars(void);
 void		exit_for_fork(t_main *shell);
+t_main		*shell_keeper(t_main *shell);
 
 // expender functions
 int			expender(t_main *shell);
@@ -67,17 +68,18 @@ char		*allocate_result(const char *str);
 void		toggle_quote(char c, t_bool *in_s, t_bool *in_d);
 int			rdr_position(t_command *cmds);
 char		*remove_quotes(const char *str, t_bool in_s, t_bool in_d);
-char		*extract_cleaned_substr(const char *value, size_t start, size_t end);
+char		*extract_cleaned_substr(const char *value, size_t start,
+				size_t end);
 size_t		length_to_token(t_tokens *lst);
 size_t		find_word_end(const char *value, size_t start, t_bool *in_d,
-					t_bool *in_s);
+				t_bool *in_s);
 // executer functions
 int			executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i);
 int			accessibility(t_command *cmds, t_main *shell);
 int			opens(t_command *cmd, size_t *i);
 void		close_all(t_command *cmds, int i);
 void		wait_forks(t_main *shell, t_command *cmd);
-int			heredocs(t_command *cmd);
+int			heredocs(t_main *shell, t_command *cmd);
 
 // builtins functions
 void		cd(t_command *cmds, t_main *shell);
@@ -92,7 +94,7 @@ void		exit_cmd(t_command *cmds, t_main *shell);
 int			is_builtin(t_command *cmds, t_main *shell, t_bool cmd_num);
 t_env		*sort_export(t_env *lst, int (*cmp)(int, int));
 int			ascending(int a, int b);
-char		*append_path(char *base,char *append);
+char		*append_path(char *base, char *append);
 t_env		*update_or_create_env(t_env **envs, char *name, char *value);
 int			set_env_value(t_env *env, char *value);
 t_env		*create_env(char *name, char *value);

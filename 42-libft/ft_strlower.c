@@ -17,6 +17,8 @@ char	*ft_strlower(char *bigger)
 	int	i;
 
 	i = 0;
+	if (!bigger)
+		return (NULL);
 	while (bigger[i])
 	{
 		bigger[i] = ft_tolower(bigger[i]);

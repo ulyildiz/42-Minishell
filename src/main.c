@@ -12,6 +12,15 @@
 
 #include "functions.h"
 
+t_main	*shell_keeper(t_main *shell)
+{
+	static t_main	*shell_keeper;
+
+	if (shell)
+		shell_keeper = shell;
+	return (shell_keeper);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_main	shell;
@@ -23,6 +32,7 @@ int	main(int ac, char **av, char **env)
 		return (ft_putendl_fd("Too much argument.", 2), 1);
 	if (!initialize(&shell, env))
 		return (perror("Initialize"), 1);
+	shell_keeper(&shell);
 	start_shell(&shell);
 	return (0);
 }
