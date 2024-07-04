@@ -12,19 +12,6 @@
 
 #include "functions.h"
 
-static int	pipe_check(t_tokens *t, size_t len)
-{
-	if (t->type != PIPE)
-		return (1);
-	if (t->next == NULL)
-		return (0);
-	else if (t->next->type == PIPE)
-		return (0);
-	else if (len == 0 && t->next != NULL)
-		return (0);
-	return (1);
-}
-
 static int	is_rdr_flag(t_tokens *t)
 {
 	if (t->type == RDR_D_IN || t->type == RDR_IN || t->type == RDR_OUT
@@ -33,15 +20,30 @@ static int	is_rdr_flag(t_tokens *t)
 	return (0);
 }
 
-static int	rdr_check(t_tokens *t, size_t len)
+static int	pipe_check(t_tokens *t, size_t len)
 {
-	if (!is_rdr_flag(t)) //heredoc patlamıyor
+	if (t->type != PIPE)
 		return (1);
 	if (t->next == NULL)
 		return (0);
-	else if (is_rdr_flag(t->next))
-		return (0);
+	else if (t->next->type == PIPE)
+		return (printf("s\n"), 0);
+/* 	else if (t->next->next && is_rdr_flag(t->next->next))
+		return (0); */
 	else if (len == 0 && t->next != NULL)
+		return (0);
+	return (1);
+}
+
+static int	rdr_check(t_tokens *t, size_t len)
+{
+	if (!is_rdr_flag(t))
+		return (1);
+	if (t->next == NULL)
+		return (0);
+	else if (t->next && !is_space(t->next->value) && t->next->next && is_rdr_flag(t->next->next))
+		return (0);
+	else if (len == 0 && t->next == NULL)
 		return (0);
 	return (1);
 }
@@ -97,4 +99,3 @@ int	token_check(t_main *shell)
 	return (1);
 }
 
-// = syntax düzelt

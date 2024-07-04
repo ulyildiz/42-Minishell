@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:19:53 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/04 11:15:29 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/04 17:57:12 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,18 @@ void	close_all(t_command *cmds, int i)
 	int	count;
 
 	count = 0;
+	if (i == -1)
+	{
+		while (cmds)
+		{
+			if (cmds->fd[1] != STDOUT_FILENO)
+				close(cmds->fd[1]);
+			if (cmds->fd[0] != STDIN_FILENO)
+				close(cmds->fd[0]);
+			cmds = cmds->next;
+		}
+		return ;
+	}
 	while (cmds && i > count)
 	{
 		if (cmds->fd[1] != STDOUT_FILENO)

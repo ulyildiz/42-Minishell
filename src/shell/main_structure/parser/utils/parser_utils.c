@@ -29,13 +29,13 @@ size_t	rdr_count(char **str)
 	len = 0;
 	while (str[i])
 	{
-		if (!ft_strncmp(str[i], "<", 1) && ft_strlen(str[i]) == 1 && i++)
+		if (!ft_strncmp(str[i], "<", 1) && ft_strlen(str[i]) == 1 && ++i)
 			len++;
-		else if (!ft_strncmp(str[i], ">", 1) && ft_strlen(str[i]) == 1 && i++)
+		else if (!ft_strncmp(str[i], ">", 1) && ft_strlen(str[i]) == 1 && ++i)
 			len++;
-		else if (!ft_strncmp(str[i], ">>", 2) && ft_strlen(str[i]) == 2 && i++)
+		else if (!ft_strncmp(str[i], ">>", 2) && ft_strlen(str[i]) == 2 && ++i)
 			len++;
-		else if (!ft_strncmp(str[i], "<<", 2) && ft_strlen(str[i]) == 2 && i++)
+		else if (!ft_strncmp(str[i], "<<", 2) && ft_strlen(str[i]) == 2 && ++i)
 			len++;
 		i++;
 	}

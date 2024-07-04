@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:38 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/02 16:00:58 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:15:26 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static int	line_read(t_main *shell)
 void	start_shell(t_main *shell)
 {
 	int			i;
+	t_tokens	*t;
 
 	while (1)
 	{
@@ -52,6 +53,14 @@ void	start_shell(t_main *shell)
 			break ;
 		if (!lexer(shell))
 			break ;
+		t = shell->token;
+		while(t)
+		{
+			printf("-%s -> expend_va = %d -> type_va = %d\n", t->value,
+					t->is_expend, t->type);
+			t = t->next;
+		}
+		printf("\n");
 		if (!expender(shell))
 			break ;
 		if (!parser(shell, shell->token, 0))
@@ -62,12 +71,3 @@ void	start_shell(t_main *shell)
 		shell->control = 1;
 	}
 }
-
-/* 		t = shell->token;
-		while(t)
-		{
-			printf("-%s -> expend_va = %d -> type_va = %d\n", t->value,
-					t->is_expend, t->type);
-			t = t->next;
-		}
-		printf("\n"); */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:44:12 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/04 15:22:39 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/04 17:57:57 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	here_loop(t_main *shell, int *fd, t_command *cmd, char *delimeter)
 	{
 		signal_reciever(4);
 		close(fd[0]);
+		close_all(shell->cmd, -1);
 		while (1)
 		{
 			line = readline("> ");
@@ -132,10 +133,11 @@ int	heredocs(t_main *shell, t_command *cmd)
 	if (check_heredoc(cmd) == 0)
 		return (1);
 	signal_reciever(5);
+	i = 0;
 	while (cmd)
 	{
 		i = -1;
-		while (cmd->rdrs[++i])
+		while (cmd->rdrs && cmd->rdrs[++i])
 		{
 			if (!ft_strncmp(cmd->rdrs[i], "<<", 2))
 			{
