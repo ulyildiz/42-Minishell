@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:06 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/04 18:18:45 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:20:05 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	exit_cmd(t_command *cmds, t_main *shell)
 	else
 		shell->exit_status = 0;
 	exit_for_fork(shell); //?
+	
 }
 //exit a    numric de çık
 //exit a 3 numeric öazım de çık
