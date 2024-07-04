@@ -6,15 +6,14 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 12:49:03 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/04 07:10:18 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/04 11:17:41 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
-#include <errno.h>
 #include <sys/stat.h>
 
-void	error_handler(t_command *cmds, int flag, t_main *shell)
+static void	error_handler(t_command *cmds, int flag, t_main *shell)
 {
 	ft_putstr_fd("ft_sh: ", 2);
 	ft_putstr_fd(cmds->value[0], 2);
@@ -40,67 +39,82 @@ void	error_handler(t_command *cmds, int flag, t_main *shell)
 	}
 }
 
-int	accessibility(t_command *cmds, t_main *shell)
+static int	check_for_absolute_path(t_command *cmds, t_main *shell,
+			t_bool *is_in)
 {
-	size_t		i;
-	char		*tmp;
 	struct stat	buf;
 
-	i = -1;
-	if (!cmds->value[0] && cmds)
+	if (!need_to_be_slash(cmds->value[0]))
 		return (0);
-	if (access(cmds->value[0], X_OK) != 0)
+	if (stat(cmds->value[0], &buf) == 0)
 	{
-		if (access(cmds->value[0], F_OK) != 0)
-		{
-			if (ft_strchr(cmds->value[0], '/') || cmds->value[0][0] == '.')
-				return (error_handler(cmds, 2, shell), 0);
-			tmp = ft_strjoin("/", cmds->value[0]);
-			if (!tmp)
-				return (perror("Access"), 0);
-			while (shell->paths[++i])
-			{
-				cmds->cmd_and_path = ft_strjoin(shell->paths[i], tmp);
-				if (access(cmds->cmd_and_path, F_OK | X_OK) == 0)
-					return (free(tmp), 1);
-				free(cmds->cmd_and_path);
-				cmds->cmd_and_path = NULL;
-			}
-			free(tmp);
-			return (error_handler(cmds, 1, shell), 0);
-		}
-		else
-		{
-			if (stat(cmds->value[0], &buf) == 0)
-			{
-				if (S_ISDIR(buf.st_mode) && ft_strchr(cmds->value[0], '/'))
-					return (error_handler(cmds, 4, shell), 0);
-				else if (!(S_IRWXU & buf.st_mode) && cmds->value[0][0] == '.'
-					&& cmds->value[0][1] == '/' && access(cmds->value[0],
-						X_OK) != 0)
-					return (error_handler(cmds, 3, shell), 0);
-				else if (S_ISREG(buf.st_mode) || !access(cmds->value[0], X_OK))
-					return (error_handler(cmds, 1, shell), 0);
-			}
-			else
-				return (error_handler(cmds, 2, shell), 0);
-		}
+		if (access(cmds->value[0], X_OK) != 0)
+			return (error_handler(cmds, 3, shell), *is_in = TRUE, 0);
+		if (S_ISDIR(buf.st_mode))
+			return (error_handler(cmds, 4, shell), *is_in = TRUE, 0);
+		return (1);
 	}
-	return (cmds->cmd_and_path = ft_strdup(cmds->value[0]), 1);
+	else
+	{
+		error_handler(cmds, 2, shell);
+		*is_in = TRUE;
+	}
+	return (0);
 }
 
-void	close_all(t_command *cmds, int i)
+static int	is_it_dir(char *path, t_main *shell, t_command *cmd)
 {
-	int	count;
+	struct stat	buf;
 
-	count = 0;
-	while (cmds && i > count)
+	if (stat(path, &buf) == 0)
 	{
-		if (cmds->fd[1] != STDOUT_FILENO)
-			close(cmds->fd[1]);
-		if (cmds->fd[0] != STDIN_FILENO)
-			close(cmds->fd[0]);
-		count++;
-		cmds = cmds->next;
+		shell->exit_status = 126;
+		if (S_ISDIR(buf.st_mode))
+			return (error_handler(cmd, 4, shell), 1);
 	}
+	return (0);
+}
+
+static int	is_it_path_command(t_command *cmd, t_main *shell)
+{
+	char	*tmp;
+	size_t	i;
+
+	i = -1;
+	tmp = ft_strjoin("/", cmd->value[0]);
+	if (!tmp)
+		return (0);
+	while (shell->paths[++i])
+	{
+		cmd->cmd_and_path = ft_strjoin(shell->paths[i], tmp);
+		if (!cmd->cmd_and_path)
+			return (0);
+		if (is_it_dir(cmd->cmd_and_path, shell, cmd))
+			return (free(tmp), 0);
+		if (access(cmd->cmd_and_path, X_OK) == 0)
+			return (free(tmp), 1);
+		free(cmd->cmd_and_path);
+		cmd->cmd_and_path = NULL;
+	}
+	return (error_handler(cmd, 1, shell), 0);
+}
+
+int	accessibility(t_command *cmds, t_main *shell)
+{
+	struct stat	buf;
+	t_bool		is_in;
+
+	is_in = FALSE;
+	if (!cmds->value[0] && cmds)
+		return (0);
+	if (check_for_absolute_path(cmds, shell, &is_in))
+	{
+		cmds->cmd_and_path = ft_strdup(cmds->value[0]);
+		if (!cmds->cmd_and_path)
+			return (0);
+		return (1);
+	}
+	else if (is_in == FALSE && is_it_path_command(cmds, shell))
+		return (1);
+	return (0);
 }

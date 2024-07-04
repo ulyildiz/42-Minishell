@@ -80,6 +80,7 @@ int			opens(t_command *cmd, size_t *i);
 void		close_all(t_command *cmds, int i);
 void		wait_forks(t_main *shell, t_command *cmd);
 int			heredocs(t_main *shell, t_command *cmd);
+int			need_to_be_slash(char *value);
 
 // builtins functions
 void		cd(t_command *cmds, t_main *shell);

@@ -6,7 +6,7 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:19:53 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/03 22:22:09 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/04 11:15:29 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,31 @@ void	wait_forks(t_main *shell, t_command *cmd)
 	}
 	while (wait(NULL) != -1)
 		;
+}
+
+void	close_all(t_command *cmds, int i)
+{
+	int	count;
+
+	count = 0;
+	while (cmds && i > count)
+	{
+		if (cmds->fd[1] != STDOUT_FILENO)
+			close(cmds->fd[1]);
+		if (cmds->fd[0] != STDIN_FILENO)
+			close(cmds->fd[0]);
+		count++;
+		cmds = cmds->next;
+	}
+}
+
+int	need_to_be_slash(char *value)
+{
+	size_t	i;
+
+	i = -1;
+	while (value[++i])
+		if (value[i] == '/')
+			return (1);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:06 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/03 17:57:30 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/04 11:19:41 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,5 @@ void	exit_cmd(t_command *cmds, t_main *shell)
 	shell = (void *)shell;
 	ft_putstr_fd("exit", cmds->fd[1]);
 	ft_putstr_fd("\n", cmds->fd[1]);
-	exit(0);
+	exit_for_fork(shell); //?
 }
-
-	/*
-	free işlemleri yapılacak
-	ama bu kısmı projenin sonuna bırakıyorum
-	*/
