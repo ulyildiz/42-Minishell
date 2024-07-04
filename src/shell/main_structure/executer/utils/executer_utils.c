@@ -6,7 +6,7 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 12:49:03 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/04 11:17:41 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/04 13:51:33 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ static int	check_for_absolute_path(t_command *cmds, t_main *shell,
 		return (0);
 	if (stat(cmds->value[0], &buf) == 0)
 	{
-		if (access(cmds->value[0], X_OK) != 0)
-			return (error_handler(cmds, 3, shell), *is_in = TRUE, 0);
 		if (S_ISDIR(buf.st_mode))
 			return (error_handler(cmds, 4, shell), *is_in = TRUE, 0);
+		if (access(cmds->value[0], X_OK) != 0)
+			return (error_handler(cmds, 3, shell), *is_in = TRUE, 0);
 		return (1);
 	}
 	else
@@ -88,15 +88,15 @@ static int	is_it_path_command(t_command *cmd, t_main *shell)
 	{
 		cmd->cmd_and_path = ft_strjoin(shell->paths[i], tmp);
 		if (!cmd->cmd_and_path)
-			return (0);
-		if (is_it_dir(cmd->cmd_and_path, shell, cmd))
 			return (free(tmp), 0);
+		if (is_it_dir(cmd->cmd_and_path, shell, cmd))
+			return (free(tmp), free(cmd->cmd_and_path), 0);
 		if (access(cmd->cmd_and_path, X_OK) == 0)
 			return (free(tmp), 1);
 		free(cmd->cmd_and_path);
 		cmd->cmd_and_path = NULL;
 	}
-	return (error_handler(cmd, 1, shell), 0);
+	return (free(tmp), error_handler(cmd, 1, shell), 0);
 }
 
 int	accessibility(t_command *cmds, t_main *shell)

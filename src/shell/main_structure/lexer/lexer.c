@@ -6,7 +6,7 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:26 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/01 20:19:50 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/04 13:33:13 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static int	last_things(t_main *shell)
 	{
 		shell->control = 0;
 		shell->exit_status = 258;
+		free_tokens(shell);
+		free(shell->cmd_line);
 	}
 	return (1);
 }

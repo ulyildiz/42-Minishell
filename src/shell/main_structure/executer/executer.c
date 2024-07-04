@@ -6,7 +6,7 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/03 22:21:04 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/04 15:25:35 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	set_fd(t_main *shell, t_command *cmd, int *i)
 
 	if (!heredocs(shell, cmd))
 		return (1);
+	signal_reciever(1);
 	while (cmd)
 	{
 		if (cmd->where_p == R_P)

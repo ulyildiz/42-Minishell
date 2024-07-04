@@ -6,36 +6,35 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:44:12 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/04 07:12:11 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/04 15:22:39 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 #include <readline/readline.h>
 
-char	*heredoc_expander(char *str, t_main *shell)
+/* char	*heredoc_expander(char *str, t_main *shell)
 {
 	char	*tmp;
 	size_t	i;
-	size_t	start;
+	size_t  start;
 
 	i = 0;
 	tmp = ft_strdup("");
-	while (str[i] && tmp)
+	if(!tmp)
+		return (NULL);
+	while (str[i] != '\0' && tmp)
 	{
-		if (str[i] == '$')
-		{
-			start = i;
+		if(str[i] == '$')
 			tmp = handle_dollar_sign(tmp, str, &i, shell);
-		}
-		else
-		{
-			tmp = ft_strappend(tmp, &str[i], 1);
-		}
+		start = i;
+		tmp = append_literal(tmp, str, &start, &i);
+		
 		i++;
 	}
+	free(str);
 	return (tmp);
-}
+} */
 // close_all();
 
 int	here_loop(t_main *shell, int *fd, t_command *cmd, char *delimeter)
@@ -66,7 +65,12 @@ int	here_loop(t_main *shell, int *fd, t_command *cmd, char *delimeter)
 				shell->exit_status = 0;
 				exit_for_fork(shell);
 			}
-			line = heredoc_expander(line, shell);
+			//line = heredoc_expander(line, shell);
+			if (!line)
+			{
+				shell->exit_status = 1;
+				exit_for_fork(shell);
+			}	
 			ft_putendl_fd(line, fd[1]);
 			free(line);
 		}
@@ -127,6 +131,7 @@ int	heredocs(t_main *shell, t_command *cmd)
 
 	if (check_heredoc(cmd) == 0)
 		return (1);
+	signal_reciever(5);
 	while (cmd)
 	{
 		i = -1;

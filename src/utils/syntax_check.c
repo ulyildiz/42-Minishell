@@ -35,7 +35,7 @@ static int	is_rdr_flag(t_tokens *t)
 
 static int	rdr_check(t_tokens *t, size_t len)
 {
-	if (!is_rdr_flag(t))
+	if (!is_rdr_flag(t)) //heredoc patlamıyor
 		return (1);
 	if (t->next == NULL)
 		return (0);

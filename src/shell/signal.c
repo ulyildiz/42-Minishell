@@ -47,6 +47,7 @@ void	heredoc_sigint(int sig)
 {
 	(void)sig;
 	ft_putchar_fd('\n', 1);
+	shell_keeper(NULL)->exit_status = 1;
 	exit_for_fork(shell_keeper(NULL));
 }
 
@@ -69,7 +70,12 @@ void	signal_reciever(int flag)
 	}
 	else if (flag == 4)
 	{
-		signal(SIGQUIT, SIG_DFL);
+		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, heredoc_sigint);
+	}
+	else if	(flag == 5)
+	{
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, SIG_IGN);
 	}
 }
