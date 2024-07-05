@@ -1,8 +1,9 @@
-# Access
-    düzünde execi çalıştırmıpor permission denied yiyor
+# Heredoc Expender
 
 # Exit Status
     builtlinlerde kladı
 
-# builtin exit fonksiyonu
-    bu en son yapılacak ama yapılacak sonuçta unutmamak adına yazıyorum
+# Leak çıkıyor düzelttin mi bilmiyorum 
+	ls > a | cd | ls > b
+	cd de getcwdyi gösteriyor
+	

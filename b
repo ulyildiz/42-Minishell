@@ -1,0 +1,10 @@
+42-libft
+Makefile
+a
+b
+include
+minishell
+minishell.dSYM
+obj
+son.md
+src

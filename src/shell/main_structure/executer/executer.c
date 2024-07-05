@@ -161,7 +161,7 @@ int	executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i)
 	if (!shell->paths)
 		return (0);
 	if (set_fd(shell, cmds, &i))
-		return (free_double(shell->paths), close_all(cmds, i), 1);
+		return (free_double(shell->paths), close_all(cmds, i), free(shell->cmd_line), free_command(shell, NULL), 1);
 	cmds = shell->cmd;
 	if (cmds && cmds->next)
 		cmd_num = TRUE;

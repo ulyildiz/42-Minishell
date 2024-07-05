@@ -34,7 +34,7 @@ static int	line_read(t_main *shell)
 		return (rl_clear_history(), 2);
 	}
 	else if (!is_space(shell->cmd_line))
-		return (free(shell->cmd_line), 0);
+		return (add_history(shell->cmd_line), free(shell->cmd_line), 0);
 	add_history(shell->cmd_line);
 	return (1);
 }

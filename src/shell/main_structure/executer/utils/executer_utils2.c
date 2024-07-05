@@ -56,7 +56,6 @@ int	opens(t_command *cmd, size_t *i)
 	return (0);
 }
 
-//neden 128 ekliyoruz?
 void	wait_forks(t_main *shell, t_command *cmd)
 {
 	int	status;

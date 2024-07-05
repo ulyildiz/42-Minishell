@@ -42,20 +42,18 @@ void	exit_cmd(t_command *cmds, t_main *shell)
 			shell->exit_status = ft_atoi(cmds->value[1]);
 			if (i > 2)
 			{
-				ft_putstr_fd("exit: too many arguments\n", 2);
+				ft_putstr_fd("exit: too many arguments\n", cmds->fd[1]);
 				shell->exit_status = 1;
+				return ;
 			}
 		}
 		else
 		{
-			ft_putstr_fd("exit: numeric argument required\n", 2);
-			shell->exit_status = 255;
+			ft_putstr_fd("exit: numeric argument required\n", cmds->fd[1]);
+			shell->exit_status = 255; //linuxta 2?
 		}
 	}
 	else
 		shell->exit_status = 0;
 	exit_for_fork(shell); //?
 }
-//exit a    numric de çık
-//exit a 3 numeric öazım de çık
-//exit 3 3 çık code=1 to much arg
