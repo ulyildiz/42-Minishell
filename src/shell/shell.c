@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:38 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/04 18:15:26 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/06 17:37:48 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ void	start_shell(t_main *shell)
 			continue ;
 		else if (i == 2)
 			break ;
-		if (!lexer(shell))
-			break ;
+		lexer(shell);
 		t = shell->token;
 		while(t)
 		{
@@ -61,12 +60,9 @@ void	start_shell(t_main *shell)
 			t = t->next;
 		}
 		printf("\n");
-		if (!expender(shell))
-			break ;
-		if (!parser(shell, shell->token, 0))
-			break ;
-		if (!executor(shell, shell->cmd, FALSE, 0))
-			break ;
+		expender(shell);
+		parser(shell, shell->token, 0);
+		executor(shell, shell->cmd, FALSE, 0);
 		signal_reciever(1);
 		shell->control = 1;
 	}

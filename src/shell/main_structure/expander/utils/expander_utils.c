@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:05:33 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/04 14:32:56 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/06 13:44:20 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@ static char	*expand_dollar_dollar(char *tmp)
 
 	pid_str = ft_itoa(getpid());
 	if (!pid_str)
+	{
+		if (tmp)
+			free(tmp);
 		return (NULL);
+	}
 	new_tmp = ft_strappend(tmp, pid_str, ft_strlen(pid_str));
 	free(pid_str);
 	return (new_tmp);
@@ -31,13 +35,16 @@ static char	*expand_dollar_question(char *tmp, t_main *shell)
 
 	code = ft_itoa(shell->exit_status);
 	if (!code)
+	{
+		if (tmp)
+			free(tmp);
 		return (NULL);
+	}
 	tmp = ft_strappend(tmp, code, ft_strlen(code));
 	free(code);
 	return (tmp);
 }
 
-// $A3 gibi durumda ne yapıcak
 static char	*expand_variable(char *tmp, const char *token_value, size_t *i,
 		t_env *env)
 {
@@ -57,6 +64,11 @@ static char	*expand_variable(char *tmp, const char *token_value, size_t *i,
 	{
 		tmp = ft_strappend(tmp, expnd_value->value,
 				ft_strlen(expnd_value->value));
+	}
+	else
+	{
+		free(tmp);
+		tmp = NULL;
 	}
 	free(new_tmp);
 	*i += j;

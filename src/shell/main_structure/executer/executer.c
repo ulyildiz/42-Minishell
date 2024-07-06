@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/04 15:25:35 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/06 17:53:12 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,17 +75,18 @@ int	set_fd(t_main *shell, t_command *cmd, int *i)
 		if (cmd->where_p == R_P)
 		{
 			if (pipe(fd) == -1)
-				return (perror("Pipe"), 1);
+				return (shell->exit_status = 1, exit_in_exec(shell), 1);
 			cmd->fd[1] = fd[1];
 			if (cmd->next)
 				cmd->next->fd[0] = fd[0];
 		}
+		(*i)++;
 		if (cmd->rdrs)
 		{
 			if (!redirection_touch(shell, &cmd))
-				return (0);
+				continue ;
+				
 		}
-		(*i)++;
 		if (cmd)
 			cmd = cmd->next;
 	}
@@ -103,8 +104,9 @@ static void	official_executer(t_command *cmds, t_main *shell, int i,
 		cmds->pid = fork();
 	if (cmds->pid == -1)
 	{
-		perror("fork");
-		exit(EXIT_FAILURE);
+		perror("Fork");
+		shell->exit_status = 1;
+		exit_for_fork(shell);
 	}
 	else if (cmds->pid == 0)
 	{
@@ -119,7 +121,7 @@ static void	official_executer(t_command *cmds, t_main *shell, int i,
 		tmp = cmds->next;
 		close_all(tmp, i);
 		execve(cmds->cmd_and_path, cmds->value, shell->env_for_execve_function);
-		perror("execve");
+		perror("Execve");
 		shell->exit_status = 1;
 		exit_for_fork(shell);
 	}
@@ -133,8 +135,9 @@ void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
 		cmds->pid = fork();
 		if (cmds->pid == -1)
 		{
-			perror("fork");
-			exit(EXIT_FAILURE);
+			perror("Fork");
+			shell->exit_status = 1;
+			exit_for_fork(shell);
 		}
 		else if (cmds->pid != 0)
 			return (signal_reciever(3));
@@ -151,17 +154,17 @@ void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
 	}
 }
 
-int	executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i)
+void	executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i)
 {
+	if (shell->control == 0)
+		return ;
 	i = 0;
 	cmds = shell->cmd;
-	if (shell->control == 0)
-		return (1);
 	shell->paths = get_cmd(shell->envs);
 	if (!shell->paths)
-		return (0);
+		return (shell->exit_status = 1, exit_in_exec(shell));
 	if (set_fd(shell, cmds, &i))
-		return (free_double(shell->paths), close_all(cmds, i), free(shell->cmd_line), free_command(shell, NULL), 1);
+		return ;
 	cmds = shell->cmd;
 	if (cmds && cmds->next)
 		cmd_num = TRUE;
@@ -176,5 +179,5 @@ int	executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i)
 	}
 	wait_forks(shell, shell->cmd);
 	return (free_double(shell->paths), free(shell->cmd_line),
-		free_command(shell, NULL), 1);
+		free_command(shell, NULL));
 }

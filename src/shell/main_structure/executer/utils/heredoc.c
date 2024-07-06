@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:44:12 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/04 17:57:57 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/06 17:36:28 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,31 +37,25 @@
 } */
 // close_all();
 
-int	here_loop(t_main *shell, int *fd, t_command *cmd, char *delimeter)
+void	here_loop(t_main *shell, int *fd, t_command *cmd, char *delimeter)
 {
 	char	*line;
 
 	cmd->pid = fork();
 	if (cmd->pid == -1)
-		return (perror("fork"), exit(EXIT_FAILURE), 0);
+		return (perror("Fork"), shell->exit_status = 1, exit_in_exec(shell));
 	else if (cmd->pid == 0)
 	{
 		signal_reciever(4);
 		close(fd[0]);
-		close_all(shell->cmd, -1);
 		while (1)
 		{
 			line = readline("> ");
-			if (!line)
+			if (!line || (!ft_strncmp(line, delimeter, ft_strlen(line))
+				&& !ft_strncmp(line, delimeter, ft_strlen(delimeter))))
 			{
-				close(fd[1]);
-				shell->exit_status = 0;
-				exit_for_fork(shell);
-			}
-			if (!ft_strncmp(line, delimeter, ft_strlen(line))
-				&& !ft_strncmp(line, delimeter, ft_strlen(delimeter)))
-			{
-				free(line);
+				if (line)
+					free(line);
 				close(fd[1]);
 				shell->exit_status = 0;
 				exit_for_fork(shell);
@@ -78,7 +72,6 @@ int	here_loop(t_main *shell, int *fd, t_command *cmd, char *delimeter)
 	}
 	else
 		close(fd[1]);
-	return (1);
 }
 
 int	wait_heredoc(t_main *shell, t_command *cmd)
@@ -142,7 +135,7 @@ int	heredocs(t_main *shell, t_command *cmd)
 			if (!ft_strncmp(cmd->rdrs[i], "<<", 2))
 			{
 				if (pipe(fd) == -1)
-					return (0);
+					return (exit_in_exec(shell), 0);
 				here_loop(shell, fd, cmd, cmd->rdrs[++i]);
 				if (wait_heredoc(shell, cmd) == SIGINT)
 					return (0);

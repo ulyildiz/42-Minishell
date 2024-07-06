@@ -55,7 +55,7 @@ static int	home_expend(t_main *shell, t_tokens *token, char *tmp, size_t i)
 				tmp = ft_strappend(tmp, "~", 1);
 			else
 				tmp = ft_strappend(tmp, find_env(shell->envs, "HOME")->value,
-						ft_strlen(find_env(shell->envs, "HOME")->value));
+						ft_strlen(find_env(shell->envs, "HOME")->value)); //Home u aldığımız bir yer var mı envde olmasa bile
 		}
 		else
 			tmp = ft_strappend(tmp, &token->value[i], 1);
@@ -70,13 +70,13 @@ static int	home_expend(t_main *shell, t_tokens *token, char *tmp, size_t i)
 	return (1);
 }
 
-int	expender(t_main *shell)
+void	expender(t_main *shell)
 {
 	t_tokens	*t;
 	char		*tmp;
 
 	if (shell->control == 0)
-		return (1);
+		return ;
 	tmp = NULL;
 	t = shell->token;
 	while (t)
@@ -86,16 +86,15 @@ int	expender(t_main *shell)
 		if (ft_strnstr(t->value, "$", ft_strlen(t->value)))
 		{
 			if (!dollar_expend(shell, t, tmp))
-				return (exit_in_lex_ex(shell), 0);
+				return (exit_in_lex_ex(shell));
 		}
 		if (ft_strnstr(t->value, "~", ft_strlen(t->value)))
 		{
 			if (!home_expend(shell, t, NULL, 0))
-				return (exit_in_lex_ex(shell), 0);
+				return (exit_in_lex_ex(shell));
 		}
 		t = t->next;
 	}
-	return (1);
 }
 // expenderıexit dene detaylıca
 /* 	t = shell->token;

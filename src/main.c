@@ -34,5 +34,5 @@ int	main(int ac, char **av, char **env)
 		return (perror("Initialize"), 1);
 	shell_keeper(&shell);
 	start_shell(&shell);
-	return (0);
+	return (shell.exit_status);
 }

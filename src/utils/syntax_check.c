@@ -27,9 +27,7 @@ static int	pipe_check(t_tokens *t, size_t len)
 	if (t->next == NULL)
 		return (0);
 	else if (t->next->type == PIPE)
-		return (printf("s\n"), 0);
-/* 	else if (t->next->next && is_rdr_flag(t->next->next))
-		return (0); */
+		return (0);
 	else if (len == 0 && t->next != NULL)
 		return (0);
 	return (1);
@@ -41,7 +39,7 @@ static int	rdr_check(t_tokens *t, size_t len)
 		return (1);
 	if (t->next == NULL)
 		return (0);
-	else if (t->next && !is_space(t->next->value) && t->next->next && is_rdr_flag(t->next->next))
+	else if (is_rdr_flag(t->next))
 		return (0);
 	else if (len == 0 && t->next == NULL)
 		return (0);
@@ -98,4 +96,3 @@ int	token_check(t_main *shell)
 	}
 	return (1);
 }
-

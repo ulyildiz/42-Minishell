@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:06 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/04 18:18:45 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/06 11:13:45 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	exit_cmd(t_command *cmds, t_main *shell)
 	{
 		if (is_all_numeric(cmds->value[1]))
 		{
-			shell->exit_status = ft_atoi(cmds->value[1]);
+			shell->exit_status = ft_atoi(cmds->value[1]) % 256;
 			if (i > 2)
 			{
 				ft_putstr_fd("exit: too many arguments\n", cmds->fd[1]);

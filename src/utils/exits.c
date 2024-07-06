@@ -25,32 +25,34 @@ void	exit_in_lex_ex(t_main *shell)
 	exit(shell->exit_status);
 }
 
-/* void	exit_in_parser(t_main *shell)
+void	exit_in_parser(t_main *shell)
 {
+	perror("Parser");
 	free_env(shell->envs);
 	free_double(shell->env_for_execve_function);
 	free_tokens(shell);
-	free_command(shell);
+	free_command(shell, NULL);
+	rl_clear_history();
 	free(shell->cmd_line);
-	exit(ENOMEM);
-} */
+	exit(shell->exit_status);
+}
 
-/* void	main_exit(t_main *shell)
+void	exit_in_exec(t_main *shell)
 {
+	perror("Executer");
 	free_env(shell->envs);
 	free_double(shell->env_for_execve_function);
-	if (shell->token)
-		free_tokens(shell);
-	if (shell->cmd)
-		free_command(shell);
+	free_double(shell->paths);
+//	free_tokens(shell);
+	free_command(shell, NULL);
+	rl_clear_history();
 	free(shell->cmd_line);
-	exit(ENOMEM);
-} */
+	exit(shell->exit_status);
+}
 
 void	exit_for_fork(t_main *shell)
 {
 	free_command(shell, NULL);
-	free_tokens(shell);
 	free_env(shell->envs);
 	free_double(shell->paths);
 	free_double(shell->env_for_execve_function);
@@ -58,4 +60,3 @@ void	exit_for_fork(t_main *shell)
 	rl_clear_history();
 	exit(shell->exit_status);
 }
-	// değişken olabilir

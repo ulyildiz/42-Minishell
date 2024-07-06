@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/04 17:27:25 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/06 16:25:38 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,12 @@ static t_command	*cmd_struct_create(t_tokens *token)
 
 static int	handle_token(t_command **cmds, t_tokens **t, size_t *i)
 {
-	rdr_position(*cmds);
+	if (!rdr_position(*cmds))
+		return (0);
 	*i = 0;
 	(*cmds)->next = cmd_struct_create(*t);
 	if (!(*cmds)->next)
-		return (perror("Parser"), 0);
+		return (0);
 	(*cmds)->where_p = R_P;
 	(*cmds)->next->prev = *cmds;
 	*cmds = (*cmds)->next;
@@ -83,33 +84,33 @@ static int	handle_command(t_command **cmds, t_tokens **t, size_t *i)
 	return (1);
 }
 
-int	parser(t_main *shell, t_tokens *t, size_t i)
+void	parser(t_main *shell, t_tokens *t, size_t i)
 {
 	t_command	*cmds;
 
 	if (shell->control == 0)
-		return (1);
+		return ;
 	cmds = cmd_struct_create(t);
 	if (!cmds)
-		return (perror("Parser"), 0);
+		return (perror("Parser"), shell->exit_status = 1, exit_in_lex_ex(shell));
 	shell->cmd = cmds;
 	while (t)
 	{
 		if (!is_token(t))
 		{
 			if (!handle_command(&cmds, &t, &i))
-				return (0);
+				return (shell->exit_status = 1, exit_in_parser(shell));
 		}
 		else
 		{
 			if (!handle_token(&cmds, &t, &i))
-				return (0);
+				return (shell->exit_status = 1, exit_in_parser(shell));
 		}
 		t = t->next;
 	}
-	rdr_position(cmds);
-	cmds->next = NULL;
-	return (free_tokens(shell), 1);
+	if (!rdr_position(cmds))
+		return (shell->exit_status = 1, exit_in_parser(shell));
+	return (cmds->next = NULL, free_tokens(shell));
 }
 
 /* 	while (shell->cmd)

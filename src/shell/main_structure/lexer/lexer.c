@@ -3,17 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:26 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/04 13:33:13 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/06 11:56:07 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 
-static int	last_things(t_main *shell)
+void	remove_unnecessary_space(t_main *shell)
 {
+	t_tokens	*tmp;
+	t_tokens	*prev;
+	t_tokens	*first;
+
+	tmp = shell->token;
+	first = tmp;
+	while (tmp)
+	{
+		if (!is_space(tmp->value))
+		{
+			if (first == tmp)
+				shell->token = tmp->next;
+			else
+				prev->next = tmp->next;
+			free(tmp->value);
+			free(tmp);
+		}
+		prev = tmp;
+		tmp = tmp->next;
+	}
+}
+
+static void	last_things(t_main *shell)
+{
+	remove_unnecessary_space(shell); // dene
 	if (!token_check(shell))
 	{
 		shell->control = 0;
@@ -21,7 +46,6 @@ static int	last_things(t_main *shell)
 		free_tokens(shell);
 		free(shell->cmd_line);
 	}
-	return (1);
 }
 
 static void	looping(t_main *shell, size_t input_len, size_t *j)
@@ -53,7 +77,7 @@ static void	looping(t_main *shell, size_t input_len, size_t *j)
 	}
 }
 
-int	lexer(t_main *shell)
+void	lexer(t_main *shell)
 {
 	size_t	input_len;
 	size_t	j;
@@ -62,7 +86,7 @@ int	lexer(t_main *shell)
 	input_len = ft_strlen(shell->cmd_line);
 	shell->tmp = (char *)malloc((input_len + 1) * sizeof(char));
 	if (!shell->tmp)
-		return (0);
+		return (exit_in_lex_ex(shell));
 	shell->in_s = FALSE;
 	shell->in_d = FALSE;
 	shell->token = NULL;
@@ -70,7 +94,8 @@ int	lexer(t_main *shell)
 	if (j > 0)
 	{
 		shell->tmp[j] = '\0';
-		tlist(&shell->token, shell->tmp);
+		if (!tlist(&shell->token, shell->tmp))
+			return (free(shell->tmp), exit_in_lex_ex(shell));
 	}
 	return (free(shell->tmp), last_things(shell));
 }

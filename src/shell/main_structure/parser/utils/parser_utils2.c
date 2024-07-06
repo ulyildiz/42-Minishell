@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 19:20:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/04 17:27:01 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/06 17:47:55 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	fill_rdrs(t_command *cmds, char **tmp, size_t *f)
 	j = 0;
 	while (cmds->value[i])
 	{
-		if (is_rdr(cmds->value[i]) == 1)
+		if (is_rdr(cmds->value[i]))
 		{
 			cmds->rdrs[j++] = cmds->value[i++];
 			cmds->rdrs[j++] = cmds->value[i];
@@ -40,9 +40,8 @@ int	rdr_position(t_command *cmds)
 
 	i = 0;
 	f = 0;
-	
 	if (rdr_count(cmds->value) <= 0)
-		return (0);
+		return (1);
 	while (cmds->value[i])
 		i++;
 	tmp = ft_calloc(i - rdr_count(cmds->value) + 1, sizeof(char *));
@@ -107,6 +106,7 @@ char	*extract_cleaned_substr(const char *value, size_t start, size_t end)
 
 	substr = ft_substr(value, start, end - start);
 	cleaned_substr = remove_quotes(substr, FALSE, FALSE);
-	free(substr);
+	if (substr)
+		free(substr);
 	return (cleaned_substr);
 }

@@ -24,7 +24,7 @@ int			initialize(t_main *shell, char **env);
 void		start_shell(t_main *shell);
 
 // lexer	functions
-int			lexer(t_main *shell);
+void		lexer(t_main *shell);
 int			tlist(t_tokens **head, char *arr);
 int			token_check(t_main *shell);
 void		listing_token(t_main *shell, char *tmp, size_t *j, char *token);
@@ -49,18 +49,20 @@ void		syntax_message(int flag);
 void		signal_reciever(int flag);
 int			update_env(t_main *shell);
 void		disable_echo_control_chars(void);
-void		exit_for_fork(t_main *shell);
 t_main		*shell_keeper(t_main *shell);
+void		exit_for_fork(t_main *shell);
+void		exit_in_parser(t_main *shell);
+void		exit_in_exec(t_main *shell);
 
 // expender functions
-int			expender(t_main *shell);
+void		expender(t_main *shell);
 char		*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
 				t_main *shell);
 char		*append_literal(char *tmp, char *token_value, size_t *start,
 				size_t *i);
 
 // parser   functions
-int			parser(t_main *shell, t_tokens *t, size_t i);
+void		parser(t_main *shell, t_tokens *t, size_t i);
 int			is_token(t_tokens *t);
 size_t		rdr_count(char **str);
 int			is_rdr(char *strs);
@@ -73,8 +75,9 @@ char		*extract_cleaned_substr(const char *value, size_t start,
 size_t		length_to_token(t_tokens *lst);
 size_t		find_word_end(const char *value, size_t start, t_bool *in_d,
 				t_bool *in_s);
+
 // executer functions
-int			executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i);
+void		executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i);
 int			accessibility(t_command *cmds, t_main *shell);
 int			opens(t_command *cmd, size_t *i);
 void		close_all(t_command *cmds, int i);
