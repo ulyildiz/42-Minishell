@@ -3,14 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:55:38 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/03 17:55:41 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/07 12:22:55 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+
+static t_env	*create_env_node(t_env *src)
+{
+	t_env	*tmp;
+
+	tmp = (t_env *)ft_calloc(1, sizeof(t_env));
+	if (!tmp)
+		return (NULL);
+	if (src->name)
+	{
+		tmp->name = ft_strdup(src->name);
+		if (!tmp->name)
+			return (free(tmp), NULL);
+	}
+	if (src->value)
+	{
+		tmp->value = ft_strdup(src->value);
+		if (!tmp->value)
+			return (free(tmp->name), free(tmp), NULL);
+	}
+	else
+	{
+		tmp->value = ft_calloc(1, 1);
+		if (!tmp->value)
+			return (free(tmp->name), free(tmp), NULL);
+	}
+	return (tmp);
+}
 
 static void	copy_env(t_env **export, t_env *src)
 {
@@ -18,36 +46,30 @@ static void	copy_env(t_env **export, t_env *src)
 
 	while (src)
 	{
-		tmp = (t_env *)malloc(sizeof(t_env));
+		tmp = create_env_node(src);
 		if (!tmp)
-			return (free_env(*export));
-		tmp->next = NULL;
-		if (src->name)
 		{
-			tmp->name = ft_strdup(src->name);
-			if (!tmp->name)
-				return (free(tmp), free_env(*export));
+			free_env(*export);
+			return ;
 		}
-		if (src->value)
-		{
-			tmp->value = ft_strdup(src->value);
-			if (!tmp->value)
-				return (free(tmp->name), free(tmp), free_env(*export));
-		}
-		else
-			tmp->value = "\0";
 		list_add_back(export, tmp);
 		src = src->next;
 	}
 }
 
-void	update_or_add_env(t_env **export, char *str)
+static void	update_or_add_env(t_env **export, char *str, t_main *shell)
 {
 	t_env	*tmp;
 	char	**split;
+	t_env	*env_var;
 
 	split = ft_split(str, '=');
-	if (split[0] && find_env(*export, split[0]) != NULL)
+	if (!split)
+		return (exit_for_fork(shell));
+	env_var = find_env(*export, split[0]);
+	if (!env_var)
+		return (free_double(split));
+	if (split[0])
 	{
 		if (split[1])
 			find_env(*export, split[0])->value = split[1];
@@ -64,9 +86,10 @@ void	update_or_add_env(t_env **export, char *str)
 		tmp->next = NULL;
 		list_add_back(export, tmp);
 	}
+	free_double(split);
 }
 
-void	print_env(t_env *env, int fd)
+static void	print_env(t_env *env, int fd)
 {
 	while (env)
 	{
@@ -90,7 +113,7 @@ void	env(t_command *cmds, t_main *shell)
 	export = NULL;
 	copy_env(&export, shell->envs);
 	while (cmds->value[i])
-		update_or_add_env(&export, cmds->value[i++]);
+		update_or_add_env(&export, cmds->value[i++], shell);
 	print_env(export, cmds->fd[1]);
 	free_env(export);
 }

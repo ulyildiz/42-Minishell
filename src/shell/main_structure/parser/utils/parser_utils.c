@@ -14,8 +14,7 @@
 
 int	is_token(t_tokens *t)
 {
-	if (t->type == PIPE && (t->is_expend != WITHIN_D_Q
-			&& t->is_expend != WITHIN_Q))
+	if (t->type == PIPE)
 		return (1);
 	return (0);
 }

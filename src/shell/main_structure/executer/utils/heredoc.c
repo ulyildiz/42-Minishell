@@ -6,75 +6,67 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:44:12 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/06 17:36:28 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/07 12:59:05 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 #include <readline/readline.h>
 
-/* char	*heredoc_expander(char *str, t_main *shell)
+static char	*heredoc_expander(char *str, t_main *shell)
 {
-	char	*tmp;
 	size_t	i;
-	size_t  start;
+	size_t	start;
+	char	*tmp;
 
 	i = 0;
 	tmp = ft_strdup("");
-	if(!tmp)
-		return (NULL);
-	while (str[i] != '\0' && tmp)
+	while (str[i])
 	{
-		if(str[i] == '$')
+		if (str[i] == '$')
 			tmp = handle_dollar_sign(tmp, str, &i, shell);
-		start = i;
-		tmp = append_literal(tmp, str, &start, &i);
-		
-		i++;
+		else
+		{
+			start = i;
+			while (str[i] && str[i] != '$')
+				i++;
+			tmp = append_literal(tmp, str, &start, &i);
+		}
+		if (!tmp)
+			return (perror("Dollar Expend"), NULL);
 	}
 	free(str);
 	return (tmp);
-} */
-// close_all();
+}
 
-void	here_loop(t_main *shell, int *fd, t_command *cmd, char *delimeter)
+static void	here_in(t_main *shell, int *fd, char *delimeter)
 {
 	char	*line;
 
-	cmd->pid = fork();
-	if (cmd->pid == -1)
-		return (perror("Fork"), shell->exit_status = 1, exit_in_exec(shell));
-	else if (cmd->pid == 0)
+	while (1)
 	{
-		signal_reciever(4);
-		close(fd[0]);
-		while (1)
+		line = readline("> ");
+		if (!line || (!ft_strncmp(line, delimeter, ft_strlen(line)) \
+		&& !ft_strncmp(line, delimeter, ft_strlen(delimeter))))
 		{
-			line = readline("> ");
-			if (!line || (!ft_strncmp(line, delimeter, ft_strlen(line))
-				&& !ft_strncmp(line, delimeter, ft_strlen(delimeter))))
-			{
-				if (line)
-					free(line);
-				close(fd[1]);
-				shell->exit_status = 0;
-				exit_for_fork(shell);
-			}
-			//line = heredoc_expander(line, shell);
-			if (!line)
-			{
-				shell->exit_status = 1;
-				exit_for_fork(shell);
-			}	
-			ft_putendl_fd(line, fd[1]);
-			free(line);
+			if (line)
+				free(line);
+			close(fd[1]);
+			shell->exit_status = 0;
+			exit_for_fork(shell);
 		}
+		line = heredoc_expander(line, shell);
+		if (!line)
+		{
+			shell->exit_status = 1;
+			exit_for_fork(shell);
+		}
+		ft_putendl_fd(line, fd[1]);
+		free(line);
 	}
-	else
-		close(fd[1]);
 }
 
-int	wait_heredoc(t_main *shell, t_command *cmd)
+static int	wait_heredoc(t_main *shell, t_command *cmd)
 {
 	int	status;
 
@@ -91,30 +83,24 @@ int	wait_heredoc(t_main *shell, t_command *cmd)
 	return (0);
 }
 
-int	check_heredoc(t_command *cmd)
+static int	here_loop(t_main *shell, int *fd, t_command *cmd, char *delimeter)
 {
-	int	i;
-	int	j;
-	int	k;
-
-	k = 0;
-	while (cmd)
+	cmd->pid = fork();
+	if (cmd->pid == -1)
+		return (shell->exit_status = 1, exit_in_exec(shell), 0);
+	else if (cmd->pid == 0)
 	{
-		i = -1;
-		while (cmd->rdrs && cmd->rdrs[++i])
-		{
-			if (!ft_strncmp(cmd->rdrs[i], "<<", 2))
-			{
-				j = i + 1;
-				if (!cmd->rdrs[j])
-					return (0);
-				k++;
-			}
-		}
-		cmd = cmd->next;
+		signal_reciever(4);
+		close(fd[0]);
+		here_in(shell, fd, delimeter);
 	}
-	if (k == 0)
-		return (0);
+	else
+	{
+		close(fd[1]);
+		if (wait_heredoc(shell, cmd) == SIGINT)
+			return (0);
+		cmd->fd[0] = fd[0];
+	}
 	return (1);
 }
 
@@ -126,7 +112,6 @@ int	heredocs(t_main *shell, t_command *cmd)
 	if (check_heredoc(cmd) == 0)
 		return (1);
 	signal_reciever(5);
-	i = 0;
 	while (cmd)
 	{
 		i = -1;
@@ -137,11 +122,6 @@ int	heredocs(t_main *shell, t_command *cmd)
 				if (pipe(fd) == -1)
 					return (exit_in_exec(shell), 0);
 				here_loop(shell, fd, cmd, cmd->rdrs[++i]);
-				if (wait_heredoc(shell, cmd) == SIGINT)
-					return (0);
-				if (cmd->fd[0] != STDIN_FILENO)
-					close(cmd->fd[0]);
-				cmd->fd[0] = fd[0];
 			}
 		}
 		cmd->pid = -1;

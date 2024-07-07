@@ -3,21 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/01 13:31:38 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/07 14:45:09 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 
-static int	dollar_expend(t_main *shell, t_tokens *token, char	*tmp)
+static int	dollar_expend(t_main *shell, t_tokens *token, char	*tmp, size_t i)
 {
-	size_t	i;
 	size_t	start;
 
-	i = 0;
 	tmp = ft_strdup("");
 	while (token->value[i])
 	{
@@ -28,10 +26,11 @@ static int	dollar_expend(t_main *shell, t_tokens *token, char	*tmp)
 			start = i;
 			while (token->value[i] && !(token->value[i] == '$' && !shell->in_s))
 			{
-				if (token->value[++i] == '\'' && !shell->in_d)
-					shell->in_s = !shell->in_s;
 				if (token->value[i] == '"' && !shell->in_s)
 					shell->in_d = !shell->in_d;
+				else if (token->value[i] == '\'' && !shell->in_d)
+					shell->in_s = !shell->in_s;
+				i++;
 			}
 			tmp = append_literal(tmp, token->value, &start, &i);
 		}
@@ -85,7 +84,7 @@ void	expender(t_main *shell)
 		shell->in_s = FALSE;
 		if (ft_strnstr(t->value, "$", ft_strlen(t->value)))
 		{
-			if (!dollar_expend(shell, t, tmp))
+			if (!dollar_expend(shell, t, tmp, 0))
 				return (exit_in_lex_ex(shell));
 		}
 		if (ft_strnstr(t->value, "~", ft_strlen(t->value)))
@@ -96,10 +95,3 @@ void	expender(t_main *shell)
 		t = t->next;
 	}
 }
-// expenderıexit dene detaylıca
-/* 	t = shell->token;
-	while (t)
-	{
-		printf("%s\n", t->value);
-		t = t->next;
-	} */

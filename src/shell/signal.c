@@ -77,7 +77,7 @@ void	signal_reciever(int flag)
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, heredoc_sigint);
 	}
-	else if	(flag == 5)
+	else if (flag == 5)
 	{
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, SIG_IGN);

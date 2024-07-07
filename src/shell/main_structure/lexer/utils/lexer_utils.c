@@ -50,7 +50,6 @@ static t_tokens	*create_token(char	*arr)
 	new->value = ft_strdup(arr);
 	if (!new->value)
 		return (free(new->value), free(new), NULL);
-	new->is_expend = NONE;
 	new->type = identify_t(arr);
 	return (new);
 }

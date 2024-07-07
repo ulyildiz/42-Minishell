@@ -45,7 +45,7 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	ar rc $(NAME) *.o
+	ar rc $(NAME) $(OBJ)
 
 .c.o:
 	@cc 	$(FLAG) -c $< -o $@

@@ -6,13 +6,13 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:26 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/06 11:56:07 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/07 14:54:55 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 
-void	remove_unnecessary_space(t_main *shell)
+static void	remove_unnecessary_space(t_main *shell)
 {
 	t_tokens	*tmp;
 	t_tokens	*prev;
@@ -30,15 +30,19 @@ void	remove_unnecessary_space(t_main *shell)
 				prev->next = tmp->next;
 			free(tmp->value);
 			free(tmp);
+			tmp = prev->next;
 		}
-		prev = tmp;
-		tmp = tmp->next;
+		else
+		{
+			prev = tmp;
+			tmp = tmp->next;
+		}
 	}
 }
 
 static void	last_things(t_main *shell)
 {
-	remove_unnecessary_space(shell); // dene
+	remove_unnecessary_space(shell);
 	if (!token_check(shell))
 	{
 		shell->control = 0;
@@ -99,16 +103,3 @@ void	lexer(t_main *shell)
 	}
 	return (free(shell->tmp), last_things(shell));
 }
-
-/* 	t_tokens *t;
-	t = shell->token;
-	printf("a = %p\n", t);
-	while (t != NULL)
-	{
-		printf("lexer = %s/%zu - expendable = %d - type = %d\n", t->value,
-				ft_strlen(t->value), t->is_expend, t->type);
-		t = t->next;
-	} */
-/* 	int i = 0;
-	while (arr[i])
-		printf("-%s-\n", arr[i++]); */

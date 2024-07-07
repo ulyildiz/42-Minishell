@@ -31,7 +31,8 @@
 	"type_traits": "c",
 	"vector": "c",
 	"locale": "c",
-	"__locale": "c"
+	"__locale": "c",
+	"atomic": "c"
 },
   "C_Cpp_Runner.msvcBatchPath": "",
   "C_Cpp_Runner.cCompilerPath": "clang",

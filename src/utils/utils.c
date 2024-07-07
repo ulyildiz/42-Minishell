@@ -41,42 +41,11 @@ size_t	wordlen(const char *str)
 
 char	**get_cmd(t_env *env)
 {
-	char	**path;
-	char	**path2;
-	t_env	*tmp;
-	int		i;
-
-	i = 0;
-	path = NULL;
-	tmp = find_env(env, "PATH");
-	if (tmp)
-	{
-		path = ft_split(tmp->value, ':');
-		if (!path)
-			return (perror("Path init 1"), NULL);
-		while (path[i] != NULL)
-			i++;
-	}
-	path2 = (char **)ft_calloc(i + 2, sizeof(char *));
-	if (!path2)
-		return (perror("Path init 2"), free_double(path), NULL);
-	i = -1;
-	if (path)
-	{
-		while (path[++i] != NULL)
-			path2[i] = path[i];
-		free(path);
-	}
-	else
-		++i;
-	tmp = find_env(env, "PWD");
-	if (tmp)
-	{
-		path2[i] = ft_strdup(tmp->value);
-		if (!path2[i])
-			return (perror("Path init 3"), free_double(path2), NULL);
-	}
-	return (path2);
+	while (env && ft_strncmp(env->name, "PATH", 4))
+		env = env->next;
+	if (!env)
+		return (ft_split("", '\0'));
+	return (ft_split(env->value, ':'));
 }
 
 int	is_whitespace(char c)

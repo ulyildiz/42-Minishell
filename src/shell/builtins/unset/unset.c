@@ -3,29 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:58:29 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/03 17:59:14 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/07 12:25:39 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 
-void	deletenode(t_env **head, char *key)
+static void	deletenode(t_env **head, char *key)
 {
 	t_env	*temp;
 	t_env	*prev;
 
 	temp = *head;
 	prev = NULL;
-	if (temp != NULL && ft_strncmp(temp->name, key, ft_strlen(temp->name)) == 0)
+	if (temp != NULL && ft_strncmp(temp->name, key, strlen(key)) == 0)
 	{
 		*head = temp->next;
-		return (free(temp));
+		free(temp->name);
+		free(temp->value);
+		free(temp);
+		return ;
 	}
-	while (temp != NULL && ft_strncmp(temp->name, key,
-			ft_strlen(temp->name)) != 0)
+	while (temp != NULL && ft_strncmp(temp->name, key, strlen(key)) != 0)
 	{
 		prev = temp;
 		temp = temp->next;
@@ -33,6 +35,8 @@ void	deletenode(t_env **head, char *key)
 	if (temp == NULL)
 		return ;
 	prev->next = temp->next;
+	free(temp->name);
+	free(temp->value);
 	free(temp);
 }
 

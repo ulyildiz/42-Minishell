@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:36 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/04 15:03:31 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/07 12:21:54 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 
-t_env	*create_env(char *name, char *value)
+static t_env	*create_env(char *name, char *value)
 {
 	t_env	*env;
 
@@ -34,7 +34,7 @@ t_env	*create_env(char *name, char *value)
 	return (env);
 }
 
-int	set_env_value(t_env *env, char *value)
+static int	set_env_value(t_env *env, char *value)
 {
 	if (env->value)
 		free(env->value);
@@ -62,7 +62,7 @@ t_env	*update_or_create_env(t_env **envs, char *name, char *value)
 		list_add_back(envs, env);
 	}
 	else if (env && env->value[0] == '\0')
-		env->value = ft_strdup(getcwd(NULL, 0));
+		env->value = getcwd(NULL, 0);
 	else if (env && env->value)
 	{
 		if (set_env_value(env, value) != 0)
@@ -83,4 +83,32 @@ char	*append_path(char *base, char *append)
 	if (!tmp)
 		return (free(path), NULL);
 	return (tmp);
+}
+
+void	change_directory_and_update_envs(t_main *shell, char *path,
+		char *old_pwd_value)
+{
+	char	*gtcwd;
+
+	if (chdir(path) == 0)
+	{
+		gtcwd = getcwd(NULL, 0);
+		if (!update_or_create_env(&shell->envs, "OLDPWD", old_pwd_value))
+		{
+			free(gtcwd);
+			perror("update_or_create_env failed");
+			shell->exit_status = 1;
+			exit_for_fork(shell);
+		}
+		if (!update_or_create_env(&shell->envs, "PWD", gtcwd))
+		{
+			free(gtcwd);
+			perror("update_or_create_env failed");
+			shell->exit_status = 1;
+			exit_for_fork(shell);
+		}
+		free(gtcwd);
+	}
+	else
+		perror("cd");
 }

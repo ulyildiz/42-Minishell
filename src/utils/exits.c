@@ -43,7 +43,6 @@ void	exit_in_exec(t_main *shell)
 	free_env(shell->envs);
 	free_double(shell->env_for_execve_function);
 	free_double(shell->paths);
-//	free_tokens(shell);
 	free_command(shell, NULL);
 	rl_clear_history();
 	free(shell->cmd_line);

@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:05:33 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/06 13:44:20 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/07 14:58:38 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,15 @@ static char	*expand_variable(char *tmp, const char *token_value, size_t *i,
 		j++;
 	}
 	new_tmp = ft_strndup(&token_value[*i], j);
-	expnd_value = find_env(env, new_tmp);
-	if (expnd_value)
-	{
-		tmp = ft_strappend(tmp, expnd_value->value,
-				ft_strlen(expnd_value->value));
-	}
-	else
+	if (!new_tmp)
 	{
 		free(tmp);
-		tmp = NULL;
+		return (NULL);
 	}
+	expnd_value = find_env(env, new_tmp);
+	if (expnd_value)
+		tmp = ft_strappend(tmp, expnd_value->value,
+				ft_strlen(expnd_value->value));
 	free(new_tmp);
 	*i += j;
 	return (tmp);
@@ -100,14 +98,11 @@ char	*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
 		(*i)++;
 	}
 	else if (ft_isalpha(token_value[*i + 1]))
-	{
 		tmp = expand_variable(tmp, token_value, i, shell->envs);
+	else
+	{
+		tmp = ft_strappend(tmp, "$", 1);
+		(*i)++;
 	}
 	return (tmp);
 }
-
-/* 	else
-	{
-		tmp = ft_strappend(tmp, "$", 1); //bak
-		(*i)++;
-	} */

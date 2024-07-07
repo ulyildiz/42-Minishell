@@ -68,7 +68,6 @@ static int	is_it_dir(char *path, t_main *shell, t_command *cmd)
 
 	if (stat(path, &buf) == 0)
 	{
-		shell->exit_status = 126;
 		if (S_ISDIR(buf.st_mode))
 			return (error_handler(cmd, 4, shell), 1);
 	}
@@ -101,7 +100,6 @@ static int	is_it_path_command(t_command *cmd, t_main *shell)
 
 int	accessibility(t_command *cmds, t_main *shell)
 {
-	struct stat	buf;
 	t_bool		is_in;
 
 	is_in = FALSE;

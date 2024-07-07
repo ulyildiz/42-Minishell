@@ -83,12 +83,18 @@ void	free_command(t_main *shell, t_command *tp)
 	if (!tp)
 		shell->cmd = NULL;
 }
-/* 
-void	main_free(t_main *shell)
+
+void	free_c(t_command *c)
 {
-	free_env(shell->envs);
-	free_tokens(shell);
-	free_command(shell);
-	free(shell->cmd_line);
+	if (c->cmd_and_path)
+		free(c->cmd_and_path);
+	if (c->value)
+		free_double(c->value);
+	if (c->rdrs)
+		free_double(c->rdrs);
+	if (c->fd[0] != STDIN_FILENO)
+		close(c->fd[0]);
+	if (c->fd[1] != STDOUT_FILENO)
+		close(c->fd[1]);
+	free(c);
 }
- */

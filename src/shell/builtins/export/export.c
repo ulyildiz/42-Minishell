@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:57:43 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/03 20:44:07 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/07 12:25:18 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,15 @@ static void	add_new_env(t_env **envs, char **str)
 	if (!tmp)
 		return ;
 	tmp->name = str[0];
-	tmp->value = "\0";
+	tmp->value = ft_calloc(1, 1);
+	if (!tmp->value)
+	{
+		free(tmp->name);
+		free(tmp);
+		return ;
+	}
 	if (str[1])
-		tmp->value = ft_strjoin(tmp->value, str[1]);
+		tmp->value = str[1];
 	tmp->next = NULL;
 	list_add_back(envs, tmp);
 }
@@ -43,12 +49,18 @@ static void	process_commands(t_command *cmds, t_main *shell)
 		else
 		{
 			str = ft_split(cmds->value[i], '=');
-			if (str && str[0])
+			if (!str)
+				return (exit_for_fork(shell));
+			if (str[0])
 			{
 				env_var = find_env(shell->envs, str[0]);
-				if (env_var && str[1])
+				if (!env_var)
+					return (free_double(str));
+				if (str[1])
 					env_var->value = str[1];
-				else if (!env_var)
+				else
+					free_double(str);
+				if (!env_var)
 					add_new_env(&(shell->envs), str);
 			}
 		}
@@ -79,7 +91,11 @@ static void	copy_env(t_env **export, t_env *src)
 				return (free(tmp->name), free(tmp), free_env(*export));
 		}
 		else
-			tmp->value = "\0";
+		{
+			tmp->value = ft_calloc(1, 1);
+			if (!tmp->value)
+				return (free(tmp->name), free(tmp), free_env(*export));
+		}
 		list_add_back(export, tmp);
 		src = src->next;
 	}

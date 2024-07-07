@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/06 16:25:38 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/07 12:42:23 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	parser(t_main *shell, t_tokens *t, size_t i)
 		return ;
 	cmds = cmd_struct_create(t);
 	if (!cmds)
-		return (perror("Parser"), shell->exit_status = 1, exit_in_lex_ex(shell));
+		return (shell->exit_status = 1, exit_in_parser(shell));
 	shell->cmd = cmds;
 	while (t)
 	{
@@ -112,10 +112,3 @@ void	parser(t_main *shell, t_tokens *t, size_t i)
 		return (shell->exit_status = 1, exit_in_parser(shell));
 	return (cmds->next = NULL, free_tokens(shell));
 }
-
-/* 	while (shell->cmd)
-	{
-		printf("value = %s - prev = %p - next = %p\n", shell->cmd->value[0],
-				shell->cmd->prev, shell->cmd->next);
-		shell->cmd = shell->cmd->next;
-	} */

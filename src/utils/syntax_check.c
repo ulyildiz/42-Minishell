@@ -39,6 +39,8 @@ static int	rdr_check(t_tokens *t, size_t len)
 		return (1);
 	if (t->next == NULL)
 		return (0);
+	else if (t->next->type == PIPE)
+		return (0);
 	else if (is_rdr_flag(t->next))
 		return (0);
 	else if (len == 0 && t->next == NULL)

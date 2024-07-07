@@ -43,14 +43,6 @@ typedef enum e_token_types
 	HEREDOC
 }	t_token_types;
 
-typedef enum e_is_expendable
-{
-	NONE,
-	WITHIN_D_Q,
-	WITHIN_Q,
-	NONE_TILDE
-}	t_is_expendable;
-
 typedef enum e_is_pipe
 {
 	NONE_P,
@@ -63,7 +55,6 @@ typedef enum e_is_pipe
 typedef struct s_tokens
 {
 	t_token_types		type;
-	t_is_expendable		is_expend;
 	char				*value;
 	struct s_tokens		*next;
 }	t_tokens;

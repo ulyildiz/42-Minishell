@@ -16,6 +16,7 @@ SRC =   src/main.c \
         src/shell/main_structure/executer/executer.c \
         src/shell/main_structure/executer/utils/executer_utils.c \
         src/shell/main_structure/executer/utils/executer_utils2.c \
+		src/shell/main_structure/executer/utils/executer_utils3.c \
 		src/shell/main_structure/executer/utils/heredoc.c \
         src/utils/exits.c \
         src/utils/utils.c \
@@ -33,7 +34,7 @@ SRC =   src/main.c \
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 CC = cc
-CFLAGS = -I ./include -I ./42-Libft #-Wall -Wextra -Werror
+CFLAGS = -I ./include -I ./42-Libft -Wall -Wextra -Werror
 LIBFT = 42-libft
 LIBFT_A = $(LIBFT)/libft.a
 

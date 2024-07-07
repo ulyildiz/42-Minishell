@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 19:20:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/06 17:47:55 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/07 12:30:22 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	rdr_position(t_command *cmds)
 	return (1);
 }
 
-char	*remove_quotes(const char *str, t_bool in_s, t_bool in_d)
+static char	*remove_quotes(const char *str, t_bool in_s, t_bool in_d)
 {
 	char	*result;
 	size_t	i;

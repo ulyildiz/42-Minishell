@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 17:30:01 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/04 07:09:29 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/07 12:27:14 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,22 @@ int	ascending(int a, int b)
 int	is_builtin(t_command *cmds, t_main *shell, t_bool cmd_num)
 {
 	int				i;
+	char			*tmp;
 	static t_build	commands[] = {{"echo", echo}, {"cd", cd}, {"pwd", pwd},
 	{"env", env}, {"unset", unset}, {"export", export}, {"exit",
 		exit_cmd}, {NULL, NULL}};
 
 	i = 0;
+	tmp = ft_strlower(ft_strdup(cmds->value[0]));
+	if (!tmp)
+		return (1);
 	while (commands[i].name)
 	{
-		if (!ft_strncmp(ft_strlower(cmds->value[0]), commands[i].name,
-				ft_strlen(cmds->value[0]))
-			&& !ft_strncmp(ft_strlower(cmds->value[0]), commands[i].name,
-				ft_strlen(commands[i].name)))
+		if (!ft_strncmp(tmp, commands[i].name, ft_strlen(tmp)) && \
+		!ft_strncmp(tmp, commands[i].name, ft_strlen(commands[i].name)))
 		{
 			commands[i].func(cmds, shell);
+			free(tmp);
 			if (cmd_num)
 				exit_for_fork(shell);
 			else
@@ -66,5 +69,5 @@ int	is_builtin(t_command *cmds, t_main *shell, t_bool cmd_num)
 		}
 		i++;
 	}
-	return (1);
+	return (free(tmp), 1);
 }
