@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/07 15:00:12 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/07 16:05:39 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	redirection_touch(t_main *shell, t_command **cmd)
 		if (opens(*cmd, &i) == -1)
 		{
 			*cmd = (*cmd)->next;
-			deletenode(&shell->cmd, tmp);
+			deletenode_p(&shell->cmd, tmp);
 			return (0);
 		}
 		i++;

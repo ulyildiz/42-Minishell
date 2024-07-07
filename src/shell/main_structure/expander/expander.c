@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/07 14:45:09 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/07 16:09:35 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,7 @@ static int	dollar_expend(t_main *shell, t_tokens *token, char	*tmp, size_t i)
 			start = i;
 			while (token->value[i] && !(token->value[i] == '$' && !shell->in_s))
 			{
-				if (token->value[i] == '"' && !shell->in_s)
-					shell->in_d = !shell->in_d;
-				else if (token->value[i] == '\'' && !shell->in_d)
-					shell->in_s = !shell->in_s;
+				toggle_quote(token->value[i], &shell->in_s, &shell->in_d);
 				i++;
 			}
 			tmp = append_literal(tmp, token->value, &start, &i);
@@ -42,7 +39,6 @@ static int	dollar_expend(t_main *shell, t_tokens *token, char	*tmp, size_t i)
 
 static int	home_expend(t_main *shell, t_tokens *token, char *tmp, size_t i)
 {
-	i = 0;
 	tmp = ft_strdup("");
 	while (token->value[i] && tmp)
 	{
@@ -53,20 +49,21 @@ static int	home_expend(t_main *shell, t_tokens *token, char *tmp, size_t i)
 					&& token->value[i + 1] != '/'))
 				tmp = ft_strappend(tmp, "~", 1);
 			else
+			{
+				if (!find_env(shell->envs, "HOME"))
+					return (ft_putendl_fd("HOME not set", 2), 1);
 				tmp = ft_strappend(tmp, find_env(shell->envs, "HOME")->value,
-						ft_strlen(find_env(shell->envs, "HOME")->value)); //Home u aldığımız bir yer var mı envde olmasa bile
+						ft_strlen(find_env(shell->envs, "HOME")->value));
+			}
 		}
 		else
 			tmp = ft_strappend(tmp, &token->value[i], 1);
-		if (token->value[i] == '\'' && !shell->in_d)
-			shell->in_s = !shell->in_s;
-		if (token->value[i++] == '"' && !shell->in_s)
-			shell->in_d = !shell->in_d;
+		toggle_quote(token->value[i], &shell->in_s, &shell->in_d);
+		i++;
 	}
-	token->value = tmp;
-	if (!token->value)
+	if (!tmp)
 		return (perror("Home expand"), 0);
-	return (1);
+	return (token->value = tmp, 1);
 }
 
 void	expender(t_main *shell)

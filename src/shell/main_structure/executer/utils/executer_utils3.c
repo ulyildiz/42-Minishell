@@ -6,13 +6,13 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:50:27 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/07 14:59:06 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/07 16:05:05 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 
-void	deletenode(t_command **head, t_command *key_point)
+void	deletenode_p(t_command **head, t_command *key_point)
 {
 	if (!head || !*head || !key_point)
 		return ;

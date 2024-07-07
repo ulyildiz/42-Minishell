@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:06 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/07 12:34:38 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/07 18:29:02 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,5 @@ void	exit_cmd(t_command *cmds, t_main *shell)
 			shell->exit_status = 255;
 		}
 	}
-	else
-		shell->exit_status = 0;
 	exit_for_fork(shell);
 }
