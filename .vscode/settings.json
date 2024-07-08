@@ -32,7 +32,8 @@
     "vector": "c",
     "locale": "c",
     "__locale": "c",
-    "atomic": "c"
+    "atomic": "c",
+    "fcntl.h": "c"
   },
   "C_Cpp_Runner.msvcBatchPath": "",
   "C_Cpp_Runner.cCompilerPath": "clang",

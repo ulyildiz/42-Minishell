@@ -27,6 +27,7 @@ SRC =   src/main.c \
         src/shell/builtins/cd/utils/cd_utils.c \
         src/shell/builtins/pwd/pwd.c \
         src/shell/builtins/export/export.c \
+        src/shell/builtins/export/utils/export_utils.c \
         src/shell/builtins/unset/unset.c \
         src/shell/builtins/env/env.c \
         src/shell/builtins/exit/exit.c
@@ -34,7 +35,7 @@ SRC =   src/main.c \
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 CC = cc
-CFLAGS = -I ./include -I ./42-Libft -Wall -Wextra -Werror
+CFLAGS = -I ./include -I ./42-Libft #-Wall -Wextra -Werror
 LIBFT = 42-libft
 LIBFT_A = $(LIBFT)/libft.a
 

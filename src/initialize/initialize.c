@@ -6,7 +6,7 @@
 /*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:52:43 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/01 13:12:32 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/08 11:16:56 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	env_len(t_main *shell)
 	}
 	return (i);
 }
-// env_for_execve_function güncellemek için ama exporta eklenmedi
 
 int	update_env(t_main *shell)
 {
@@ -58,13 +57,13 @@ int	update_env(t_main *shell)
 		new_env[i] = ft_strjoin(tmp->name, "=");
 		if (!new_env[i])
 			return (free_double(new_env), 0);
-		new_env[i] = ft_strappend(new_env[i], tmp->value,
-				ft_strlen(tmp->value));
+		if (tmp->value)
+			new_env[i] = ft_strappend(new_env[i], tmp->value,
+					ft_strlen(tmp->value));
 		if (!new_env[i++])
 			return (free_double(new_env), 0);
 		tmp = tmp->next;
 	}
-	new_env[i] = NULL;
 	if (shell->env_for_execve_function)
 		free_double(shell->env_for_execve_function);
 	shell->env_for_execve_function = new_env;

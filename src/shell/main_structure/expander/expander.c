@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/07 16:09:35 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/07 22:22:30 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	home_expend(t_main *shell, t_tokens *token, char *tmp, size_t i)
 			else
 			{
 				if (!find_env(shell->envs, "HOME"))
-					return (ft_putendl_fd("HOME not set", 2), 1);
+					return (1);
 				tmp = ft_strappend(tmp, find_env(shell->envs, "HOME")->value,
 						ft_strlen(find_env(shell->envs, "HOME")->value));
 			}

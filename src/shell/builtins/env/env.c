@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:55:38 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/07 12:22:55 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/08 14:36:29 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 
-static t_env	*create_env_node(t_env *src)
+extern void	copy_env(t_env **export, t_env *src);
+/* static t_env	*create_env_node(t_env *src)
 {
 	t_env	*tmp;
 
@@ -55,7 +56,7 @@ static void	copy_env(t_env **export, t_env *src)
 		list_add_back(export, tmp);
 		src = src->next;
 	}
-}
+} */
 
 static void	update_or_add_env(t_env **export, char *str, t_main *shell)
 {
@@ -93,13 +94,12 @@ static void	print_env(t_env *env, int fd)
 {
 	while (env)
 	{
-		ft_putstr_fd(env->name, fd);
-		if (env->value && env->value[0] != '\0')
+		if (env->value)
 		{
+			ft_putstr_fd(env->name, fd);
 			ft_putstr_fd("=", fd);
-			ft_putstr_fd(env->value, fd);
+			ft_putendl_fd(env->value, fd);
 		}
-		ft_putstr_fd("\n", fd);
 		env = env->next;
 	}
 }

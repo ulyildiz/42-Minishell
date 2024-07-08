@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 17:30:01 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/07 12:27:14 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/08 13:37:45 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ t_env	*sort_export(t_env *lst, int (*cmp)(int, int))
 	char	*swap_value;
 	t_env	*tmp;
 
+	if (!lst || !lst->next)
+		return (lst);
 	tmp = lst;
 	while (lst->next != NULL)
 	{
