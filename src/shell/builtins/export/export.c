@@ -3,16 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:57:43 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/08 14:58:23 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/08 17:09:07 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 
-extern char	*ft_exportdup(const char *s1);
+char *ft_exportdup(const char *s1);
+t_env	*sort_export(t_env *lst, int (*cmp)(int, int));
+int	ascending(int a, int b);
+
 static int	add_new_env(t_env **envs, char *name, char *value)
 {
 	t_env	*tmp;
@@ -97,7 +100,7 @@ static int	process_commands(t_command *cmds, t_main *shell)
 	return (0);
 }
 
-void	copy_env(t_env **export, t_env *src)
+int	copy_env(t_env **export, t_env *src)
 {
 	t_env	*tmp;
 
@@ -105,17 +108,18 @@ void	copy_env(t_env **export, t_env *src)
 	{
 		tmp = (t_env *)malloc(sizeof(t_env));
 		if (!tmp)
-			return (free_env(*export));
+			return (free_env(*export),0);
 		tmp->next = NULL;
 		tmp->name = ft_strdup(src->name);
 		if (!tmp->name)
-			return (free(tmp), free_env(*export));
+			return (free(tmp), free_env(*export),0);
 		tmp->value = ft_exportdup(src->value);
 		if (tmp->value == (void *)1)
-			return (free(tmp->name), free(tmp), free_env(*export));
+			return (free(tmp->name), free(tmp), free_env(*export),0);
 		list_add_back(export, tmp);
 		src = src->next;
 	}
+	return (1);
 }
 
 static void	print_export(t_env *env, int fd)
@@ -138,18 +142,24 @@ static void	print_export(t_env *env, int fd)
 	}
 }
 
-void	export(t_command *cmds, t_main *shell)
+int	export(t_command *cmds, t_main *shell)
 {
 	t_env	*export;
 
 	export = NULL;
-	process_commands(cmds, shell);
+	if(process_commands(cmds, shell))
+		return (0);
 	if (update_env(shell) == 0)
-		return ;
-	copy_env(&export, shell->envs);
+		return(0) ;
+	if(!copy_env(&export, shell->envs))
+		return (0);
 	export = sort_export(export, ascending);
+	if(!export)
+		return (0);
 	if (cmds->value[1] == NULL)
 		print_export(export, cmds->fd[1]);
-	update_env(shell);
+	if (update_env(shell) == 0)
+		return(0) ;
 	free_env(export);
+	return (1);	
 }

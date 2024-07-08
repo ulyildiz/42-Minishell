@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:36 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/08 15:03:58 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/08 16:54:11 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ static int	set_env_value(t_env *env, char *value)
 t_env	*update_or_create_env(t_env **envs, char *name, char *value)
 {
 	t_env	*env;
-
+	
+	if(!value)
+		return (NULL);
 	env = find_env(*envs, name);
 	if (!env || !env->value)
 	{

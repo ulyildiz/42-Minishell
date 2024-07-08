@@ -97,7 +97,7 @@ typedef struct s_main
 typedef struct s_build
 {
 	char				*name;
-	void				(*func)(t_command *cmds, t_main *shell);
+	int					(*func)(t_command *cmds, t_main *shell);
 }	t_build;
 
 #endif

@@ -90,19 +90,15 @@ int			check_heredoc(t_command *cmd);
 void		deletenode_p(t_command **head, t_command *key_point);
 
 // builtins functions
-void		cd(t_command *cmds, t_main *shell);
-void		pwd(t_command *cmds, t_main *shell);
-void		env(t_command *cmds, t_main *shell);
-void		echo(t_command *cmds, t_main *shell);
-void		unset(t_command *cmds, t_main *shell);
-void		export(t_command *cmds, t_main *shell);
-void		exit_cmd(t_command *cmds, t_main *shell);
+int			cd(t_command *cmds, t_main *shell);
+int			pwd(t_command *cmds, t_main *shell);
+int			env(t_command *cmds, t_main *shell);
+int			echo(t_command *cmds, t_main *shell);
+int			unset(t_command *cmds, t_main *shell);
+int			export(t_command *cmds, t_main *shell);
+int			exit_cmd(t_command *cmds, t_main *shell);
 
 // builtins utils functions
 int			is_builtin(t_command *cmds, t_main *shell, t_bool cmd_num);
-t_env		*sort_export(t_env *lst, int (*cmp)(int, int));
-int			ascending(int a, int b);
-char		*append_path(char *base, char *append);
-t_env		*update_or_create_env(t_env **envs, char *name, char *value);
 
 #endif

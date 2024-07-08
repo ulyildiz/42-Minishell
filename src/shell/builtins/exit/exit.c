@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:06 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/07 18:29:02 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/08 16:38:54 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	is_all_numeric(char *str)
 	return (1);
 }
 
-void	exit_cmd(t_command *cmds, t_main *shell)
+int	exit_cmd(t_command *cmds, t_main *shell)
 {
 	size_t	i;
 
@@ -41,7 +41,7 @@ void	exit_cmd(t_command *cmds, t_main *shell)
 			shell->exit_status = ft_atoi(cmds->value[1]) % 256;
 			if (i > 2)
 				return (shell->exit_status = 1, ft_putendl_fd(
-						"exit: too many arguments\n", cmds->fd[1]));
+						"exit: too many arguments\n", cmds->fd[1]),1);
 		}
 		else
 		{
@@ -50,4 +50,5 @@ void	exit_cmd(t_command *cmds, t_main *shell)
 		}
 	}
 	exit_for_fork(shell);
+	return (1);
 }

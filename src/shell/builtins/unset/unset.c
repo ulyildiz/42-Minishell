@@ -3,53 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/03 17:58:29 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/08 14:48:43 by ulyildiz         ###   ########.fr       */
+/*   Created: 2024/07/08 16:26:15 by ysarac            #+#    #+#             */
+/*   Updated: 2024/07/08 16:26:18 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 
-static void	deletenode(t_env **head, char *key)
+static int	deletenode(t_env **head, char *key)
 {
 	t_env	*temp;
 	t_env	*prev;
 
 	temp = *head;
 	prev = NULL;
-	if (temp != NULL && ft_strncmp(temp->name, key, strlen(key)) == 0)
+	if (temp != NULL && ft_strncmp(temp->name, key, ft_strlen(key)) == 0)
 	{
 		*head = temp->next;
 		free(temp->name);
 		free(temp->value);
 		free(temp);
-		return ;
+		return (0);
 	}
-	while (temp != NULL && ft_strncmp(temp->name, key, strlen(key)) != 0)
+	while (temp != NULL && ft_strncmp(temp->name, key, ft_strlen(key)) != 0)
 	{
 		prev = temp;
 		temp = temp->next;
 	}
 	if (temp == NULL)
-		return ;
+		return (0);
 	prev->next = temp->next;
 	free(temp->name);
 	free(temp->value);
 	free(temp);
+	return (1);
 }
 
-void	unset(t_command *cmds, t_main *shell)
+int	unset(t_command *cmds, t_main *shell)
 {
 	int	i;
 
 	i = 1;
 	while (cmds->value[i] != NULL)
 	{
-		deletenode(&shell->envs, cmds->value[i]);
+		if (deletenode(&shell->envs, cmds->value[i]) == 0)
+			return (0);
 		i++;
 	}
+	return (1);
 }
 
 // d0nE

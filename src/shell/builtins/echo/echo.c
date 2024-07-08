@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 13:05:17 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/01 13:05:21 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/08 16:36:15 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	index_counter(size_t *i, size_t *j, int *newline, t_command *cmds)
 	}
 }
 
-void	echo(t_command *cmds, t_main *shell)
+int	echo(t_command *cmds, t_main *shell)
 {
 	size_t	i;
 	size_t	j;
@@ -49,4 +49,5 @@ void	echo(t_command *cmds, t_main *shell)
 	}
 	if (newline)
 		ft_putstr_fd("\n", cmds->fd[1]);
+	return (1);
 }

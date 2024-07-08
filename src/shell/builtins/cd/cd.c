@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:16 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/08 15:03:48 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/08 16:55:04 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+
+extern char		*append_path(char *base, char *append);
+extern t_env	*update_or_create_env(t_env **envs, char *name, char *value);
 
 static char	*get_oldpwd_path(t_command *cmds, t_env *oldpwd)
 {
@@ -30,10 +33,11 @@ static char	*get_oldpwd_path(t_command *cmds, t_env *oldpwd)
 		return (ft_putendl_fd(path, cmds->fd[1]), path);
 	}
 	else
-		return (ft_putstr_fd("OLDPWD not set\n", cmds->fd[1]), shell->exit_status = 1, NULL);
+		return (ft_putstr_fd("OLDPWD not set\n", cmds->fd[1]),
+			shell->exit_status = 1, NULL);
 }
 
-static char *get_home_path(t_command *cmds, t_env *home)
+static char	*get_home_path(t_command *cmds, t_env *home)
 {
 	char	*path;
 	t_main	*shell;
@@ -51,8 +55,8 @@ static char *get_home_path(t_command *cmds, t_env *home)
 		return (path);
 	}
 	else
-		return (ft_putstr_fd("HOME not set\n", cmds->fd[1]), \
-		shell->exit_status = 1, NULL);
+		return (ft_putstr_fd("HOME not set\n", cmds->fd[1]),
+			shell->exit_status = 1, NULL);
 }
 
 static char	*get_cmd_path(t_command *cmds, t_env *pwd)
@@ -88,7 +92,7 @@ static char	*get_path(t_command *cmds, t_env *pwd, t_env *oldpwd, t_env *home)
 	return (path);
 }
 
-void	cd(t_command *cmds, t_main *shell)
+int	cd(t_command *cmds, t_main *shell)
 {
 	t_env	*pwd;
 	t_env	*oldpwd;
@@ -103,14 +107,15 @@ void	cd(t_command *cmds, t_main *shell)
 	if (!pwd)
 	{
 		shell->exit_status = 1;
-		return (free(gtcwd), exit_for_fork(shell));
+		return (free(gtcwd), exit_for_fork(shell), 0);
 	}
 	path = get_path(cmds, pwd, oldpwd, home);
 	if (!path)
-		return (free(gtcwd));
+		return (free(gtcwd), 0);
 	change_directory_and_update_envs(shell, path, pwd->value);
 	free(gtcwd);
 	free(path);
 	if (update_env(shell) == -1)
-		return (perror("update_env failed"));
+		return (perror("update_env failed"), 0);
+	return (1);
 }
