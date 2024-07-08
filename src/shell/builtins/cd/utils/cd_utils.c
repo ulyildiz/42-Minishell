@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:36 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/07 12:21:54 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/08 15:03:58 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	change_directory_and_update_envs(t_main *shell, char *path,
 		char *old_pwd_value)
 {
 	char	*gtcwd;
+	static int i = 0;
 
 	if (chdir(path) == 0)
 	{
@@ -96,13 +97,15 @@ void	change_directory_and_update_envs(t_main *shell, char *path,
 		if (!update_or_create_env(&shell->envs, "OLDPWD", old_pwd_value))
 		{
 			free(gtcwd);
+			free(path);
 			perror("update_or_create_env failed");
 			shell->exit_status = 1;
 			exit_for_fork(shell);
 		}
-		if (!update_or_create_env(&shell->envs, "PWD", gtcwd))
+		if (!update_or_create_env(&shell->envs, "PWD", gtcwd) || i == 4)
 		{
 			free(gtcwd);
+			free(path);
 			perror("update_or_create_env failed");
 			shell->exit_status = 1;
 			exit_for_fork(shell);
@@ -111,4 +114,5 @@ void	change_directory_and_update_envs(t_main *shell, char *path,
 	}
 	else
 		perror("cd");
+	i++;
 }

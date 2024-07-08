@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <ysarac@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:57:43 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/08 14:35:35 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/08 14:58:23 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ static int	process_commands(t_command *cmds, t_main *shell)
 	{
 		if (ft_isdigit(cmds->value[i][0]) || cmds->value[i][0] == '=')
 		{
-			ft_putstr_fd("ft_sh: export:", cmds->fd[1]);
+			ft_putstr_fd("ft_sh: export: ", cmds->fd[1]);
 			ft_putstr_fd(cmds->value[i], cmds->fd[1]);
-			ft_putendl_fd(": not a valid identifier", cmds->fd[1]);
+			ft_putendl_fd(" : not a valid identifier", cmds->fd[1]);
 			shell->exit_status = 1;
 		}
 		else
@@ -87,7 +87,6 @@ static int	process_commands(t_command *cmds, t_main *shell)
 			}
 			else
 			{
-				printf("%s\n", cmds->value[i]);
 				env_var = find_env(shell->envs, cmds->value[i]);
 				if (!env_var)
 					add_new_env(&shell->envs, cmds->value[i], NULL);
