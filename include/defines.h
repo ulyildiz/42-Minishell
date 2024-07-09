@@ -65,6 +65,7 @@ typedef struct s_command
 	char				**rdrs;
 	char				*cmd_and_path;
 	int					fd[2];
+	int					here_fd;
 	t_is_pipe			where_p;
 	int					pid;
 	struct s_command	*prev;

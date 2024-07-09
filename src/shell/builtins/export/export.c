@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:57:43 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/09 21:06:18 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/09 22:31:09 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ extern int		handle_invalid_identifier(t_command *cmd, t_main *shell, int i);
 extern int		handle_assignment(t_command *cmd, t_main *shell, char *eq_pos,
 					int i);
 extern int		update_or_add_env_var(t_env **envs, char *name, char *value);
+extern int		all_alphanumeric(char *str);
 
 int	add_new_env(t_env **envs, char *name, char *value)
 {
@@ -54,7 +55,8 @@ static int	process_commands(t_command *cmds, t_main *shell, int i)
 	{
 		eq_pos = ft_strchr(cmds->value[i], '=');
 		env_var = find_env(shell->envs, cmds->value[i]);
-		if (ft_isdigit(cmds->value[i][0]) || cmds->value[i][0] == '=')
+		if (ft_isdigit(cmds->value[i][0]) || cmds->value[i][0] == '='
+			|| !all_alphanumeric(cmds->value[i]))
 			handle_invalid_identifier(cmds, shell, i);
 		else if (eq_pos != NULL)
 		{

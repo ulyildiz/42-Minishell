@@ -100,5 +100,6 @@ int			exit_cmd(t_command *cmds, t_main *shell);
 
 // builtins utils functions
 int			is_builtin(t_command *cmds, t_bool cmd_num, char *tmp, int i);
+int			check_for_options(t_command *cmds);
 
 #endif

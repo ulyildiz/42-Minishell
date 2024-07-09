@@ -47,6 +47,11 @@ int	opens(t_command *cmd, size_t *i)
 		if (!check_and_close(cmd, STDIN_FILENO, fd))
 			return (perror(cmd->rdrs[(*i)]), -1);
 	}
+	else if (!ft_strncmp(cmd->rdrs[*i], "<<", 2))
+	{
+		++(*i);
+		check_and_close(cmd, STDIN_FILENO, cmd->here_fd);
+	}
 	else if (!ft_strncmp(cmd->rdrs[*i], ">", 1))
 	{
 		fd = open(cmd->rdrs[++(*i)], O_TRUNC | O_CREAT | O_WRONLY, 0777);

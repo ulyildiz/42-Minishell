@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:44:12 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/07 18:16:11 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/09 22:51:21 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static int	here_loop(t_main *shell, int *fd, t_command *cmd, char *delimeter)
 	{
 		close(fd[1]);
 		if (wait_heredoc(shell, cmd) == SIGINT)
-			return (0);
+			return (SIGINT);
 		cmd->fd[0] = fd[0];
 	}
 	return (1);
@@ -121,7 +121,8 @@ int	heredocs(t_main *shell, t_command *cmd)
 			{
 				if (pipe(fd) == -1)
 					return (exit_in_exec(shell), 0);
-				here_loop(shell, fd, cmd, cmd->rdrs[++i]);
+				if (here_loop(shell, fd, cmd, cmd->rdrs[++i]) == SIGINT)
+					return (0);
 			}
 		}
 		cmd->pid = -1;

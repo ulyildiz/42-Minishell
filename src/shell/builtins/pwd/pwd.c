@@ -17,6 +17,8 @@ int	pwd(t_command *cmds, t_main *shell)
 	char	*pwd;
 
 	shell = (void *)shell;
+	if (!check_for_options(cmds))
+		return (1);
 	pwd = getcwd(NULL, 0);
 	if (pwd != NULL)
 		ft_putendl_fd(pwd, cmds->fd[1]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:16 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/09 22:23:54 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/09 22:32:13 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ int	cd(t_command *cmds, t_main *shell)
 	char	*path;
 	char	*gtcwd;
 
+	if (!check_for_options(cmds))
+		return (1);
 	gtcwd = ft_strdup(cmds->value[1]);
 	pwd = update_or_create_env(&shell->envs, "PWD", gtcwd);
 	oldpwd = find_env(shell->envs, "OLDPWD");

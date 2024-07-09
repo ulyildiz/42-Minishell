@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 17:30:01 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/09 20:08:33 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/09 22:29:50 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,18 @@ t_env	*sort_export(t_env *lst, int (*cmp)(int, int))
 	}
 	lst = tmp;
 	return (lst);
+}
+
+int	check_for_options(t_command *cmds)
+{
+	if (!cmds->value[1])
+		return (1);
+	if (cmds->value[1][0] == '-' && ft_strlen(cmds->value[1]) > 1)
+	{
+		ft_putendl_fd("ft_sh: no option required", cmds->fd[1]);
+		return (0);
+	}
+	return (1);
 }
 
 int	ascending(int a, int b)
