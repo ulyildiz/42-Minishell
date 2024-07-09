@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 16:26:15 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/08 16:26:18 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/09 23:21:26 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ int	unset(t_command *cmds, t_main *shell)
 	int	i;
 
 	i = 1;
+
+	if (!check_for_options(cmds))
+		return (1);
 	while (cmds->value[i] != NULL)
 	{
 		if (deletenode(&shell->envs, cmds->value[i]) == 0)

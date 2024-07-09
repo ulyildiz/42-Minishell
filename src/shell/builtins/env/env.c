@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:55:38 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/09 20:41:14 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/09 23:22:44 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ int	env(t_command *cmds, t_main *shell)
 
 	i = 1;
 	export = NULL;
+	if (!check_for_options(cmds))
+		return (1);
 	if (!copy_env(&export, shell->envs))
 		return (0);
 	while (cmds->value[i])
@@ -94,4 +96,3 @@ int	env(t_command *cmds, t_main *shell)
 	free_env(export);
 	return (1);
 }
-// d0nE

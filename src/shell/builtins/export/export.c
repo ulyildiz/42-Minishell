@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:57:43 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/09 22:31:09 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/09 23:21:57 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ int	export(t_command *cmds, t_main *shell)
 	t_env	*export;
 
 	export = NULL;
+	if (!check_for_options(cmds))
+		return (1);
 	if (process_commands(cmds, shell, 0))
 		return (0);
 	if (update_env(shell) == 0)
