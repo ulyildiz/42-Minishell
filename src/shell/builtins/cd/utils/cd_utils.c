@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:36 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/09 19:15:54 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/10 02:38:16 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+#include "libft.h"
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
 
 static t_env	*create_env(char *name, char *value)
 {

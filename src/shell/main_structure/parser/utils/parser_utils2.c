@@ -6,11 +6,12 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 19:20:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/07 12:30:22 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/10 02:32:02 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+#include "libft.h"
 
 static void	fill_rdrs(t_command *cmds, char **tmp, size_t *f)
 {

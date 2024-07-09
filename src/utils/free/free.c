@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "functions.h"
+#include "defines.h"
+#include <stdlib.h>
+#include <unistd.h>
 
 void	free_double(char **arr)
 {
@@ -32,15 +34,13 @@ void	free_env(t_env *env)
 	{
 		tmp = env;
 		env = env->next;
-		free(tmp->name);
+		if (tmp->name)
+			free(tmp->name);
 		if (tmp->value)
 			free(tmp->value);
 		free(tmp);
 	}
 }
-
-// linuxta 1 byte leake sebep oluyor büyük 
-//ihtimalle içinde null char olan envler freelenmicek
 
 void	free_tokens(t_main *shell)
 {

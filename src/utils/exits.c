@@ -11,9 +11,11 @@
 /* ************************************************************************** */
 
 #include "functions.h"
+#include "libft.h"
 #include <errno.h>
-#include <readline/readline.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <readline/readline.h>
 
 void	exit_in_lex_ex(t_main *shell)
 {

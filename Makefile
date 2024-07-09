@@ -2,7 +2,7 @@ NAME = minishell
 SRC =   src/main.c \
         src/initialize/initialize.c \
         src/shell/shell.c \
-        src/shell/signal.c \
+        src/shell/signal/signal.c \
         src/utils/free/free.c \
         src/shell/main_structure/lexer/lexer.c \
         src/shell/main_structure/lexer/utils/lexer_utils.c \
@@ -35,7 +35,7 @@ SRC =   src/main.c \
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 CC = cc
-CFLAGS = -I ./include -I ./42-Libft -Wall -Wextra -Werror -g
+CFLAGS = -I ./include -I ./42-Libft -Wall -Wextra -Werror
 LIBFT = 42-libft
 LIBFT_A = $(LIBFT)/libft.a
 

@@ -6,11 +6,13 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:26 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/07 14:54:55 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/10 02:27:43 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+#include "libft.h"
+#include <stdlib.h>
 
 static void	remove_unnecessary_space(t_main *shell)
 {

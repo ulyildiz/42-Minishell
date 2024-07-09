@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "functions.h"
+#include <stdlib.h>
 
 void	listing_token(t_main *shell, char *tmp, size_t *j, char *token)
 {

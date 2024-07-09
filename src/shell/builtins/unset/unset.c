@@ -6,10 +6,11 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 16:26:15 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/09 23:21:26 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/10 02:21:55 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "functions.h"
 
 static int	deletenode(t_env **head, char *key)
@@ -46,7 +47,6 @@ int	unset(t_command *cmds, t_main *shell)
 	int	i;
 
 	i = 1;
-
 	if (!check_for_options(cmds))
 		return (1);
 	while (cmds->value[i] != NULL)
@@ -57,5 +57,3 @@ int	unset(t_command *cmds, t_main *shell)
 	}
 	return (1);
 }
-
-// d0nE

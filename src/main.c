@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include "functions.h"
+#include "libft.h"
+#include <unistd.h>
+#include <stdio.h>
 
 t_main	*shell_keeper(t_main *shell)
 {

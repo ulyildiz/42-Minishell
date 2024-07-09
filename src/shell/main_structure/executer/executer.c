@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/09 20:07:30 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/10 02:32:44 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+#include "libft.h"
+#include <unistd.h>
+#include <stdio.h>
 
 static int	redirection_touch(t_main *shell, t_command **cmd)
 {
@@ -22,7 +25,7 @@ static int	redirection_touch(t_main *shell, t_command **cmd)
 	while ((*cmd)->rdrs[i])
 	{
 		tmp = *cmd;
-		if (opens(*cmd, &i) == -1)
+		if (opens(*cmd, &i, -1) == -1)
 		{
 			*cmd = (*cmd)->next;
 			deletenode_p(&shell->cmd, tmp);
@@ -126,7 +129,8 @@ void	executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i)
 	if (!shell->paths)
 		return (shell->exit_status = 1, exit_in_exec(shell));
 	if (set_fd(shell, cmds, &i))
-		return ;
+		return (shell->exit_status = 1, free_double(shell->paths),
+			free(shell->cmd_line), free_command(shell, NULL));
 	cmds = shell->cmd;
 	if (cmds && cmds->next)
 		cmd_num = TRUE;

@@ -6,11 +6,14 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/09 22:49:08 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/10 02:31:18 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+#include "libft.h"
+#include <stdlib.h>
+#include <unistd.h>
 
 static t_command	*cmd_struct_create(t_tokens *token)
 {

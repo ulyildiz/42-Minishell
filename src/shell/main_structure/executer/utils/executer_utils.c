@@ -11,9 +11,11 @@
 /* ************************************************************************** */
 
 #include "functions.h"
+#include "libft.h"
+#include <unistd.h>
 #include <sys/stat.h>
 
-static void	error_handler(t_command *cmds, int flag, t_main *shell)
+void	error_handler(t_command *cmds, int flag, t_main *shell)
 {
 	ft_putstr_fd("ft_sh: ", 2);
 	ft_putstr_fd(cmds->value[0], 2);

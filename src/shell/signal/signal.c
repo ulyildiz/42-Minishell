@@ -10,10 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "functions.h"
-#include <readline/readline.h>
-#include <signal.h>
 #include <stdio.h>
+#include <readline/readline.h>
 #include <termios.h>
 #include <unistd.h>
 

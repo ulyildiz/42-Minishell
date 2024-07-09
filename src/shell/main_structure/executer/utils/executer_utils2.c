@@ -6,11 +6,15 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:19:53 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/04 17:57:12 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/10 02:33:51 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+#include "libft.h"
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdio.h>
 
 static int	check_and_close(t_command *cmd, int fd, int i)
 {
@@ -31,10 +35,8 @@ static int	check_and_close(t_command *cmd, int fd, int i)
 	return (1);
 }
 
-int	opens(t_command *cmd, size_t *i)
+int	opens(t_command *cmd, size_t *i, int fd)
 {
-	int	fd;
-
 	if (!ft_strncmp(cmd->rdrs[*i], ">>", 2))
 	{
 		fd = open(cmd->rdrs[++(*i)], O_CREAT | O_APPEND | O_WRONLY, 0777);

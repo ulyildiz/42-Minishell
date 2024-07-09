@@ -16,7 +16,7 @@
 /********************************   Includes   ********************************/
 
 # include "defines.h"
-
+# include <stddef.h>
 /********************************   Funtions   ********************************/
 
 // preparing functions
@@ -81,7 +81,7 @@ size_t		find_word_end(const char *value, size_t start, t_bool *in_d,
 // executer functions
 void		executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i);
 int			accessibility(t_command *cmds, t_main *shell);
-int			opens(t_command *cmd, size_t *i);
+int			opens(t_command *cmd, size_t *i, int fd);
 void		close_all(t_command *cmds, int i);
 void		wait_forks(t_main *shell, t_command *cmd);
 int			heredocs(t_main *shell, t_command *cmd);

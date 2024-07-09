@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 13:05:17 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/08 16:36:15 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/10 02:36:31 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+#include "libft.h"
 
 static void	index_counter(size_t *i, size_t *j, int *newline, t_command *cmds)
 {

@@ -6,11 +6,12 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 17:30:01 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/09 22:29:50 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/10 02:36:14 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+#include "libft.h"
 
 t_env	*sort_export(t_env *lst, int (*cmp)(int, int))
 {

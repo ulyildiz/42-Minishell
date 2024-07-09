@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:42:15 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/09 22:30:19 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/10 01:43:55 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	handle_invalid_identifier(t_command *cmd, t_main *shell, int i)
 	return (0);
 }
 
-int	handle_assignment(t_command *cmd, t_main *shell, char *eq_pos, int i)
+int	handle_assignment(t_command *cmd, t_env *envs, char *eq_pos, int i)
 {
 	char	*name;
 	char	*value;
@@ -82,22 +82,22 @@ int	handle_assignment(t_command *cmd, t_main *shell, char *eq_pos, int i)
 		free(name);
 		return (1);
 	}
-	result = update_or_add_env_var(&shell->envs, name, value);
+	result = update_or_add_env_var(&envs, name, value);
 	free(name);
 	free(value);
 	return (result);
 }
 
-int	all_alphanumeric(char *str)
+int	all_alphanumeric(char *str, int i)
 {
-	int	i;
+	int	j;
 
-	i = 0;
-	while (str[i])
+	j = 0;
+	while (str[j] && j < i)
 	{
-		if (!ft_isalnum(str[i]))
+		if (!ft_isalnum(str[j]) && str[j] != '_')
 			return (0);
-		i++;
+		j++;
 	}
 	return (1);
 }

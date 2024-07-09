@@ -6,11 +6,14 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:16 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/09 22:32:13 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/10 02:36:58 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+#include <unistd.h>
+#include <stdio.h>
+#include "libft.h"
 
 extern t_env	*update_or_create_env(t_env **envs, char *name, char *value);
 
@@ -61,7 +64,7 @@ static char	*get_home_path(t_command *cmds, t_env *home)
 static char	*get_path(t_command *cmds, t_env *oldpwd, t_env *home)
 {
 	char	*path;
-	
+
 	path = NULL;
 	if (cmds->value[1] != NULL)
 	{
@@ -98,9 +101,7 @@ int	cd(t_command *cmds, t_main *shell)
 	if (!path)
 		return (free(gtcwd), 0);
 	change_directory_and_update_envs(shell, path, pwd->value);
-	free(gtcwd);
-	free(path);
 	if (update_env(shell) == -1)
-		return (perror("update_env failed"), 0);
-	return (1);
+		return (free(gtcwd), free(path), perror("update_env failed"), 0);
+	return (free(gtcwd), free(path), 1);
 }

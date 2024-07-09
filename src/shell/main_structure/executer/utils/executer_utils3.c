@@ -6,11 +6,12 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:50:27 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/07 16:05:05 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/10 02:34:05 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+#include "libft.h"
 
 void	deletenode_p(t_command **head, t_command *key_point)
 {

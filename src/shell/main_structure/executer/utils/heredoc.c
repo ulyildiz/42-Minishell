@@ -6,12 +6,15 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:44:12 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/09 22:51:21 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/10 02:34:53 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+#include "libft.h"
+#include <stdio.h>
 #include <readline/readline.h>
+#include <unistd.h>
 
 static char	*heredoc_expander(char *str, t_main *shell)
 {

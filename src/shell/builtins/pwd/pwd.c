@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include "functions.h"
+#include "libft.h"
+#include <stdlib.h>
+#include <unistd.h>
 
 int	pwd(t_command *cmds, t_main *shell)
 {

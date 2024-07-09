@@ -6,11 +6,14 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:05:33 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/07 14:58:38 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/10 02:30:41 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
+#include "libft.h"
+#include <stdlib.h>
+#include <unistd.h>
 
 static char	*expand_dollar_dollar(char *tmp)
 {
