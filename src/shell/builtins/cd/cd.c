@@ -6,13 +6,12 @@
 /*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:16 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/08 16:55:04 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/09 18:58:03 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 
-extern char		*append_path(char *base, char *append);
 extern t_env	*update_or_create_env(t_env **envs, char *name, char *value);
 
 static char	*get_oldpwd_path(t_command *cmds, t_env *oldpwd)
@@ -59,22 +58,6 @@ static char	*get_home_path(t_command *cmds, t_env *home)
 			shell->exit_status = 1, NULL);
 }
 
-static char	*get_cmd_path(t_command *cmds, t_env *pwd)
-{
-	char	*path;
-	t_main	*shell;
-
-	shell = shell_keeper(NULL);
-	path = append_path(pwd->value, cmds->value[1]);
-	if (!path)
-	{
-		ft_putstr_fd("Error generating path from command\n", cmds->fd[1]);
-		shell->exit_status = 1;
-		exit_for_fork(shell);
-	}
-	return (path);
-}
-
 static char	*get_path(t_command *cmds, t_env *pwd, t_env *oldpwd, t_env *home)
 {
 	char	*path;
@@ -83,7 +66,7 @@ static char	*get_path(t_command *cmds, t_env *pwd, t_env *oldpwd, t_env *home)
 	if (cmds->value[1] != NULL)
 	{
 		if (cmds->value[1][0] != '-')
-			path = get_cmd_path(cmds, pwd);
+			path = ft_strdup(cmds->value[1]);
 		else if (cmds->value[1][0] == '-')
 			path = get_oldpwd_path(cmds, oldpwd);
 	}
@@ -100,7 +83,7 @@ int	cd(t_command *cmds, t_main *shell)
 	char	*path;
 	char	*gtcwd;
 
-	gtcwd = getcwd(NULL, 0);
+	gtcwd = ft_strdup(cmds->value[1]);
 	pwd = update_or_create_env(&shell->envs, "PWD", gtcwd);
 	oldpwd = find_env(shell->envs, "OLDPWD");
 	home = find_env(shell->envs, "HOME");

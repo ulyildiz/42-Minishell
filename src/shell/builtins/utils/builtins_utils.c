@@ -6,7 +6,7 @@
 /*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 17:30:01 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/08 18:21:23 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/09 20:08:33 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,37 +45,39 @@ int	ascending(int a, int b)
 	return (a <= b);
 }
 
-int	is_builtin(t_command *cmds, t_main *shell, t_bool cmd_num)
+int	check_argument(char *tmp, char *arg)
 {
-	int				i;
-	char			*tmp;
-	static t_build	commands[] = {{"echo", echo}, {"cd", cd}, {"pwd", pwd},
-			{"env", env}, {"unset", unset}, {"export", export}, {"exit",
-			exit_cmd}, {NULL, NULL}};
+	if (!ft_strncmp(tmp, arg, ft_strlen(tmp)) && !ft_strncmp(tmp, arg,
+			ft_strlen(arg)))
+		return (1);
+	return (0);
+}
 
-	i = 0;
-	tmp = ft_strlower(ft_strdup(cmds->value[0]));
+int	is_builtin(t_command *cmds, t_bool cmd_num, char *tmp, int i)
+{
+	static t_build	commands[] = {{"echo", echo}, {"cd", cd}, {"pwd", pwd},
+	{"env", env}, {"unset", unset}, {"export", export}, {"exit",
+		exit_cmd}, {NULL, NULL}};
+
 	if (!tmp)
 		return (1);
-	while (commands[i].name)
+	while (commands[++i].name)
 	{
-		if (!ft_strncmp(tmp, commands[i].name, ft_strlen(tmp))
-			&& !ft_strncmp(tmp, commands[i].name, ft_strlen(commands[i].name)))
+		if (check_argument(tmp, commands[i].name))
 		{
 			free(tmp);
-			if (!commands[i].func(cmds, shell))
+			if (!commands[i].func(cmds, shell_keeper(NULL)))
 			{
 				if (cmd_num)
-					exit_for_fork(shell);
+					exit_for_fork(shell_keeper(NULL));
 				else
-					exit_in_exec(shell);
+					exit_in_exec(shell_keeper(NULL));
 			}
 			if (cmd_num)
-				exit_for_fork(shell);
+				exit_for_fork(shell_keeper(NULL));
 			else
 				return (0);
 		}
-		i++;
 	}
 	return (free(tmp), 1);
 }

@@ -6,17 +6,21 @@
 /*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:57:43 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/08 17:09:07 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/09 21:06:18 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 
-char *ft_exportdup(const char *s1);
-t_env	*sort_export(t_env *lst, int (*cmp)(int, int));
-int	ascending(int a, int b);
+extern char		*ft_exportdup(const char *s1);
+extern t_env	*sort_export(t_env *lst, int (*cmp)(int, int));
+extern int		ascending(int a, int b);
+extern int		handle_invalid_identifier(t_command *cmd, t_main *shell, int i);
+extern int		handle_assignment(t_command *cmd, t_main *shell, char *eq_pos,
+					int i);
+extern int		update_or_add_env_var(t_env **envs, char *name, char *value);
 
-static int	add_new_env(t_env **envs, char *name, char *value)
+int	add_new_env(t_env **envs, char *name, char *value)
 {
 	t_env	*tmp;
 
@@ -41,61 +45,24 @@ static int	add_new_env(t_env **envs, char *name, char *value)
 	return (0);
 }
 
-static int	process_commands(t_command *cmds, t_main *shell)
+static int	process_commands(t_command *cmds, t_main *shell, int i)
 {
 	char	*eq_pos;
-	char	*name;
-	char	*value;
-	int		i;
 	t_env	*env_var;
 
-	i = 1;
-	while (cmds->value[i])
+	while (cmds->value[++i])
 	{
+		eq_pos = ft_strchr(cmds->value[i], '=');
+		env_var = find_env(shell->envs, cmds->value[i]);
 		if (ft_isdigit(cmds->value[i][0]) || cmds->value[i][0] == '=')
+			handle_invalid_identifier(cmds, shell, i);
+		else if (eq_pos != NULL)
 		{
-			ft_putstr_fd("ft_sh: export: ", cmds->fd[1]);
-			ft_putstr_fd(cmds->value[i], cmds->fd[1]);
-			ft_putendl_fd(" : not a valid identifier", cmds->fd[1]);
-			shell->exit_status = 1;
+			if (handle_assignment(cmds, shell, eq_pos, i))
+				return (1);
 		}
-		else
-		{
-			eq_pos = ft_strchr(cmds->value[i], '=');
-			if (eq_pos != NULL)
-			{
-				name = ft_substr(cmds->value[i], 0, eq_pos - cmds->value[i]);
-				if (!name)
-					return (1);
-				value = ft_exportdup(eq_pos + 1);
-				if (value == (void *)1)
-					return (free(name), 1);
-				env_var = find_env(shell->envs, name);
-				if (env_var)
-				{
-					if (env_var->value)
-						free(env_var->value);
-					env_var->value = ft_strdup(value);
-					free(name);
-					free(value);
-					if (env_var->value == (void *)1)
-						return (1);
-				}
-				else
-				{
-					add_new_env(&shell->envs, name, value);
-					free(name);
-					free(value);
-				}
-			}
-			else
-			{
-				env_var = find_env(shell->envs, cmds->value[i]);
-				if (!env_var)
-					add_new_env(&shell->envs, cmds->value[i], NULL);
-			}
-		}
-		i++;
+		else if (env_var == NULL)
+			add_new_env(&shell->envs, cmds->value[i], NULL);
 	}
 	return (0);
 }
@@ -108,14 +75,14 @@ int	copy_env(t_env **export, t_env *src)
 	{
 		tmp = (t_env *)malloc(sizeof(t_env));
 		if (!tmp)
-			return (free_env(*export),0);
+			return (free_env(*export), 0);
 		tmp->next = NULL;
 		tmp->name = ft_strdup(src->name);
 		if (!tmp->name)
-			return (free(tmp), free_env(*export),0);
+			return (free(tmp), free_env(*export), 0);
 		tmp->value = ft_exportdup(src->value);
 		if (tmp->value == (void *)1)
-			return (free(tmp->name), free(tmp), free_env(*export),0);
+			return (free(tmp->name), free(tmp), free_env(*export), 0);
 		list_add_back(export, tmp);
 		src = src->next;
 	}
@@ -147,19 +114,19 @@ int	export(t_command *cmds, t_main *shell)
 	t_env	*export;
 
 	export = NULL;
-	if(process_commands(cmds, shell))
+	if (process_commands(cmds, shell, 0))
 		return (0);
 	if (update_env(shell) == 0)
-		return(0) ;
-	if(!copy_env(&export, shell->envs))
+		return (0);
+	if (!copy_env(&export, shell->envs))
 		return (0);
 	export = sort_export(export, ascending);
-	if(!export)
+	if (!export)
 		return (0);
 	if (cmds->value[1] == NULL)
 		print_export(export, cmds->fd[1]);
 	if (update_env(shell) == 0)
-		return(0) ;
+		return (0);
 	free_env(export);
-	return (1);	
+	return (1);
 }

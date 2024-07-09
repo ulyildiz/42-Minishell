@@ -6,14 +6,17 @@
 /*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:42:15 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/08 16:37:20 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/09 21:00:43 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "functions.h"
 #include "libft.h"
+#include <stdlib.h>
 
-char *ft_exportdup(const char *s1)
+extern int	add_new_env(t_env **envs, char *name, char *value);
+
+char	*ft_exportdup(const char *s1)
 {
 	char	*s2;
 	int		i;
@@ -31,4 +34,56 @@ char *ft_exportdup(const char *s1)
 	}
 	s2[i] = '\0';
 	return (s2);
+}
+
+int	update_or_add_env_var(t_env **envs, char *name, char *value)
+{
+	t_env	*env_var;
+
+	env_var = find_env(*envs, name);
+	if (env_var)
+	{
+		if (env_var->value)
+			free(env_var->value);
+		env_var->value = ft_strdup(value);
+		if (env_var->value == (void *)1)
+			return (1);
+		else
+			return (0);
+	}
+	else
+	{
+		add_new_env(envs, name, value);
+		return (0);
+	}
+}
+
+int	handle_invalid_identifier(t_command *cmd, t_main *shell, int i)
+{
+	ft_putstr_fd("ft_sh: export: ", cmd->fd[1]);
+	ft_putstr_fd(cmd->value[i], cmd->fd[1]);
+	ft_putendl_fd(" : not a valid identifier", cmd->fd[1]);
+	shell->exit_status = 1;
+	return (0);
+}
+
+int	handle_assignment(t_command *cmd, t_main *shell, char *eq_pos, int i)
+{
+	char	*name;
+	char	*value;
+	int		result;
+
+	name = ft_substr(cmd->value[i], 0, eq_pos - cmd->value[i]);
+	if (!name)
+		return (1);
+	value = ft_exportdup(eq_pos + 1);
+	if (value == (void *)1)
+	{
+		free(name);
+		return (1);
+	}
+	result = update_or_add_env_var(&shell->envs, name, value);
+	free(name);
+	free(value);
+	return (result);
 }

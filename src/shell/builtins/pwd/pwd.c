@@ -10,13 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "functions.h"
-
 
 int	pwd(t_command *cmds, t_main *shell)
 {
-	char *pwd;
+	char	*pwd;
 
 	shell = (void *)shell;
 	pwd = getcwd(NULL, 0);

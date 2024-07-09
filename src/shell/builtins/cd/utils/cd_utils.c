@@ -6,7 +6,7 @@
 /*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:36 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/08 16:54:11 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/09 19:15:54 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ static int	set_env_value(t_env *env, char *value)
 t_env	*update_or_create_env(t_env **envs, char *name, char *value)
 {
 	t_env	*env;
-	
-	if(!value)
+
+	if (!value)
 		return (NULL);
 	env = find_env(*envs, name);
 	if (!env || !env->value)
@@ -73,38 +73,23 @@ t_env	*update_or_create_env(t_env **envs, char *name, char *value)
 	return (env);
 }
 
-char	*append_path(char *base, char *append)
-{
-	char	*path;
-	char	*tmp;
-
-	path = ft_strjoin(base, "/");
-	if (!path)
-		return (NULL);
-	tmp = ft_strappend(path, append, ft_strlen(append));
-	if (!tmp)
-		return (free(path), NULL);
-	return (tmp);
-}
-
 void	change_directory_and_update_envs(t_main *shell, char *path,
 		char *old_pwd_value)
 {
 	char	*gtcwd;
-	static int i = 0;
 
 	if (chdir(path) == 0)
 	{
 		gtcwd = getcwd(NULL, 0);
-		if (!update_or_create_env(&shell->envs, "OLDPWD", old_pwd_value))
+		if (!gtcwd)
 		{
-			free(gtcwd);
 			free(path);
-			perror("update_or_create_env failed");
+			perror("getcwd");
 			shell->exit_status = 1;
 			exit_for_fork(shell);
 		}
-		if (!update_or_create_env(&shell->envs, "PWD", gtcwd) || i == 4)
+		if (!update_or_create_env(&shell->envs, "OLDPWD", old_pwd_value)
+			|| !update_or_create_env(&shell->envs, "PWD", gtcwd))
 		{
 			free(gtcwd);
 			free(path);
@@ -116,5 +101,4 @@ void	change_directory_and_update_envs(t_main *shell, char *path,
 	}
 	else
 		perror("cd");
-	i++;
 }

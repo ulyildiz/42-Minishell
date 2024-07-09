@@ -6,7 +6,7 @@
 /*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:06 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/08 16:38:54 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/09 18:54:05 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,9 @@ int	exit_cmd(t_command *cmds, t_main *shell)
 		{
 			shell->exit_status = ft_atoi(cmds->value[1]) % 256;
 			if (i > 2)
-				return (shell->exit_status = 1, ft_putendl_fd(
-						"exit: too many arguments\n", cmds->fd[1]),1);
+				return (shell->exit_status = 1,
+					ft_putendl_fd("exit: too many arguments\n", cmds->fd[1]),
+					1);
 		}
 		else
 		{

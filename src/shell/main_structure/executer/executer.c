@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/07 16:05:39 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/09 20:07:30 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
 			return (signal_reciever(3));
 		signal_reciever(2);
 	}
-	if (!is_builtin(cmds, shell, cmd_num))
+	if (!is_builtin(cmds, cmd_num, ft_strlower(ft_strdup(cmds->value[0])), -1))
 		;
 	else if (accessibility(cmds, shell))
 		official_executer(cmds, shell, i, cmd_num);
