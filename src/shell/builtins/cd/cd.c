@@ -6,7 +6,7 @@
 /*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:16 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/09 18:58:03 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/09 22:23:54 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ static char	*get_home_path(t_command *cmds, t_env *home)
 			shell->exit_status = 1, NULL);
 }
 
-static char	*get_path(t_command *cmds, t_env *pwd, t_env *oldpwd, t_env *home)
+static char	*get_path(t_command *cmds, t_env *oldpwd, t_env *home)
 {
 	char	*path;
-
+	
 	path = NULL;
 	if (cmds->value[1] != NULL)
 	{
@@ -92,7 +92,7 @@ int	cd(t_command *cmds, t_main *shell)
 		shell->exit_status = 1;
 		return (free(gtcwd), exit_for_fork(shell), 0);
 	}
-	path = get_path(cmds, pwd, oldpwd, home);
+	path = get_path(cmds, oldpwd, home);
 	if (!path)
 		return (free(gtcwd), 0);
 	change_directory_and_update_envs(shell, path, pwd->value);

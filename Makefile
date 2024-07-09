@@ -35,7 +35,7 @@ SRC =   src/main.c \
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 CC = cc
-CFLAGS = -I ./include -I ./42-Libft #-Wall -Wextra -Werror
+CFLAGS = -I ./include -I ./42-Libft -Wall -Wextra -Werror -g
 LIBFT = 42-libft
 LIBFT_A = $(LIBFT)/libft.a
 
