@@ -106,8 +106,8 @@ char	*extract_cleaned_substr(const char *value, size_t start, size_t end)
 	char	*cleaned_substr;
 
 	substr = ft_substr(value, start, end - start);
-	cleaned_substr = remove_quotes(substr, FALSE, FALSE);
-	if (substr)
-		free(substr);
+	cleaned_substr = substr;/* remove_quotes(substr, FALSE, FALSE) */;
+/* 	if (substr)
+		free(substr); */
 	return (cleaned_substr);
 }

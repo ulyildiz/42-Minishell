@@ -79,7 +79,7 @@ static int	handle_command(t_command **cmds, t_tokens **t, size_t *i)
 		if ((*t)->value[j])
 		{
 			j = find_word_end((*t)->value, j, &in_d, &in_s);
-			cleaned_substr = extract_cleaned_substr((*t)->value, start, j);
+			cleaned_substr = ft_substr((*t)->value, start, j - start);
 			if (!cleaned_substr)
 				return (0);
 			(*cmds)->value[(*i)++] = cleaned_substr;

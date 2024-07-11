@@ -58,10 +58,16 @@ void	start_shell(t_main *shell)
 		else if (i == 2)
 			break ;
 		lexer(shell);
-		expender(shell);
-		//printf("-%p-, -%s-, -%d-\n", shell->token->value, shell->token->value, shell->token->value[0]);
+		printf("token = -%s-\n", shell->token->value);
 		parser(shell, shell->token, 0);
-		executor(shell, shell->cmd, FALSE, 0);
+		i = 0;
+		while (shell->cmd->value[i])
+			printf("%s\n", shell->cmd->value[i++]);
+ 		expender(shell);
+		i = 0;
+		while (shell->cmd->value[i])
+			printf("after expander-> %s\n", shell->cmd->value[i++]);
+/*		executor(shell, shell->cmd, FALSE, 0); */
 		signal_reciever(1);
 		shell->control = 1;
 	}
