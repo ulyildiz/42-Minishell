@@ -81,7 +81,6 @@ char	*remove_quotes(const char *str, t_bool in_s, t_bool in_d)
 		}
 		result[j++] = str[i++];
 	}
-	
 	result[j] = '\0';
 	return (result);
 }
