@@ -67,7 +67,7 @@ static int	home_expend(t_main *shell, char** cmd, char *tmp, size_t i)
 		return (perror("Home expand"), 0);
 	return (free(*cmd), *cmd = tmp, 1);
 }
-
+extern char	*recreate_cmdval(t_command *cmd);
 void	expender(t_main *shell)
 {
 	t_command	*cmds;
@@ -93,8 +93,9 @@ void	expender(t_main *shell)
 				if (!home_expend(shell, &cmds->value[i], NULL, 0))
 					return (exit_in_lex_ex(shell));
 			}
-			cmds->value[i] = remove_quotes(cmds->value[i], FALSE, FALSE);
+			//cmds->value[i] = remove_quotes(cmds->value[i], FALSE, FALSE);
 		}
+		recreate_cmdval(cmds);
 		cmds = cmds->next;
 	}
 }

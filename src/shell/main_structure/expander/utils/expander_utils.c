@@ -87,3 +87,37 @@ char	*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
 	}
 	return (tmp);
 }
+
+#include <stdio.h>
+
+size_t	w_c(char **value)
+{
+	size_t i, j, len;
+	t_bool in_s, in_d;
+
+	i = 0;
+	len = 0;
+	while (value[i])
+	{
+		j = 0;
+		in_s = FALSE;
+		in_d = FALSE;
+		while (value[i][j])
+		{
+			while (value[i][j] && is_whitespace(value[i][j]))
+				j++;
+			if (value[i][j])
+			{
+				len++;
+				while (value[i][j] && (!is_whitespace(value[i][j]) || in_s || in_d))
+				{
+					toggle_quote(value[i][j], &in_s, &in_d);
+					j++;
+				}
+			}
+		}
+		i++;
+	}
+	return (len);
+}
+#include <string.h>

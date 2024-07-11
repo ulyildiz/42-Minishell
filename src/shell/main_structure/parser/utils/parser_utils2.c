@@ -63,7 +63,6 @@ char	*remove_quotes(const char *str, t_bool in_s, t_bool in_d)
 	size_t	i;
 	size_t	j;
 
-	printf("a\n");
 	if (!str)
 		return (NULL);
 	result = allocate_result(str);
