@@ -17,7 +17,7 @@ static void	index_counter(size_t *i, size_t *j, int *newline, t_command *cmds)
 {
 	(*i) = 1;
 	(*newline) = 1;
-	if (cmds->value[(*i)] && cmds->value[(*i)][0] == '-')
+	if (cmds->value[(*i)] && cmds->value[(*i)][0] == '-' && cmds->value[*i][1] == 'n')
 	{
 		while (cmds->value[(*i)] && cmds->value[(*i)][0] == '-')
 		{

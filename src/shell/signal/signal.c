@@ -16,6 +16,7 @@
 #include <readline/readline.h>
 #include <termios.h>
 #include <unistd.h>
+#include <signal.h>
 
 void	parent_sigint(int sig)
 {

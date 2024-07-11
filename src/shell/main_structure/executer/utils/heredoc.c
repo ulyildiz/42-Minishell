@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 static char	*heredoc_expander(char *str, t_main *shell)
 {

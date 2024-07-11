@@ -18,6 +18,8 @@ static int	is_all_numeric(char *str)
 	size_t	i;
 
 	i = 0;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]))
@@ -39,10 +41,10 @@ int	exit_cmd(t_command *cmds, t_main *shell)
 	{
 		if (is_all_numeric(cmds->value[1]))
 		{
-			shell->exit_status = ft_atoi(cmds->value[1]) % 256;
+			shell->exit_status = (ft_atoi(cmds->value[1]) % 256);
 			if (i > 2)
 				return (shell->exit_status = 1,
-					ft_putendl_fd("exit: too many arguments\n", cmds->fd[1]),
+					ft_putendl_fd("exit: too many arguments", cmds->fd[1]),
 					1);
 		}
 		else

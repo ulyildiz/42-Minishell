@@ -65,9 +65,7 @@ int	process_command2(t_command *cmds, t_env *export, t_main *shell, int i)
 int	env(t_command *cmds, t_main *shell)
 {
 	t_env	*export;
-	int		i;
 
-	i = 1;
 	export = NULL;
 	if (!check_for_options(cmds))
 		return (1);

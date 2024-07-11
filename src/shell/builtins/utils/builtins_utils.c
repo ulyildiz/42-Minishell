@@ -89,7 +89,7 @@ int	is_builtin(t_command *cmds, t_bool cmd_num, char *tmp, int i)
 			if (cmd_num)
 				exit_for_fork(shell_keeper(NULL));
 			else
-				return (0);
+				return (shell_keeper(NULL)->exit_status = 0, 0);
 		}
 	}
 	return (free(tmp), 1);

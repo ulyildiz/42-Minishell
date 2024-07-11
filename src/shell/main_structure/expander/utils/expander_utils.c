@@ -15,23 +15,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static char	*expand_dollar_dollar(char *tmp)
-{
-	char	*pid_str;
-	char	*new_tmp;
-
-	pid_str = ft_itoa(getpid());
-	if (!pid_str)
-	{
-		if (tmp)
-			free(tmp);
-		return (NULL);
-	}
-	new_tmp = ft_strappend(tmp, pid_str, ft_strlen(pid_str));
-	free(pid_str);
-	return (new_tmp);
-}
-
 static char	*expand_dollar_question(char *tmp, t_main *shell)
 {
 	char	*code;
@@ -57,10 +40,8 @@ static char	*expand_variable(char *tmp, const char *token_value, size_t *i,
 
 	j = 0;
 	(*i)++;
-	while (ft_isalpha(token_value[*i + j]))
-	{
+	while (ft_isalpha(token_value[*i + j]) || token_value[*i + j] == '_')
 		j++;
-	}
 	new_tmp = ft_strndup(&token_value[*i], j);
 	if (!new_tmp)
 	{
@@ -85,12 +66,7 @@ char	*append_literal(char *tmp, char *token_value, size_t *start, size_t *i)
 char	*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
 		t_main *shell)
 {
-	if (token_value[*i + 1] == '$')
-	{
-		tmp = expand_dollar_dollar(tmp);
-		*i += 2;
-	}
-	else if (token_value[*i + 1] == '?')
+	if (token_value[*i + 1] == '?')
 	{
 		tmp = expand_dollar_question(tmp, shell);
 		*i += 2;

@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <sys/wait.h>
 
 static int	check_and_close(t_command *cmd, int fd, int i)
 {

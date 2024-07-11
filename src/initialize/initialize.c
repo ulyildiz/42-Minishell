@@ -115,6 +115,6 @@ int	initialize(t_main *shell, char **env)
 	shell->control = 1;
 	shell->env_for_execve_function = NULL;
 	if (!update_env(shell))
-		(free_env(shell->envs), 0);
+		return (free_env(shell->envs), 0);
 	return (1);
 }

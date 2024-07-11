@@ -59,6 +59,7 @@ void	start_shell(t_main *shell)
 			break ;
 		lexer(shell);
 		expender(shell);
+		//printf("-%p-, -%s-, -%d-\n", shell->token->value, shell->token->value, shell->token->value[0]);
 		parser(shell, shell->token, 0);
 		executor(shell, shell->cmd, FALSE, 0);
 		signal_reciever(1);
