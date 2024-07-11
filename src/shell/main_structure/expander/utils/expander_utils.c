@@ -31,6 +31,8 @@ static char	*expand_dollar_question(char *tmp, t_main *shell)
 	return (tmp);
 }
 
+
+
 static char	*expand_variable(char *tmp, const char *token_value, size_t *i,
 		t_env *env)
 {
@@ -76,7 +78,7 @@ char	*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
 		tmp = ft_strappend(tmp, "$", 1);
 		(*i)++;
 	}
-	else if (ft_isalpha(token_value[*i + 1]))
+	else if (ft_isalpha(token_value[*i + 1]) || token_value[*i + 1] == '_')
 		tmp = expand_variable(tmp, token_value, i, shell->envs);
 	else
 	{

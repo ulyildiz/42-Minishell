@@ -67,7 +67,7 @@ void	start_shell(t_main *shell)
 		i = 0;
 		while (shell->cmd->value[i])
 			printf("after expander-> %s\n", shell->cmd->value[i++]);
-/*		executor(shell, shell->cmd, FALSE, 0); */
+		executor(shell, shell->cmd, FALSE, 0);
 		signal_reciever(1);
 		shell->control = 1;
 	}

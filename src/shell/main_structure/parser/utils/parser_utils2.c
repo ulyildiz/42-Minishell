@@ -12,7 +12,7 @@
 
 #include "functions.h"
 #include "libft.h"
-
+#include <stdio.h>
 static void	fill_rdrs(t_command *cmds, char **tmp, size_t *f)
 {
 	size_t	i;
@@ -57,12 +57,13 @@ int	rdr_position(t_command *cmds)
 	return (1);
 }
 
-static char	*remove_quotes(const char *str, t_bool in_s, t_bool in_d)
+char	*remove_quotes(const char *str, t_bool in_s, t_bool in_d)
 {
 	char	*result;
 	size_t	i;
 	size_t	j;
 
+	printf("a\n");
 	if (!str)
 		return (NULL);
 	result = allocate_result(str);

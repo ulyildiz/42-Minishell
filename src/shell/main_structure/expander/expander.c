@@ -14,7 +14,6 @@
 #include "libft.h"
 #include <stdlib.h>
 #include <stdio.h>
-/*  extract_cleaned_substr((*t)->value, start, j); */
 static int	dollar_expend(t_main *shell, char** cmd, char *tmp, size_t i)
 {
 	size_t	start;
@@ -30,9 +29,6 @@ static int	dollar_expend(t_main *shell, char** cmd, char *tmp, size_t i)
 			while ((*cmd)[i] && !((*cmd)[i] == '$' && !shell->in_s))
 			{
 				toggle_quote((*cmd)[i], &shell->in_s, &shell->in_d);
-				/* if (((*cmd)[i] == '"' || (*cmd)[i] == '\"') && !shell->in_s && !shell->in_d)
-					(*cmd)[i] = '\0'; */
-
 				i++;
 			}
 			tmp = append_literal(tmp, *cmd, &start, &i);
@@ -76,7 +72,6 @@ void	expender(t_main *shell)
 {
 	t_command	*cmds;
 	size_t		i;
-	char		*tmp;
 
 	if (shell->control == 0)
 		return ;
@@ -90,7 +85,7 @@ void	expender(t_main *shell)
 		{
 			if (ft_strnstr(cmds->value[i], "$", ft_strlen(cmds->value[i])))
 			{
-				if (!dollar_expend(shell, &cmds->value[i], tmp, 0))
+				if (!dollar_expend(shell, &cmds->value[i], NULL, 0))
 					return (exit_in_lex_ex(shell));
 			}
 			if (ft_strnstr(cmds->value[i], "~", ft_strlen(cmds->value[i])))
@@ -98,6 +93,7 @@ void	expender(t_main *shell)
 				if (!home_expend(shell, &cmds->value[i], NULL, 0))
 					return (exit_in_lex_ex(shell));
 			}
+			cmds->value[i] = remove_quotes(cmds->value[i], FALSE, FALSE);
 		}
 		cmds = cmds->next;
 	}

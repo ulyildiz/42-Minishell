@@ -17,6 +17,7 @@
 
 # include "defines.h"
 # include <stddef.h>
+
 /********************************   Funtions   ********************************/
 
 // preparing functions
@@ -77,6 +78,7 @@ char		*extract_cleaned_substr(const char *value, size_t start,
 size_t		length_to_token(t_tokens *lst);
 size_t		find_word_end(const char *value, size_t start, t_bool *in_d,
 				t_bool *in_s);
+char	*remove_quotes(const char *str, t_bool in_s, t_bool in_d);
 
 // executer functions
 void		executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i);
