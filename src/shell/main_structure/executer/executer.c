@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/10 02:32:44 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/12 14:24:41 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ static int	set_fd(t_main *shell, t_command *cmd, int *i)
 {
 	int	fd[2];
 
-	if (!heredocs(shell, cmd))
-		return (1);
+/* 	if (!heredocs(shell, cmd))
+		return (1); */
 	signal_reciever(1);
 	while (cmd)
 	{

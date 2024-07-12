@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/12 10:39:39 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/12 17:00:40 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,34 @@ static int	home_expend(t_main *shell, char** cmd, char *tmp, size_t i)
 	return (free(*cmd), *cmd = tmp, 1);
 }
 extern char	**recreate_cmdval(t_command *cmd);
+
+char	*remove_quotes(const char *str, t_bool in_s, t_bool in_d)
+{
+	char	*result;
+	size_t	i;
+	size_t	j;
+
+	if (!str)
+		return (NULL);
+	result = allocate_result(str);
+	if (!result)
+		return (NULL);
+	j = 0;
+	i = 0;
+	while (str[i])
+	{
+		toggle_quote(str[i], &in_s, &in_d);
+		if ((str[i] == '\'' && !in_d) || (str[i] == '"' && !in_s))
+		{
+			i++;
+			continue ;
+		}
+		result[j++] = str[i++];
+	}
+	result[j] = '\0';
+	return (result);
+}
+
 void	expender(t_main *shell)
 {
 	t_command	*cmds;
@@ -91,10 +119,28 @@ void	expender(t_main *shell)
 			if (ft_strnstr(cmds->value[i], "~", ft_strlen(cmds->value[i])))
 			{
 				if (!home_expend(shell, &cmds->value[i], NULL, 0))
-					return (exit_in_lex_ex(shell));
+					return (exit_in_lex_ex(shell));		
 			}
 		}
 		cmds->value = recreate_cmdval(cmds);
+		printf("a\n");
+		i = -1;
+		shell->in_d = FALSE;
+		shell->in_s = FALSE;
+		while (cmds->rdrs && cmds->rdrs[i += 2])
+		{
+			if (ft_strnstr(cmds->rdrs[i], "$", ft_strlen(cmds->rdrs[i])))
+			{
+				if (!dollar_expend(shell, &cmds->rdrs[i], NULL, 0))
+					return (exit_in_lex_ex(shell));
+			}
+			if (ft_strnstr(cmds->rdrs[i], "~", ft_strlen(cmds->rdrs[i])))
+			{
+				if (!home_expend(shell, &cmds->rdrs[i], NULL, 0))
+					return (exit_in_lex_ex(shell));
+			}
+			cmds->rdrs[i] = remove_quotes(cmds->rdrs[i], FALSE, FALSE);
+		}
 		cmds = cmds->next;
 	}
 }

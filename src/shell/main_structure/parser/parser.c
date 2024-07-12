@@ -114,5 +114,8 @@ void	parser(t_main *shell, t_tokens *t, size_t i)
 	}
 	if (!rdr_position(cmds))
 		return (shell->exit_status = 1, exit_in_parser(shell));
+	if (!heredocs(shell, cmds))
+		return (exit(1));
+	signal_reciever(1);
 	return (cmds->next = NULL, free_tokens(shell));
 }

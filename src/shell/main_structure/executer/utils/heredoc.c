@@ -57,13 +57,15 @@ static void	here_in(t_main *shell, int *fd, char *delimeter)
 				free(line);
 			close(fd[1]);
 			shell->exit_status = 0;
-			exit_for_fork(shell);
+			exit(shell->exit_status);
+			//exit_for_fork(shell);
 		}
 		line = heredoc_expander(line, shell);
 		if (!line)
 		{
 			shell->exit_status = 1;
-			exit_for_fork(shell);
+			exit(shell->exit_status);
+			//exit_for_fork(shell);
 		}
 		ft_putendl_fd(line, fd[1]);
 		free(line);
@@ -124,7 +126,7 @@ int	heredocs(t_main *shell, t_command *cmd)
 			if (!ft_strncmp(cmd->rdrs[i], "<<", 2))
 			{
 				if (pipe(fd) == -1)
-					return (exit_in_exec(shell), 0);
+					return (0);
 				if (here_loop(shell, fd, cmd, cmd->rdrs[++i]) == SIGINT)
 					return (0);
 			}

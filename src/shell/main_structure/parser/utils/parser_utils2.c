@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 19:20:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/12 10:53:26 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/12 17:00:58 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,16 +94,4 @@ size_t	find_word_end(const char *value, size_t start, t_bool *in_d,
 		j++;
 	}
 	return (j);
-}
-
-char	*extract_cleaned_substr(const char *value, size_t start, size_t end)
-{
-	char	*substr;
-	char	*cleaned_substr;
-
-	substr = ft_substr(value, start, end - start);
-	cleaned_substr = substr;/* remove_quotes(substr, FALSE, FALSE) */;
-/* 	if (substr)
-		free(substr); */
-	return (cleaned_substr);
 }
