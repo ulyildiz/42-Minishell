@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:05:33 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/10 02:30:41 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/12 12:13:18 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ char	*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
 	return (tmp);
 }
 
-#include <stdio.h>
-
 size_t	w_c(char **value)
 {
 	size_t i, j, len;
@@ -120,4 +118,78 @@ size_t	w_c(char **value)
 	}
 	return (len);
 }
-#include <string.h>
+
+char	*createword(t_command *cmd, size_t idx, size_t j, size_t *i)
+{
+	size_t	start;
+	t_bool	in_s;
+	t_bool	in_d;
+	size_t	len;
+	char 	*tmp;
+
+	start = *i;
+	in_s = FALSE;
+	in_d = FALSE;
+	while (cmd->value[j][*i] && (!is_whitespace(cmd->value[j][*i]) || in_s || in_d))
+	{
+		toggle_quote(cmd->value[j][*i], &in_s, &in_d);
+		if ((cmd->value[j][*i] == '\'' && !in_d) || (cmd->value[j][*i] == '"' && !in_s))
+		{
+			(*i)++;
+			continue ;
+		}
+		(*i)++;
+	}
+	len = (*i) - start;
+	tmp = ft_calloc(len + 1, sizeof(char));
+	if (!tmp)
+		return (NULL);
+	in_s = FALSE;
+	in_d = FALSE;
+	size_t	k = start;
+	size_t	tmp_idx = 0;
+	while (cmd->value[j][k] && k < *i /* && (!is_whitespace(cmd->value[j][*i]) || in_s || in_d) */)
+	{
+		toggle_quote(cmd->value[j][k], &in_s, &in_d);
+		if ((cmd->value[j][k] == '\'' && !in_d) || (cmd->value[j][k] == '"' && !in_s))
+		{
+			(k)++;
+			continue ;
+		}
+		tmp[tmp_idx++] = cmd->value[j][k]; 	
+		(k)++;
+	}
+	return (tmp);
+}
+
+
+char **recreate_cmdval(t_command *cmd)
+{
+	size_t	j;
+	char	**tmp;
+	size_t	idx;
+	size_t	i;
+
+	idx = 0;
+	j = 0;
+	tmp = ft_calloc(w_c(cmd->value) + 1, sizeof(char *));
+	if (!tmp)
+		return (NULL);
+	while (cmd->value[j])
+	{
+		i = 0;
+		while (cmd->value[j][i])
+		{
+			while (cmd->value[j][i] && is_whitespace(cmd->value[j][i]))
+				i++;
+			if (cmd->value[j][i])
+			{
+				tmp[idx] = createword(cmd, idx, j, &i);
+				if (!tmp[idx++])
+					return (NULL);
+			}
+		}
+		j++;
+	}
+	return (free_double(cmd->value), tmp);
+}

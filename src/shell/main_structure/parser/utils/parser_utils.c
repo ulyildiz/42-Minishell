@@ -67,7 +67,7 @@ char	*allocate_result(const char *str)
 	char	*result;
 
 	len = ft_strlen(str);
-	result = (char *)calloc(len + 1, sizeof(char));
+	result = (char *)ft_calloc(len + 1, sizeof(char));
 	return (result);
 }
 

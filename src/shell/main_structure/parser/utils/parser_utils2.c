@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 19:20:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/10 02:32:02 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/12 10:53:26 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,31 +57,27 @@ int	rdr_position(t_command *cmds)
 	return (1);
 }
 
-char	*remove_quotes(const char *str, t_bool in_s, t_bool in_d)
+char	*create_word(t_command *cmd, size_t idx, size_t j, size_t *i)
 {
-	char	*result;
-	size_t	i;
-	size_t	j;
+	size_t	start;
+	t_bool	in_s;
+	t_bool	in_d;
+	size_t	len;
 
-	if (!str)
-		return (NULL);
-	result = allocate_result(str);
-	if (!result)
-		return (NULL);
-	j = 0;
-	i = 0;
-	while (str[i])
+	start = *i;
+	in_s = FALSE;
+	in_d = FALSE;
+	while (cmd->value[j][*i] && (!is_whitespace(cmd->value[j][*i]) || in_s || in_d))
 	{
-		toggle_quote(str[i], &in_s, &in_d);
-		if ((str[i] == '\'' && !in_d) || (str[i] == '"' && !in_s))
+		toggle_quote(cmd->value[j][*i], &in_s, &in_d);
+		if ((cmd->value[j][*i] == '\'' && !in_d) || (cmd->value[j][*i] == '"' && !in_s))
 		{
-			i++;
+			(*i)++;
 			continue ;
 		}
-		result[j++] = str[i++];
 	}
-	result[j] = '\0';
-	return (result);
+	len = (*i) - start;
+	return (ft_substr(cmd->value[j], start, len));
 }
 
 size_t	find_word_end(const char *value, size_t start, t_bool *in_d,
