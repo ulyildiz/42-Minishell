@@ -30,7 +30,6 @@ int			tlist(t_tokens **head, char *arr);
 int			token_check(t_main *shell);
 void		listing_token(t_main *shell, char *tmp, size_t *j, char *token);
 void		listing_rdr(t_main *shell, size_t *j, size_t *i, char *token);
-void		exit_in_lex_ex(t_main *shell);
 
 // free		functions
 void		free_env(t_env *shell);
@@ -52,11 +51,15 @@ void		signal_reciever(int flag);
 int			update_env(t_main *shell);
 void		disable_echo_control_chars(void);
 t_main		*shell_keeper(t_main *shell);
+void		change_directory_and_update_envs(t_main *shell, char *path,
+				char *old_pwd_value);
+
+// exits
+void		exit_in_lex(t_main *shell);
 void		exit_for_fork(t_main *shell);
 void		exit_in_parser(t_main *shell);
 void		exit_in_exec(t_main *shell);
-void		change_directory_and_update_envs(t_main *shell, char *path,
-				char *old_pwd_value);
+void		exit_in_expander(t_main *shell);
 
 // expender functions
 void		expender(t_main *shell);
@@ -73,12 +76,12 @@ int			is_rdr(char *strs);
 char		*allocate_result(const char *str);
 void		toggle_quote(char c, t_bool *in_s, t_bool *in_d);
 int			rdr_position(t_command *cmds);
-char		*extract_cleaned_substr(const char *value, size_t start,
-				size_t end);
 size_t		length_to_token(t_tokens *lst);
 size_t		find_word_end(const char *value, size_t start, t_bool *in_d,
 				t_bool *in_s);
-char	*remove_quotes(const char *str, t_bool in_s, t_bool in_d);
+char		*remove_quotes(const char *str, t_bool in_s, t_bool in_d);
+char		**recreate_cmdval(t_command *cmd);
+
 
 // executer functions
 void		executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i);

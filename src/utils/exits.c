@@ -17,13 +17,24 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 
-void	exit_in_lex_ex(t_main *shell)
+void	exit_in_lex(t_main *shell)
 {
 	free_env(shell->envs);
 	free_double(shell->env_for_execve_function);
 	free_tokens(shell);
 	rl_clear_history();
 	free(shell->cmd_line);
+	exit(shell->exit_status);
+}
+
+void	exit_in_expander(t_main *shell)
+{
+	perror("Expander");
+	free_env(shell->envs);
+	free_double(shell->env_for_execve_function);
+	rl_clear_history();
+	free(shell->cmd_line);
+	free_command(shell, NULL);
 	exit(shell->exit_status);
 }
 

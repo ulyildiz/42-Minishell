@@ -92,7 +92,7 @@ void	lexer(t_main *shell)
 	input_len = ft_strlen(shell->cmd_line);
 	shell->tmp = (char *)malloc((input_len + 1) * sizeof(char));
 	if (!shell->tmp)
-		return (exit_in_lex_ex(shell));
+		return (exit_in_lex(shell));
 	shell->in_s = FALSE;
 	shell->in_d = FALSE;
 	shell->token = NULL;
@@ -101,7 +101,7 @@ void	lexer(t_main *shell)
 	{
 		shell->tmp[j] = '\0';
 		if (!tlist(&shell->token, shell->tmp))
-			return (free(shell->tmp), exit_in_lex_ex(shell));
+			return (free(shell->tmp), exit_in_lex(shell));
 	}
 	return (free(shell->tmp), last_things(shell));
 }

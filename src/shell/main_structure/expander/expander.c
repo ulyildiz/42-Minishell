@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/12 17:00:40 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/13 20:45:40 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,80 +67,74 @@ static int	home_expend(t_main *shell, char** cmd, char *tmp, size_t i)
 		return (perror("Home expand"), 0);
 	return (free(*cmd), *cmd = tmp, 1);
 }
-extern char	**recreate_cmdval(t_command *cmd);
 
-char	*remove_quotes(const char *str, t_bool in_s, t_bool in_d)
+static int	expand_value(t_command *cmds, t_main *shell)
 {
-	char	*result;
 	size_t	i;
-	size_t	j;
 
-	if (!str)
-		return (NULL);
-	result = allocate_result(str);
-	if (!result)
-		return (NULL);
-	j = 0;
-	i = 0;
-	while (str[i])
+	i = -1;
+	shell->in_d = FALSE;
+	shell->in_s = FALSE;
+	while (cmds->value[++i])
 	{
-		toggle_quote(str[i], &in_s, &in_d);
-		if ((str[i] == '\'' && !in_d) || (str[i] == '"' && !in_s))
+		if (ft_strnstr(cmds->value[i], "$", ft_strlen(cmds->value[i])))
 		{
-			i++;
-			continue ;
+			if (!dollar_expend(shell, &cmds->value[i], NULL, 0))
+				return (1);
 		}
-		result[j++] = str[i++];
+		if (ft_strnstr(cmds->value[i], "~", ft_strlen(cmds->value[i])))
+		{
+			if (!home_expend(shell, &cmds->value[i], NULL, 0))
+				return (1);
+		}
 	}
-	result[j] = '\0';
-	return (result);
+	cmds->value = recreate_cmdval(cmds);
+	if (cmds->value == NULL)
+		return (1);
+	return (0);
+}
+
+static int	expand_rdr(t_command *cmds, t_main *shell)
+{
+	size_t	i;
+	char	*tmp;
+
+	i = -1;
+	shell->in_d = FALSE;
+	shell->in_s = FALSE;
+	while (cmds->rdrs && cmds->rdrs[i += 2])
+	{
+		if (ft_strnstr(cmds->rdrs[i], "$", ft_strlen(cmds->rdrs[i])))
+		{
+			if (!dollar_expend(shell, &cmds->rdrs[i], NULL, 0))
+				return (1);
+		}
+		if (ft_strnstr(cmds->rdrs[i], "~", ft_strlen(cmds->rdrs[i])))
+		{
+			if (!home_expend(shell, &cmds->rdrs[i], NULL, 0))
+				return (1);
+		}
+		tmp = remove_quotes(cmds->rdrs[i], FALSE, FALSE);
+		if (!tmp)
+			return (1);
+		cmds->rdrs[i] = tmp;
+	}
+	return (0);
 }
 
 void	expender(t_main *shell)
 {
 	t_command	*cmds;
-	size_t		i;
 
 	if (shell->control == 0)
 		return ;
 	cmds = shell->cmd;
 	while (cmds)
 	{
-		i = -1;
-		shell->in_d = FALSE;
-		shell->in_s = FALSE;
-		while (cmds->value[++i])
-		{
-			if (ft_strnstr(cmds->value[i], "$", ft_strlen(cmds->value[i])))
-			{
-				if (!dollar_expend(shell, &cmds->value[i], NULL, 0))
-					return (exit_in_lex_ex(shell));
-			}
-			if (ft_strnstr(cmds->value[i], "~", ft_strlen(cmds->value[i])))
-			{
-				if (!home_expend(shell, &cmds->value[i], NULL, 0))
-					return (exit_in_lex_ex(shell));		
-			}
-		}
-		cmds->value = recreate_cmdval(cmds);
-		printf("a\n");
-		i = -1;
-		shell->in_d = FALSE;
-		shell->in_s = FALSE;
-		while (cmds->rdrs && cmds->rdrs[i += 2])
-		{
-			if (ft_strnstr(cmds->rdrs[i], "$", ft_strlen(cmds->rdrs[i])))
-			{
-				if (!dollar_expend(shell, &cmds->rdrs[i], NULL, 0))
-					return (exit_in_lex_ex(shell));
-			}
-			if (ft_strnstr(cmds->rdrs[i], "~", ft_strlen(cmds->rdrs[i])))
-			{
-				if (!home_expend(shell, &cmds->rdrs[i], NULL, 0))
-					return (exit_in_lex_ex(shell));
-			}
-			cmds->rdrs[i] = remove_quotes(cmds->rdrs[i], FALSE, FALSE);
-		}
+		if (expand_value(cmds, shell))
+			return (shell->exit_status = 1, exit_in_expander(shell));
+		if (expand_rdr(cmds, shell))
+			return (shell->exit_status = 1, exit_in_expander(shell));
 		cmds = cmds->next;
 	}
 }
