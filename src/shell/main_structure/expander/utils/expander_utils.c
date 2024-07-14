@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:05:33 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/13 20:42:55 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/14 23:26:33 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	*expand_dollar_question(char *tmp, t_main *shell)
 {
 	char	*code;
 
-	code = ft_itoa(shell->exit_status);
+	code = ft_itoa(shell->es);
 	if (!code)
 	{
 		if (tmp)
@@ -30,7 +30,7 @@ static char	*expand_dollar_question(char *tmp, t_main *shell)
 	free(code);
 	return (tmp);
 }
-
+#include <stdio.h>
 static char	*expand_variable(char *tmp, const char *token_value, size_t *i,
 		t_env *env)
 {
@@ -52,8 +52,11 @@ static char	*expand_variable(char *tmp, const char *token_value, size_t *i,
 	if (expnd_value)
 		tmp = ft_strappend(tmp, expnd_value->value,
 				ft_strlen(expnd_value->value));
+	else
+		tmp = ft_strdup("");
 	free(new_tmp);
 	*i += j;
+	printf("%p\n", tmp);
 	return (tmp);
 }
 
@@ -76,7 +79,7 @@ char	*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
 		tmp = ft_strappend(tmp, "$", 1);
 		(*i)++;
 	}
-	else if (ft_isalpha(token_value[*i + 1]) || token_value[*i + 1] == '_')
+	else if (ft_isascii(token_value[*i + 1])/* ft_isalpha(token_value[*i + 1]) || token_value[*i + 1] == '_' */)
 		tmp = expand_variable(tmp, token_value, i, shell->envs);
 	else
 	{

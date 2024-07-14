@@ -35,7 +35,6 @@ void	deletenode_p(t_command **head, t_command *key_point)
 int	check_heredoc(t_command *cmd)
 {
 	int	i;
-	int	j;
 	int	k;
 
 	k = 0;
@@ -45,12 +44,7 @@ int	check_heredoc(t_command *cmd)
 		while (cmd->rdrs && cmd->rdrs[++i])
 		{
 			if (!ft_strncmp(cmd->rdrs[i], "<<", 2))
-			{
-				j = i + 1;
-				if (!cmd->rdrs[j])
-					return (0);
 				k++;
-			}
 		}
 		cmd = cmd->next;
 	}

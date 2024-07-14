@@ -6,20 +6,22 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 20:18:49 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/13 20:25:33 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/14 23:33:57 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <functions.h>
+#include "functions.h"
+#include "libft.h"
 
 static size_t	w_c(char **value)
 {
 	size_t i, j, len;
-	t_bool in_s, in_d;
+	t_bool in_s;
+	t_bool in_d;
 
-	i = 0;
+	i = -1;
 	len = 0;
-	while (value[i])
+	while (value[++i])
 	{
 		j = 0;
 		in_s = FALSE;
@@ -38,12 +40,11 @@ static size_t	w_c(char **value)
 				}
 			}
 		}
-		i++;
 	}
 	return (len);
 }
 
-static char	*createword(t_command *cmd, size_t idx, size_t j, size_t *i)
+static char	*createword(t_command *cmd, size_t j, size_t *i)
 {
 	size_t	start;
 	t_bool	in_s;
@@ -72,7 +73,7 @@ static char	*createword(t_command *cmd, size_t idx, size_t j, size_t *i)
 	in_d = FALSE;
 	size_t	k = start;
 	size_t	tmp_idx = 0;
-	while (cmd->value[j][k] && k < *i /* && (!is_whitespace(cmd->value[j][*i]) || in_s || in_d) */)
+	while (cmd->value[j][k] && k < *i)
 	{
 		toggle_quote(cmd->value[j][k], &in_s, &in_d);
 		if ((cmd->value[j][k] == '\'' && !in_d) || (cmd->value[j][k] == '"' && !in_s))
@@ -107,7 +108,7 @@ char	**recreate_cmdval(t_command *cmd)
 				i++;
 			if (cmd->value[j][i])
 			{
-				tmp[idx] = createword(cmd, idx, j, &i);
+				tmp[idx] = createword(cmd, j, &i);
 				if (!tmp[idx++])
 					return (free_double(tmp), NULL);
 			}

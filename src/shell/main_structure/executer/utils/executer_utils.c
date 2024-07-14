@@ -22,22 +22,22 @@ void	error_handler(t_command *cmds, int flag, t_main *shell)
 	if (flag == 1)
 	{
 		ft_putendl_fd(": command not found", 2);
-		shell->exit_status = 127;
+		shell->es = 127;
 	}
 	else if (flag == 2)
 	{
 		ft_putendl_fd(": No such file or directory", 2);
-		shell->exit_status = 127;
+		shell->es = 127;
 	}
 	else if (flag == 3)
 	{
 		ft_putendl_fd(": Permission denied", 2);
-		shell->exit_status = 126;
+		shell->es = 126;
 	}
 	else if (flag == 4)
 	{
 		ft_putendl_fd(": Is a directory", 2);
-		shell->exit_status = 126;
+		shell->es = 126;
 	}
 }
 

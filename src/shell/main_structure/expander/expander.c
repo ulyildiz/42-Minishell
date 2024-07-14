@@ -6,14 +6,14 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/13 20:45:40 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/14 23:28:25 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 #include "libft.h"
-#include <stdlib.h>
 #include <stdio.h>
+
 static int	dollar_expend(t_main *shell, char** cmd, char *tmp, size_t i)
 {
 	size_t	start;
@@ -102,7 +102,7 @@ static int	expand_rdr(t_command *cmds, t_main *shell)
 	i = -1;
 	shell->in_d = FALSE;
 	shell->in_s = FALSE;
-	while (cmds->rdrs && cmds->rdrs[i += 2])
+	while (cmds->rdrs && cmds->rdrs[++i])
 	{
 		if (ft_strnstr(cmds->rdrs[i], "$", ft_strlen(cmds->rdrs[i])))
 		{
@@ -118,6 +118,7 @@ static int	expand_rdr(t_command *cmds, t_main *shell)
 		if (!tmp)
 			return (1);
 		cmds->rdrs[i] = tmp;
+		i++;
 	}
 	return (0);
 }
@@ -132,9 +133,9 @@ void	expender(t_main *shell)
 	while (cmds)
 	{
 		if (expand_value(cmds, shell))
-			return (shell->exit_status = 1, exit_in_expander(shell));
+			return (shell->es = 1, exit_in_expander(shell));
 		if (expand_rdr(cmds, shell))
-			return (shell->exit_status = 1, exit_in_expander(shell));
+			return (shell->es = 1, exit_in_expander(shell));
 		cmds = cmds->next;
 	}
 }

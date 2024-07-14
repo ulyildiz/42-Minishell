@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 17:30:01 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/10 02:36:14 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/14 23:23:17 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	check_argument(char *tmp, char *arg)
 		return (1);
 	return (0);
 }
-
+#include <stdio.h>
 int	is_builtin(t_command *cmds, t_bool cmd_num, char *tmp, int i)
 {
 	static t_build	commands[] = {{"echo", echo}, {"cd", cd}, {"pwd", pwd},
@@ -73,7 +73,7 @@ int	is_builtin(t_command *cmds, t_bool cmd_num, char *tmp, int i)
 		exit_cmd}, {NULL, NULL}};
 
 	if (!tmp)
-		return (1);
+		return (shell_keeper(NULL)->es = 1, exit_in_exec(shell_keeper(NULL)), 1);
 	while (commands[++i].name)
 	{
 		if (check_argument(tmp, commands[i].name))
@@ -81,15 +81,17 @@ int	is_builtin(t_command *cmds, t_bool cmd_num, char *tmp, int i)
 			free(tmp);
 			if (!commands[i].func(cmds, shell_keeper(NULL)))
 			{
+				shell_keeper(NULL)->es = 1;
 				if (cmd_num)
 					exit_for_fork(shell_keeper(NULL));
 				else
 					exit_in_exec(shell_keeper(NULL));
 			}
+			shell_keeper(NULL)->es = 0;
 			if (cmd_num)
 				exit_for_fork(shell_keeper(NULL));
 			else
-				return (shell_keeper(NULL)->exit_status = 0, 0);
+				return (0);
 		}
 	}
 	return (free(tmp), 1);

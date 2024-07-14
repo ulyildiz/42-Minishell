@@ -12,7 +12,7 @@
 
 #include "functions.h"
 #include "libft.h"
-#include <stdio.h>
+
 static void	fill_rdrs(t_command *cmds, char **tmp, size_t *f)
 {
 	size_t	i;
@@ -57,7 +57,7 @@ int	rdr_position(t_command *cmds)
 	return (1);
 }
 
-char	*create_word(t_command *cmd, size_t idx, size_t j, size_t *i)
+char	*create_word(t_command *cmd, size_t j, size_t *i)
 {
 	size_t	start;
 	t_bool	in_s;

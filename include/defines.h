@@ -75,7 +75,7 @@ typedef struct s_main
 	t_bool				in_s;
 	t_bool				in_d;
 	char				*tmp;
-	int					exit_status;
+	int					es;
 	int					control;
 	char				**paths;
 	char				*prompt;

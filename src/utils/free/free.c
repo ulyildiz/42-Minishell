@@ -92,8 +92,8 @@ void	free_c(t_command *c)
 		free_double(c->value);
 	if (c->rdrs)
 		free_double(c->rdrs);
-	if (c->fd[0] != STDIN_FILENO)
-		close(c->fd[0]);
+/* 	if (c->fd[0] != STDIN_FILENO)
+		close(c->fd[0]); */
 	if (c->fd[1] != STDOUT_FILENO)
 		close(c->fd[1]);
 	free(c);

@@ -30,7 +30,7 @@ static char *get_oldpwd_path(t_command *cmds, t_env *oldpwd)
         if (!path)
 		{
             ft_putstr_fd("Error duplicating OLDPWD value\n", cmds->fd[1]);
-            shell->exit_status = 1;
+            shell->es = 1;
             exit_for_fork(shell);
         }
         ft_putendl_fd(path, cmds->fd[1]);
@@ -39,7 +39,7 @@ static char *get_oldpwd_path(t_command *cmds, t_env *oldpwd)
 	else 
 	{
         ft_putstr_fd("OLDPWD not set\n", cmds->fd[1]);
-        shell->exit_status = 1;
+        shell->es = 1;
         return (NULL);
     }
 }
@@ -56,7 +56,7 @@ static char *get_home_path(t_command *cmds, t_env *home)
         if (!path)
 		{
             ft_putstr_fd("Error duplicating HOME value\n", cmds->fd[1]);
-            shell->exit_status = 1;
+            shell->es = 1;
             exit_for_fork(shell);
         }
         return (path);
@@ -64,7 +64,7 @@ static char *get_home_path(t_command *cmds, t_env *home)
 	else
 	{
         ft_putstr_fd("HOME not set\n", cmds->fd[1]);
-        shell->exit_status = 1;
+        shell->es = 1;
         return (NULL);
     }
 }
@@ -94,13 +94,13 @@ int cd(t_command *cmds, t_main *shell)
         return 1;
     gtcwd = getcwd(NULL, 0);
     if (!gtcwd)
-        return (perror("getcwd failed"), shell->exit_status = 1, 0);
+        return (perror("getcwd failed"), shell->es = 1, 0);
     pwd = update_or_create_env(&shell->envs, "PWD", gtcwd);
     oldpwd = find_env(shell->envs, "OLDPWD");
     home = find_env(shell->envs, "HOME");
     if (!pwd)
 	{
-        shell->exit_status = 1;
+        shell->es = 1;
         free(gtcwd);
         exit_for_fork(shell);
     }

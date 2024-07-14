@@ -12,7 +12,6 @@
 
 #include "functions.h"
 #include "libft.h"
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <readline/readline.h>
@@ -24,7 +23,7 @@ void	exit_in_lex(t_main *shell)
 	free_tokens(shell);
 	rl_clear_history();
 	free(shell->cmd_line);
-	exit(shell->exit_status);
+	exit(shell->es);
 }
 
 void	exit_in_expander(t_main *shell)
@@ -35,19 +34,23 @@ void	exit_in_expander(t_main *shell)
 	rl_clear_history();
 	free(shell->cmd_line);
 	free_command(shell, NULL);
-	exit(shell->exit_status);
+	exit(shell->es);
 }
 
-void	exit_in_parser(t_main *shell)
+void	exit_in_parser(t_main *shell, int in_here)
 {
-	perror("Parser");
-	free_env(shell->envs);
-	free_double(shell->env_for_execve_function);
+	if (in_here == 0)
+		perror("Parser");
 	free_tokens(shell);
 	free_command(shell, NULL);
-	rl_clear_history();
 	free(shell->cmd_line);
-	exit(shell->exit_status);
+	if (in_here != 2)
+	{
+		rl_clear_history();
+		free_env(shell->envs);
+		free_double(shell->env_for_execve_function);
+		exit(shell->es);
+	}
 }
 
 void	exit_in_exec(t_main *shell)
@@ -59,7 +62,7 @@ void	exit_in_exec(t_main *shell)
 	free_command(shell, NULL);
 	rl_clear_history();
 	free(shell->cmd_line);
-	exit(shell->exit_status);
+	exit(shell->es);
 }
 
 void	exit_for_fork(t_main *shell)
@@ -70,5 +73,5 @@ void	exit_for_fork(t_main *shell)
 	free_double(shell->env_for_execve_function);
 	free(shell->cmd_line);
 	rl_clear_history();
-	exit(shell->exit_status);
+	exit(shell->es);
 }

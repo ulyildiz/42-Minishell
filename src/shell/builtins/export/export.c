@@ -63,12 +63,12 @@ int	process_commands(t_command *cmds, t_main *shell, int i)
 		else if (eq_pos != NULL)
 		{
 			if (handle_assignment(cmds, shell->envs, eq_pos, i))
-				return (shell->exit_status = 1, exit_for_fork(shell), 1);
+				return (shell->es = 1, exit_for_fork(shell), 1);
 		}
 		else if (env_var == NULL)
 		{
 			if (add_new_env(&shell->envs, cmds->value[i], NULL))
-				return (shell->exit_status = 1, exit_for_fork(shell), 1);
+				return (shell->es = 1, exit_for_fork(shell), 1);
 		}
 	}
 	return (0);

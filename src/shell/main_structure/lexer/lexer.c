@@ -48,7 +48,7 @@ static void	last_things(t_main *shell)
 	if (!token_check(shell))
 	{
 		shell->control = 0;
-		shell->exit_status = 258;
+		shell->es = 258;
 		free_tokens(shell);
 		free(shell->cmd_line);
 	}

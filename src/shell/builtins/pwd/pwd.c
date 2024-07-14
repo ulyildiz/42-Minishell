@@ -27,7 +27,7 @@ int	pwd(t_command *cmds, t_main *shell)
 		ft_putendl_fd(pwd, cmds->fd[1]);
 	else
 	{
-		shell->exit_status = 1;
+		shell->es = 1;
 		ft_putendl_fd("pwd not set", cmds->fd[1]);
 		return (0);
 	}

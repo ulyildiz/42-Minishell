@@ -41,16 +41,16 @@ int	exit_cmd(t_command *cmds, t_main *shell)
 	{
 		if (is_all_numeric(cmds->value[1]))
 		{
-			shell->exit_status = (ft_atoi(cmds->value[1]) % 256);
+			shell->es = (ft_atoi(cmds->value[1]) % 256);
 			if (i > 2)
-				return (shell->exit_status = 1,
+				return (shell->es = 1,
 					ft_putendl_fd("exit: too many arguments", cmds->fd[1]),
 					1);
 		}
 		else
 		{
 			ft_putstr_fd("exit: numeric argument required\n", cmds->fd[1]);
-			shell->exit_status = 255;
+			shell->es = 255;
 		}
 	}
 	exit_for_fork(shell);

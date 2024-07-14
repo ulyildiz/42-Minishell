@@ -63,7 +63,7 @@ int	handle_invalid_identifier(t_command *cmd, t_main *shell, int i)
 	ft_putstr_fd("ft_sh: export: ", cmd->fd[1]);
 	ft_putstr_fd(cmd->value[i], cmd->fd[1]);
 	ft_putendl_fd(" : not a valid identifier", cmd->fd[1]);
-	shell->exit_status = 1;
+	shell->es = 1;
 	return (0);
 }
 

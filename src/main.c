@@ -42,5 +42,5 @@ int	main(int ac, char **av, char **env)
 	}
 	else
 		perror("ft_sh:");
-	return (shell.exit_status);
+	return (shell.es);
 }

@@ -9,6 +9,7 @@ SRC =   src/main.c \
         src/shell/main_structure/lexer/utils/lexer_utils2.c \
         src/shell/main_structure/expander/expander.c \
         src/shell/main_structure/expander/utils/expander_utils.c \
+		src/shell/main_structure/expander/utils/expander_utils2.c \
         src/shell/main_structure/parser/parser.c \
         src/shell/main_structure/parser/utils/parser_utils.c \
         src/shell/main_structure/parser/utils/parser_utils2.c \
@@ -35,7 +36,7 @@ SRC =   src/main.c \
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 CC = cc
-CFLAGS = -I ./include -I ./42-Libft# -Wall -Wextra -Werror
+CFLAGS = -I ./include -I ./42-Libft #-Wall -Wextra -Werror
 LIBFT = 42-libft
 LIBFT_A = $(LIBFT)/libft.a
 

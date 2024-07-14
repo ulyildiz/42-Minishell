@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "functions.h"
+#include "defines.h"
 #include "libft.h"
 #include <unistd.h>
 #include <fcntl.h>
@@ -72,9 +72,9 @@ void	wait_forks(t_main *shell, t_command *cmd)
 	{
 		waitpid(cmd->pid, &status, 0);
 		if (cmd->pid != -1 && WIFEXITED(status))
-			shell->exit_status = WEXITSTATUS(status);
+			shell->es = WEXITSTATUS(status);
 		else if (cmd->pid != -1 && WIFSIGNALED(status))
-			shell->exit_status = 128 + WTERMSIG(status);
+			shell->es = 128 + WTERMSIG(status);
 		cmd = cmd->next;
 	}
 	while (wait(NULL) != -1)

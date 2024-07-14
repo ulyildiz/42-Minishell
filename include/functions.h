@@ -57,7 +57,7 @@ void		change_directory_and_update_envs(t_main *shell, char *path,
 // exits
 void		exit_in_lex(t_main *shell);
 void		exit_for_fork(t_main *shell);
-void		exit_in_parser(t_main *shell);
+void		exit_in_parser(t_main *shell, int in_here);
 void		exit_in_exec(t_main *shell);
 void		exit_in_expander(t_main *shell);
 
@@ -79,7 +79,7 @@ int			rdr_position(t_command *cmds);
 size_t		length_to_token(t_tokens *lst);
 size_t		find_word_end(const char *value, size_t start, t_bool *in_d,
 				t_bool *in_s);
-char		*remove_quotes(const char *str, t_bool in_s, t_bool in_d);
+char		*remove_quotes(char *str, t_bool in_s, t_bool in_d);
 char		**recreate_cmdval(t_command *cmd);
 
 
