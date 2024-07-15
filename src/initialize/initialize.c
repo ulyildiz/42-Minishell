@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:52:43 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/14 22:23:25 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/15 19:33:20 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,25 @@ static int	init_env(t_main *shell, char **env)
 	return (1);
 }
 
+int	shell_level(t_env *env)
+{
+	int	i;
+
+	if (!env)
+		return (1);
+	i = ft_atoi(env->value);
+	if (i < 0)
+		i = 0;
+	else
+		i++;
+	if (env->value)
+		free(env->value);
+	env->value = ft_itoa(i);
+	if (!env->value)
+		return (0);
+	return (1);
+}
+
 int	initialize(t_main *shell, char **env)
 {
 	shell->cmd = NULL;
@@ -112,6 +131,8 @@ int	initialize(t_main *shell, char **env)
 	shell->es = 0;
 	if (!init_env(shell, env))
 		return (0);
+	if (!shell_level(find_env(shell->envs, "SHLVL")))
+		return (free_env(shell->envs), 0);
 	shell->control = 1;
 	shell->env_for_execve_function = NULL;
 	if (!update_env(shell))

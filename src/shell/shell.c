@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:38 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/14 21:45:08 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/15 21:51:25 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	line_read(t_main *shell)
 
 void	start_shell(t_main *shell)
 {
-	int			i;
+	int	i;
 
 	while (1)
 	{

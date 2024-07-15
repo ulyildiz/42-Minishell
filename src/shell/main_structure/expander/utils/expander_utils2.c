@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 20:18:49 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/14 23:33:57 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/15 19:22:32 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ static size_t	w_c(char **value)
 				}
 			}
 		}
+		if (j == 0 && value[i][j] == '\0')
+			len++;
 	}
 	return (len);
 }
@@ -86,7 +88,7 @@ static char	*createword(t_command *cmd, size_t j, size_t *i)
 	}
 	return (tmp);
 }
-
+//(i == 0 && !cmd->value[j][i])
 char	**recreate_cmdval(t_command *cmd)
 {
 	size_t	j;
@@ -102,6 +104,14 @@ char	**recreate_cmdval(t_command *cmd)
 	while (cmd->value[j])
 	{
 		i = 0;
+		if (cmd->value[j][i] == '\0')
+		{
+			tmp[idx] = ft_calloc(1, sizeof(char));
+			if (!tmp[idx++])
+				return (free_double(tmp), NULL);
+			j++;
+			continue;
+		}
 		while (cmd->value[j][i])
 		{
 			while (cmd->value[j][i] && is_whitespace(cmd->value[j][i]))

@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 17:30:01 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/14 23:23:17 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/15 21:56:33 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	check_argument(char *tmp, char *arg)
 		return (1);
 	return (0);
 }
-#include <stdio.h>
+
 int	is_builtin(t_command *cmds, t_bool cmd_num, char *tmp, int i)
 {
 	static t_build	commands[] = {{"echo", echo}, {"cd", cd}, {"pwd", pwd},

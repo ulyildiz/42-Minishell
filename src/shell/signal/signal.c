@@ -39,11 +39,7 @@ void	disable_echo_control_chars(void)
 {
 	struct termios	tty;
 
-	if (tcgetattr(STDIN_FILENO, &tty))
-	{
-		perror("ft_sh");
-		exit(1);
-	}
+	tcgetattr(STDIN_FILENO, &tty);
 	tty.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &tty);
 }

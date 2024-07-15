@@ -105,7 +105,7 @@ int	accessibility(t_command *cmds, t_main *shell)
 	t_bool		is_in;
 
 	is_in = FALSE;
-	if (!cmds->value[0] && cmds)
+	if (cmds && (!cmds->value[0] || !cmds->value[0][0]))
 		return (0);
 	if (check_for_absolute_path(cmds, shell, &is_in))
 	{

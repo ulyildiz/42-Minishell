@@ -41,6 +41,9 @@ int	main(int ac, char **av, char **env)
 		start_shell(&shell);
 	}
 	else
+	{
+		shell.es = 25; //ENOTTY?
 		perror("ft_sh:");
+	}
 	return (shell.es);
 }

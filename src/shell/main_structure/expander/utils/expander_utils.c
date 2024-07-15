@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:05:33 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/14 23:26:33 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/15 19:20:35 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ static char	*expand_variable(char *tmp, const char *token_value, size_t *i,
 	if (expnd_value)
 		tmp = ft_strappend(tmp, expnd_value->value,
 				ft_strlen(expnd_value->value));
-	else
-		tmp = ft_strdup("");
 	free(new_tmp);
 	*i += j;
 	printf("%p\n", tmp);

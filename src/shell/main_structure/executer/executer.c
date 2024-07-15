@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/14 23:34:20 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/15 21:56:19 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
 			return (signal_reciever(3));
 		signal_reciever(2);
 	}
-	//rintf("%p - /%d/\n", cmds->value[0], cmds->value[0][0]);
 	if (!is_builtin(cmds, cmd_num, ft_strlower(ft_strdup(cmds->value[0])), -1))
 		;
 	else if (accessibility(cmds, shell))
