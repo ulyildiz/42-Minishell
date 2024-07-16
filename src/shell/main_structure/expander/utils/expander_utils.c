@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:05:33 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/15 19:20:35 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/16 18:17:58 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*expand_variable(char *tmp, const char *token_value, size_t *i,
 
 	j = 0;
 	(*i)++;
-	while (ft_isalpha(token_value[*i + j]) || token_value[*i + j] == '_')
+	while ((ft_isalnum(token_value[*i + j]) || token_value[*i + j] == '_')) //$1a
 		j++;
 	new_tmp = ft_strndup(&token_value[*i], j);
 	if (!new_tmp)
@@ -77,7 +77,7 @@ char	*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
 		tmp = ft_strappend(tmp, "$", 1);
 		(*i)++;
 	}
-	else if (ft_isascii(token_value[*i + 1])/* ft_isalpha(token_value[*i + 1]) || token_value[*i + 1] == '_' */)
+	else if (ft_isalnum(token_value[*i + 1])/* ft_isalpha(token_value[*i + 1]) || token_value[*i + 1] == '_' */)
 		tmp = expand_variable(tmp, token_value, i, shell->envs);
 	else
 	{

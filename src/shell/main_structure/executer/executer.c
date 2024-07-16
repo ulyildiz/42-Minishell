@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/15 21:56:19 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:42:32 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,14 @@
 static int	redirection_touch(t_main *shell, t_command **cmd)
 {
 	size_t		i;
-	t_command	*tmp;
 
 	i = 0;
-	tmp = NULL;
 	while ((*cmd)->rdrs[i])
 	{
-		tmp = *cmd;
 		if (opens(*cmd, &i, -1) == -1)
 		{
+			(*cmd)->in_work = 0;
 			*cmd = (*cmd)->next;
-			deletenode_p(&shell->cmd, tmp);
 			return (0);
 		}
 		i++;
@@ -42,6 +39,11 @@ static void	set_fd(t_main *shell, t_command *cmd, int *i)
 
 	while (cmd)
 	{
+		if (cmd->in_work == 0)
+		{
+			cmd = cmd->next;
+			continue ;
+		}
 		if (cmd->where_p == R_P)
 		{
 			if (pipe(fd) == -1)
@@ -101,7 +103,7 @@ void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
 			exit_for_fork(shell);
 		}
 		else if (cmds->pid != 0)
-			return (signal_reciever(3));
+			return signal_reciever(3);
 		signal_reciever(2);
 	}
 	if (!is_builtin(cmds, cmd_num, ft_strlower(ft_strdup(cmds->value[0])), -1))
@@ -128,7 +130,8 @@ void	executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i)
 		cmd_num = TRUE;
 	while (cmds != NULL)
 	{
-		run_command(shell, cmds, i, cmd_num);
+		if (cmds->in_work)
+			run_command(shell, cmds, i, cmd_num);
 		if (cmds->fd[1] != STDOUT_FILENO)
 			close(cmds->fd[1]);
 		if (cmds->fd[0] != STDIN_FILENO)

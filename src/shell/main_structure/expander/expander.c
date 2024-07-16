@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/14 23:28:25 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:48:24 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,26 +99,32 @@ static int	expand_rdr(t_command *cmds, t_main *shell)
 	size_t	i;
 	char	*tmp;
 
-	i = -1;
+	i = 0;
 	shell->in_d = FALSE;
 	shell->in_s = FALSE;
-	while (cmds->rdrs && cmds->rdrs[++i])
+	while (cmds->rdrs && cmds->rdrs[i] && cmds->rdrs[i + 1])
 	{
-		if (ft_strnstr(cmds->rdrs[i], "$", ft_strlen(cmds->rdrs[i])))
+		if (ft_strnstr(cmds->rdrs[i + 1], "$", ft_strlen(cmds->rdrs[i + 1])))
 		{
-			if (!dollar_expend(shell, &cmds->rdrs[i], NULL, 0))
+			if (!dollar_expend(shell, &cmds->rdrs[i + 1], NULL, 0))
 				return (1);
 		}
-		if (ft_strnstr(cmds->rdrs[i], "~", ft_strlen(cmds->rdrs[i])))
+		if (ft_strnstr(cmds->rdrs[i + 1], "~", ft_strlen(cmds->rdrs[i + 1])))
 		{
-			if (!home_expend(shell, &cmds->rdrs[i], NULL, 0))
+			if (!home_expend(shell, &cmds->rdrs[i + 1], NULL, 0))
 				return (1);
 		}
-		tmp = remove_quotes(cmds->rdrs[i], FALSE, FALSE);
+		if (ft_strnstr(cmds->rdrs[i + 1], " ", ft_strlen(cmds->rdrs[i + 1])) && !(ft_strnstr(cmds->rdrs[i + 1], "'", ft_strlen(cmds->rdrs[i + 1])) || ft_strnstr(cmds->rdrs[i + 1], "\"", ft_strlen(cmds->rdrs[i + 1]))))
+		{
+			cmds->in_work = 0;
+			ft_putendl_fd("ft_sh: ambiguous redirect", 2);
+			return (0);
+		}
+		tmp = remove_quotes(cmds->rdrs[i + 1], FALSE, FALSE);
 		if (!tmp)
 			return (1);
-		cmds->rdrs[i] = tmp;
-		i++;
+		cmds->rdrs[i + 1] = tmp;
+		i+=2;
 	}
 	return (0);
 }

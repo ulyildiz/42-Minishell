@@ -49,6 +49,7 @@ typedef struct s_tokens
 
 typedef struct s_command
 {
+	int					in_work;
 	char				**value;
 	char				**rdrs;
 	char				*cmd_and_path;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/14 22:03:35 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/16 14:35:24 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static t_command	*cmd_struct_create(t_tokens *token)
 	cmd->cmd_and_path = NULL;
 	cmd->next = NULL;
 	cmd->prev = NULL;
+	cmd->in_work = 1;
 	return (cmd);
 }
 

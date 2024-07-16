@@ -1,0 +1,10 @@
+42-libft
+Makefile
+a
+a.sh
+b
+include
+minishell
+minishell.dSYM
+obj
+src

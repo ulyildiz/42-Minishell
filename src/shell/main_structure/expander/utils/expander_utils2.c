@@ -3,29 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 20:18:49 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/15 19:22:32 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/16 14:11:09 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 #include "libft.h"
 
-static size_t	w_c(char **value)
+static size_t	w_c(char **value, size_t i, size_t j, size_t len)
 {
-	size_t i, j, len;
-	t_bool in_s;
-	t_bool in_d;
+	t_bool in_q[2];
 
-	i = -1;
-	len = 0;
 	while (value[++i])
 	{
 		j = 0;
-		in_s = FALSE;
-		in_d = FALSE;
+		in_q[0] = FALSE;
+		in_q[1] = FALSE;
 		while (value[i][j])
 		{
 			while (value[i][j] && is_whitespace(value[i][j]))
@@ -33,9 +29,9 @@ static size_t	w_c(char **value)
 			if (value[i][j])
 			{
 				len++;
-				while (value[i][j] && (!is_whitespace(value[i][j]) || in_s || in_d))
+				while (value[i][j] && (!is_whitespace(value[i][j]) || in_q[0] || in_q[1]))
 				{
-					toggle_quote(value[i][j], &in_s, &in_d);
+					toggle_quote(value[i][j], &in_q[0], &in_q[1]);
 					j++;
 				}
 			}
@@ -88,7 +84,7 @@ static char	*createword(t_command *cmd, size_t j, size_t *i)
 	}
 	return (tmp);
 }
-//(i == 0 && !cmd->value[j][i])
+
 char	**recreate_cmdval(t_command *cmd)
 {
 	size_t	j;
@@ -98,7 +94,7 @@ char	**recreate_cmdval(t_command *cmd)
 
 	idx = 0;
 	j = 0;
-	tmp = ft_calloc(w_c(cmd->value) + 1, sizeof(char *));
+	tmp = ft_calloc(w_c(cmd->value, -1, 0, 0) + 1, sizeof(char *));
 	if (!tmp)
 		return (NULL);
 	while (cmd->value[j])
