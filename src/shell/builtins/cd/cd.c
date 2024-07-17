@@ -40,7 +40,7 @@ static char *get_oldpwd_path(t_command *cmds, t_env *oldpwd)
 	{
         ft_putstr_fd("OLDPWD not set\n", cmds->fd[1]);
         shell->es = 1;
-        return (NULL);
+		return (NULL); // null dönünce programdan çıkıyor çıkmasın
     }
 }
 
@@ -65,7 +65,7 @@ static char *get_home_path(t_command *cmds, t_env *home)
 	{
         ft_putstr_fd("HOME not set\n", cmds->fd[1]);
         shell->es = 1;
-        return (NULL);
+        return (NULL); // null dönünce programdan çıkıyor çıkmasın
     }
 }
 
@@ -110,5 +110,5 @@ int cd(t_command *cmds, t_main *shell)
     change_directory_and_update_envs(shell, path, pwd->value);
     if (update_env(shell) == -1)
         return (perror("update_env failed"), free(gtcwd),free(path),0);
-    return (free(gtcwd), free(path),1);
+    return (free(gtcwd), free(path), shell->es = 0, 1);
 }

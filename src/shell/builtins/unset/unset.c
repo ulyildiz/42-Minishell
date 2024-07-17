@@ -48,12 +48,12 @@ int	unset(t_command *cmds, t_main *shell)
 
 	i = 1;
 	if (!check_for_options(cmds))
-		return (1);
+		return (/*shell->es = ,*/ 1);
 	while (cmds->value[i] != NULL)
 	{
 		if (deletenode(&shell->envs, cmds->value[i]) == 0)
 			return (0);
 		i++;
 	}
-	return (1);
+	return (shell->es = 0, 1);
 }

@@ -39,11 +39,6 @@ static void	set_fd(t_main *shell, t_command *cmd, int *i)
 
 	while (cmd)
 	{
-		if (cmd->in_work == 0)
-		{
-			cmd = cmd->next;
-			continue ;
-		}
 		if (cmd->where_p == R_P)
 		{
 			if (pipe(fd) == -1)
@@ -52,10 +47,13 @@ static void	set_fd(t_main *shell, t_command *cmd, int *i)
 			cmd->next->fd[0] = fd[0];
 		}
 		(*i)++;
-		if (cmd->rdrs)
+		if (cmd->in_work)
 		{
-			if (!redirection_touch(shell, &cmd))
-				continue ;
+			if (cmd->rdrs)
+			{
+				if (!redirection_touch(shell, &cmd))
+					continue ;
+			}
 		}
 		if (cmd)
 			cmd = cmd->next;
@@ -103,7 +101,7 @@ void	run_command(t_main *shell, t_command *cmds, int i, t_bool cmd_num)
 			exit_for_fork(shell);
 		}
 		else if (cmds->pid != 0)
-			return signal_reciever(3);
+			return (signal_reciever(3));
 		signal_reciever(2);
 	}
 	if (!is_builtin(cmds, cmd_num, ft_strlower(ft_strdup(cmds->value[0])), -1))

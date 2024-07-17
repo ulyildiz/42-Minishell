@@ -50,5 +50,5 @@ int	echo(t_command *cmds, t_main *shell)
 	}
 	if (newline)
 		ft_putstr_fd("\n", cmds->fd[1]);
-	return (1);
+	return (shell->es = 0, 1);
 }

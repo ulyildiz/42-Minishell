@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/16 16:48:24 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/17 22:33:14 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ static int	expand_rdr(t_command *cmds, t_main *shell)
 			if (!home_expend(shell, &cmds->rdrs[i + 1], NULL, 0))
 				return (1);
 		}
-		if (ft_strnstr(cmds->rdrs[i + 1], " ", ft_strlen(cmds->rdrs[i + 1])) && !(ft_strnstr(cmds->rdrs[i + 1], "'", ft_strlen(cmds->rdrs[i + 1])) || ft_strnstr(cmds->rdrs[i + 1], "\"", ft_strlen(cmds->rdrs[i + 1]))))
+		if (!cmds->rdrs[i + 1][0] || (ft_strnstr(cmds->rdrs[i + 1], " ", ft_strlen(cmds->rdrs[i + 1])) && !(ft_strnstr(cmds->rdrs[i + 1], "'", ft_strlen(cmds->rdrs[i + 1])) || ft_strnstr(cmds->rdrs[i + 1], "\"", ft_strlen(cmds->rdrs[i + 1])))))
 		{
 			cmds->in_work = 0;
 			ft_putendl_fd("ft_sh: ambiguous redirect", 2);

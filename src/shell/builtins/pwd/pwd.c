@@ -32,5 +32,5 @@ int	pwd(t_command *cmds, t_main *shell)
 		return (0);
 	}
 	free(pwd);
-	return (1);
+	return (shell->es = 0, 1);
 }

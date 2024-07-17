@@ -13,25 +13,6 @@
 #include "functions.h"
 #include "libft.h"
 
-void	deletenode_p(t_command **head, t_command *key_point)
-{
-	if (!head || !*head || !key_point)
-		return ;
-	if (*head == key_point)
-	{
-		*head = key_point->next;
-		if (*head)
-			(*head)->prev = NULL;
-		free_c(key_point);
-		return ;
-	}
-	if (key_point->prev)
-		key_point->prev->next = key_point->next;
-	if (key_point->next)
-		key_point->next->prev = key_point->prev;
-	free_c(key_point);
-}
-
 int	check_heredoc(t_command *cmd)
 {
 	int	i;

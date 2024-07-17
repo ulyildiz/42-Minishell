@@ -19,7 +19,7 @@ int	is_token(t_tokens *t)
 		return (1);
 	return (0);
 }
-#include <stdio.h>
+
 size_t	rdr_count(char **str)
 {
 	size_t	len;
@@ -29,7 +29,6 @@ size_t	rdr_count(char **str)
 	len = 0;
 	while (str[i])
 	{
-		/* printf("%s str\n", str[i]); */
 		if (!ft_strncmp(str[i], "<", 1) && ft_strlen(str[i]) == 1 && ++i)
 			len++;
 		else if (!ft_strncmp(str[i], ">", 1) && ft_strlen(str[i]) == 1 && ++i)

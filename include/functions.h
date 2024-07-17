@@ -92,7 +92,6 @@ void		wait_forks(t_main *shell, t_command *cmd);
 int			heredocs(t_main *shell, t_command *cmd);
 int			need_to_be_slash(char *value);
 int			check_heredoc(t_command *cmd);
-void		deletenode_p(t_command **head, t_command *key_point);
 
 // builtins functions
 int			cd(t_command *cmds, t_main *shell);

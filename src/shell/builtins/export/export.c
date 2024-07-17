@@ -137,5 +137,5 @@ int	export(t_command *cmds, t_main *shell)
 	if (update_env(shell) == 0)
 		return (0);
 	free_env(export);
-	return (1);
+	return (shell->es = 0, 1);
 }

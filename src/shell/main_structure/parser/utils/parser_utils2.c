@@ -33,7 +33,7 @@ static void	fill_rdrs(t_command *cmds, char **tmp, size_t *f)
 	}
 	tmp[*f] = NULL;
 }
-#include <stdio.h>
+
 int	rdr_position(t_command *cmds)
 {
 	char	**tmp;
@@ -42,14 +42,10 @@ int	rdr_position(t_command *cmds)
 
 	i = 0;
 	f = 0;
-/* 	while (cmds->value[i])
-		printf("cmds->value: %s\n", cmds->value[i++]);
-	i = 0; */
 	if (rdr_count(cmds->value) <= 0)
 		return (1);
 	while (cmds->value[i])
 		i++;
-	printf("%zu\n", i - rdr_count(cmds->value));
 	tmp = ft_calloc(i - rdr_count(cmds->value) + 1, sizeof(char *));
 	if (!tmp)
 		return (0);
