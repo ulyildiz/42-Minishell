@@ -51,8 +51,6 @@ void		signal_reciever(int flag);
 int			update_env(t_main *shell);
 void		disable_echo_control_chars(void);
 t_main		*shell_keeper(t_main *shell);
-void		change_directory_and_update_envs(t_main *shell, char *path,
-				char *old_pwd_value);
 
 // exits
 void		exit_in_lex(t_main *shell);

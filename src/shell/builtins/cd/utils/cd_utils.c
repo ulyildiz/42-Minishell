@@ -76,14 +76,13 @@ t_env *update_or_create_env(t_env **envs, char *name, char *value)
 	return (env);
 }
 
-void change_directory_and_update_envs(t_main *shell, char *path, char *old_pwd_value)
+void change_directory_and_update_envs(t_main *shell, char *path, char *old_pwd_value, char *gtcwd)
 {
-	char *gtcwd;
-
 	if (chdir(path) == 0)
 	{
 		gtcwd = getcwd(NULL, 0);
-		if (!gtcwd) {
+		if (!gtcwd)
+        {
 			free(path);
 			perror("getcwd");
 			shell->es = 1;
@@ -101,6 +100,6 @@ void change_directory_and_update_envs(t_main *shell, char *path, char *old_pwd_v
 
 		free(gtcwd);
 	}
-	else
-		perror("cd");
+	else if (ft_strncmp(path, "", 1) != 0)
+        perror("cd");
 }

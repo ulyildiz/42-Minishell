@@ -17,6 +17,8 @@
 #include <stdlib.h>
 
 extern t_env *update_or_create_env(t_env **envs, char *name, char *value);
+extern  void change_directory_and_update_envs(t_main *shell, char *path,
+				char *old_pwd_value, char *gtcwd);
 
 static char *get_oldpwd_path(t_command *cmds, t_env *oldpwd)
 {
@@ -40,7 +42,7 @@ static char *get_oldpwd_path(t_command *cmds, t_env *oldpwd)
 	{
         ft_putstr_fd("OLDPWD not set\n", cmds->fd[1]);
         shell->es = 1;
-		return (NULL); // null dönünce programdan çıkıyor çıkmasın
+		return (malloc(sizeof(char **)));
     }
 }
 
@@ -65,7 +67,7 @@ static char *get_home_path(t_command *cmds, t_env *home)
 	{
         ft_putstr_fd("HOME not set\n", cmds->fd[1]);
         shell->es = 1;
-        return (NULL); // null dönünce programdan çıkıyor çıkmasın
+        return (malloc(sizeof(char **)));
     }
 }
 
@@ -107,7 +109,7 @@ int cd(t_command *cmds, t_main *shell)
     path = get_path(cmds, oldpwd, home);
     if (!path)
 		return (free(gtcwd), 0);
-    change_directory_and_update_envs(shell, path, pwd->value);
+    change_directory_and_update_envs(shell, path, pwd->value, NULL);
     if (update_env(shell) == -1)
         return (perror("update_env failed"), free(gtcwd),free(path),0);
     return (free(gtcwd), free(path), shell->es = 0, 1);
