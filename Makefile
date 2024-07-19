@@ -10,6 +10,7 @@ SRC =   src/main.c \
         src/shell/main_structure/expander/expander.c \
         src/shell/main_structure/expander/utils/expander_utils.c \
 		src/shell/main_structure/expander/utils/expander_utils2.c \
+		src/shell/main_structure/expander/utils/expander_utils3.c \
         src/shell/main_structure/parser/parser.c \
         src/shell/main_structure/parser/utils/parser_utils.c \
         src/shell/main_structure/parser/utils/parser_utils2.c \

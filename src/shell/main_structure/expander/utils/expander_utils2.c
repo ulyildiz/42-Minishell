@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 20:18:49 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/16 14:11:09 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/19 18:48:29 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 #include "libft.h"
+#include <stdio.h>
 
 static size_t	w_c(char **value, size_t i, size_t j, size_t len)
 {
@@ -40,49 +41,6 @@ static size_t	w_c(char **value, size_t i, size_t j, size_t len)
 			len++;
 	}
 	return (len);
-}
-
-static char	*createword(t_command *cmd, size_t j, size_t *i)
-{
-	size_t	start;
-	t_bool	in_s;
-	t_bool	in_d;
-	size_t	len;
-	char 	*tmp;
-
-	start = *i;
-	in_s = FALSE;
-	in_d = FALSE;
-	while (cmd->value[j][*i] && (!is_whitespace(cmd->value[j][*i]) || in_s || in_d))
-	{
-		toggle_quote(cmd->value[j][*i], &in_s, &in_d);
-		if ((cmd->value[j][*i] == '\'' && !in_d) || (cmd->value[j][*i] == '"' && !in_s))
-		{
-			(*i)++;
-			continue ;
-		}
-		(*i)++;
-	}
-	len = (*i) - start;
-	tmp = ft_calloc(len + 1, sizeof(char));
-	if (!tmp)
-		return (NULL);
-	in_s = FALSE;
-	in_d = FALSE;
-	size_t	k = start;
-	size_t	tmp_idx = 0;
-	while (cmd->value[j][k] && k < *i)
-	{
-		toggle_quote(cmd->value[j][k], &in_s, &in_d);
-		if ((cmd->value[j][k] == '\'' && !in_d) || (cmd->value[j][k] == '"' && !in_s))
-		{
-			(k)++;
-			continue ;
-		}
-		tmp[tmp_idx++] = cmd->value[j][k]; 	
-		(k)++;
-	}
-	return (tmp);
 }
 
 char	**recreate_cmdval(t_command *cmd)

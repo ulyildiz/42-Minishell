@@ -65,6 +65,7 @@ char		*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
 				t_main *shell);
 char		*append_literal(char *tmp, char *token_value, size_t *start,
 				size_t *i);
+char		*createword(t_command *cmd, size_t j, size_t *i);
 
 // parser   functions
 void		parser(t_main *shell, t_tokens *t, size_t i);
