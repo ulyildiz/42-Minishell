@@ -97,7 +97,6 @@ void change_directory_and_update_envs(t_main *shell, char *path, char *old_pwd_v
 			shell->es = 1;
 			exit_for_fork(shell);
 		}
-
 		free(gtcwd);
 	}
 	else if (ft_strncmp(path, "", 1) != 0)

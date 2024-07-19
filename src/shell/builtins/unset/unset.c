@@ -34,7 +34,7 @@ static int	deletenode(t_env **head, char *key)
 		temp = temp->next;
 	}
 	if (temp == NULL)
-		return (0);
+		return (1);
 	prev->next = temp->next;
 	free(temp->name);
 	free(temp->value);
