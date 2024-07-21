@@ -49,7 +49,7 @@ void	heredoc_sigint(int sig)
 	(void)sig;
 	ft_putchar_fd('\n', 1);
 	shell_keeper(NULL)->es = 1;
-	exit_for_fork(shell_keeper(NULL));
+	exit_in_parser(shell_keeper(NULL), 1);
 }
 
 void	signal_reciever(int flag)

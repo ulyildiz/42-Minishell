@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/16 14:35:24 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 10:38:32 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,5 @@ void	parser(t_main *shell, t_tokens *t, size_t i)
 		return (shell->es = 1, exit_in_parser(shell, 0));
 	if (!heredocs(shell, shell->cmd))
 		return (shell->control = 0, exit_in_parser(shell, 2));
-	signal_reciever(1);
 	return (cmds->next = NULL, free_tokens(shell));
 }

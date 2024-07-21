@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:44:12 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/14 22:25:33 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 10:42:30 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static void	here_in(t_main *shell, int *fd, char *delimeter)
 		if (!line)
 		{
 			shell->es = 1;
+			close(fd[1]); // parentanda çıkmalı mı
 			exit_in_parser(shell, 1);
 		}
 		ft_putendl_fd(line, fd[1]);
@@ -102,7 +103,7 @@ static int	here_loop(t_main *shell, int *fd, t_command *cmd, char *delimeter)
 	{
 		close(fd[1]);
 		if (wait_heredoc(shell, cmd) == SIGINT)
-			return (SIGINT);
+			return (close(fd[0]), SIGINT);
 		cmd->here_fd = fd[0];
 	}
 	return (1);
@@ -126,7 +127,7 @@ int	heredocs(t_main *shell, t_command *cmd)
 				if (pipe(fd) == -1)
 					return (exit_in_parser(shell, 0), 0);
 				if (here_loop(shell, fd, cmd, cmd->rdrs[++i]) == SIGINT)
-					return (0);
+					return (signal_reciever(1), 0);
 			}
 		}
 		cmd->pid = -1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:05:33 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/17 22:46:47 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 10:35:28 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ char	*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
 		tmp = ft_strappend(tmp, "$", 1);
 		(*i)++;
 	}
-	else if (ft_isalnum(token_value[*i + 1]) || token_value[*i + 1] == '_')
+	else if (ft_isalnum(token_value[*i + 1]) || token_value[*i + 1] == '_' \
+	|| token_value[*i + 1] == '"' || token_value[*i + 1] == '\'')
 		tmp = expand_variable(tmp, token_value, i, shell->envs);
 	else
 	{

@@ -55,17 +55,5 @@
   "C_Cpp_Runner.useLeakSanitizer": false,
   "C_Cpp_Runner.showCompilationTime": false,
   "C_Cpp_Runner.useLinkTimeOptimization": false,
-  "C_Cpp_Runner.msvcSecureNoWarnings": false,
-  "files.associations": {
-    "functions.h": "c",
-    "libft.h": "c",
-    "type_traits": "c",
-    "stdio.h": "c",
-    "sstream": "c",
-    "stdlib.h": "c",
-    "corecrt.h": "c",
-    "corecrt_wstdlib.h": "c",
-    "limits.h": "c",
-    "errno.h": "c"
-  }
+  "C_Cpp_Runner.msvcSecureNoWarnings": false
 }
