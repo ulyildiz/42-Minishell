@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/21 15:01:21 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:04:34 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 #include "libft.h"
 #include <stdio.h>
+
+extern int	home_expend(t_main *shell, char **cmd, char *tmp, size_t i);
 
 static int	dollar_expend(t_main *shell, char **cmd, char *tmp, size_t i)
 {
@@ -36,35 +38,6 @@ static int	dollar_expend(t_main *shell, char **cmd, char *tmp, size_t i)
 		if (!tmp)
 			return (perror("Dollar Expend"), 0);
 	}
-	return (free(*cmd), *cmd = tmp, 1);
-}
-
-static int	home_expend(t_main *shell, char **cmd, char *tmp, size_t i)
-{
-	tmp = ft_strdup("");
-	while ((*cmd)[i] && tmp)
-	{
-		if ((*cmd)[i] == '~' && !shell->in_s && !shell->in_d)
-		{
-			if ((i > 0 && !is_whitespace((*cmd)[i - 1])) || \
-			(!is_whitespace((*cmd)[i + 1]) && (*cmd)[i + 1] != '\0'
-					&& (*cmd)[i + 1] != '/'))
-				tmp = ft_strappend(tmp, "~", 1);
-			else
-			{
-				if (!find_env(shell->envs, "HOME"))
-					return (1);
-				tmp = ft_strappend(tmp, find_env(shell->envs, "HOME")->value,
-						ft_strlen(find_env(shell->envs, "HOME")->value));
-			}
-		}
-		else
-			tmp = ft_strappend(tmp, &(*cmd)[i], 1);
-		toggle_quote((*cmd)[i], &shell->in_s, &shell->in_d);
-		i++;
-	}
-	if (!tmp)
-		return (perror("Home expand"), 0);
 	return (free(*cmd), *cmd = tmp, 1);
 }
 
@@ -94,37 +67,54 @@ static int	expand_value(t_command *cmds, t_main *shell)
 	return (0);
 }
 
+static int	process_redirects(char **rdrs, t_main *shell, size_t *i)
+{
+	char	*tmp;
+
+	if (ft_strnstr(rdrs[*i + 1], "$", ft_strlen(rdrs[*i + 1])))
+	{
+		if (!dollar_expend(shell, &rdrs[*i + 1], NULL, 0))
+			return (1);
+	}
+	if (ft_strnstr(rdrs[*i + 1], "~", ft_strlen(rdrs[*i + 1])))
+	{
+		if (!home_expend(shell, &rdrs[*i + 1], NULL, 0))
+			return (1);
+	}
+	if (!rdrs[*i + 1][0] || (ft_strnstr(rdrs[*i + 1], " ", ft_strlen(rdrs[*i
+					+ 1])) && !(ft_strnstr(rdrs[*i + 1], "'", ft_strlen(rdrs[*i
+						+ 1])) || ft_strnstr(rdrs[*i + 1], "\"",
+					ft_strlen(rdrs[*i + 1])))))
+	{
+		return (-1);
+	}
+	tmp = remove_quotes(rdrs[*i + 1], FALSE, FALSE);
+	if (!tmp)
+		return (1);
+	rdrs[*i + 1] = tmp;
+	*i += 2;
+	return (0);
+}
+
 static int	expand_rdr(t_command *cmds, t_main *shell)
 {
 	size_t	i;
-	char	*tmp;
+	int		result;
 
 	i = 0;
 	shell->in_d = FALSE;
 	shell->in_s = FALSE;
 	while (cmds->rdrs && cmds->rdrs[i] && cmds->rdrs[i + 1])
 	{
-		if (ft_strnstr(cmds->rdrs[i + 1], "$", ft_strlen(cmds->rdrs[i + 1])))
-		{
-			if (!dollar_expend(shell, &cmds->rdrs[i + 1], NULL, 0))
-				return (1);
-		}
-		if (ft_strnstr(cmds->rdrs[i + 1], "~", ft_strlen(cmds->rdrs[i + 1])))
-		{
-			if (!home_expend(shell, &cmds->rdrs[i + 1], NULL, 0))
-				return (1);
-		}
-		if (!cmds->rdrs[i + 1][0] || (ft_strnstr(cmds->rdrs[i + 1], " ", ft_strlen(cmds->rdrs[i + 1])) && !(ft_strnstr(cmds->rdrs[i + 1], "'", ft_strlen(cmds->rdrs[i + 1])) || ft_strnstr(cmds->rdrs[i + 1], "\"", ft_strlen(cmds->rdrs[i + 1])))))
+		result = process_redirects(cmds->rdrs, shell, &i);
+		if (result == 1)
+			return (1);
+		if (result == -1)
 		{
 			cmds->in_work = 0;
 			ft_putendl_fd("ft_sh: ambiguous redirect", 2);
 			return (0);
 		}
-		tmp = remove_quotes(cmds->rdrs[i + 1], FALSE, FALSE);
-		if (!tmp)
-			return (1);
-		cmds->rdrs[i + 1] = tmp;
-		i += 2;
 	}
 	return (0);
 }

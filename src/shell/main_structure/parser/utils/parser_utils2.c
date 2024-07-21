@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 19:20:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/21 14:40:54 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 15:16:56 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 #include "libft.h"
 #include <stdio.h>
+
 static void	fill_rdrs(t_command *cmds, char **tmp, size_t *f)
 {
 	size_t	i;
@@ -22,7 +23,6 @@ static void	fill_rdrs(t_command *cmds, char **tmp, size_t *f)
 	j = 0;
 	while (cmds->value[i])
 	{
-		
 		if (is_rdr(cmds->value[i]))
 		{
 			cmds->rdrs[j++] = cmds->value[i++];
@@ -69,10 +69,12 @@ char	*create_word(t_command *cmd, size_t j, size_t *i)
 	start = *i;
 	in_s = FALSE;
 	in_d = FALSE;
-	while (cmd->value[j][*i] && (!is_whitespace(cmd->value[j][*i]) || in_s || in_d))
+	while (cmd->value[j][*i] && (!is_whitespace(cmd->value[j][*i]) || in_s
+			|| in_d))
 	{
 		toggle_quote(cmd->value[j][*i], &in_s, &in_d);
-		if ((cmd->value[j][*i] == '\'' && !in_d) || (cmd->value[j][*i] == '"' && !in_s))
+		if ((cmd->value[j][*i] == '\'' && !in_d) || (cmd->value[j][*i] == '"'
+				&& !in_s))
 		{
 			(*i)++;
 			continue ;
@@ -83,7 +85,7 @@ char	*create_word(t_command *cmd, size_t j, size_t *i)
 }
 
 size_t	find_word_end(const char *value, size_t start, t_bool *in_d,
-					t_bool *in_s)
+		t_bool *in_s)
 {
 	size_t	j;
 

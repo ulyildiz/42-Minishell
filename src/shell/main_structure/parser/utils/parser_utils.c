@@ -49,7 +49,6 @@ int	is_rdr(char *strs)
 	t_bool	in_s;
 	t_bool	in_d;
 
-	
 	i = 0;
 	in_s = FALSE;
 	in_d = FALSE;

@@ -65,10 +65,10 @@ char		*handle_dollar_sign(char *tmp, const char *token_value, size_t *i,
 				t_main *shell);
 char		*append_literal(char *tmp, char *token_value, size_t *start,
 				size_t *i);
-char		*createword(t_command *cmd, size_t j, size_t *i);
+char		*createword(char *value, size_t *i);
 
 // parser   functions
-void		parser(t_main *shell, t_tokens *t, size_t i);
+void		parser(t_main *shell, t_tokens *t, size_t i, t_command *cmds);
 int			is_token(t_tokens *t);
 size_t		rdr_count(char **str);
 int			is_rdr(char *strs);
@@ -80,7 +80,6 @@ size_t		find_word_end(const char *value, size_t start, t_bool *in_d,
 				t_bool *in_s);
 char		*remove_quotes(char *str, t_bool in_s, t_bool in_d);
 char		**recreate_cmdval(t_command *cmd);
-
 
 // executer functions
 void		executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i);

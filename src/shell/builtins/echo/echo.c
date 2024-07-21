@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 13:05:17 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/10 02:36:31 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 15:35:06 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ static void	index_counter(size_t *i, size_t *j, int *newline, t_command *cmds)
 {
 	(*i) = 1;
 	(*newline) = 1;
-	if (cmds->value[(*i)] && cmds->value[(*i)][0] == '-' && cmds->value[*i][1] == 'n')
+	if (cmds->value[(*i)] && cmds->value[(*i)][0] == '-' \
+	&& cmds->value[*i][1] == 'n')
 	{
 		while (cmds->value[(*i)] && cmds->value[(*i)][0] == '-')
 		{

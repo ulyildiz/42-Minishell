@@ -3,15 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 17:30:01 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/16 13:08:34 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 18:16:22 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 #include "libft.h"
+
+extern int	execute_command(t_command *cmds, t_bool cmd_num, t_build *command,
+				char *tmp);
+extern int	handle_builtin_exit(t_bool cmd_num);
 
 t_env	*sort_export(t_env *lst, int (*cmp)(int, int))
 {
@@ -73,25 +77,18 @@ int	is_builtin(t_command *cmds, t_bool cmd_num, char *tmp, int i)
 		exit_cmd}, {NULL, NULL}};
 
 	if (!tmp)
-		return (shell_keeper(NULL)->es = 1, exit_in_exec(shell_keeper(NULL)), 1);
+	{
+		shell_keeper(NULL)->es = 1;
+		exit_in_exec(shell_keeper(NULL));
+		return (1);
+	}
 	while (commands[++i].name)
 	{
 		if (check_argument(tmp, commands[i].name))
 		{
-			free(tmp);
-			if (!commands[i].func(cmds, shell_keeper(NULL)))
-			{
-				shell_keeper(NULL)->es = 1;
-				if (cmd_num)
-					exit_for_fork(shell_keeper(NULL));
-				else
-					exit_in_exec(shell_keeper(NULL));
-			}
-			if (cmd_num)
-				exit_for_fork(shell_keeper(NULL));
-			else
-				return (0);
+			return (execute_command(cmds, cmd_num, &commands[i], tmp));
 		}
 	}
-	return (free(tmp), 1);
+	free(tmp);
+	return (1);
 }

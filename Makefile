@@ -24,6 +24,7 @@ SRC =   src/main.c \
         src/utils/utils.c \
         src/utils/syntax_check.c \
         src/shell/builtins/utils/builtins_utils.c \
+        src/shell/builtins/utils/builtins_utils2.c \
         src/shell/builtins/echo/echo.c \
         src/shell/builtins/cd/cd.c \
         src/shell/builtins/cd/utils/cd_utils.c \
@@ -37,7 +38,7 @@ SRC =   src/main.c \
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 CC = cc
-CFLAGS = -I ./include -I ./42-Libft #-Wall -Wextra -Werror
+CFLAGS = -I ./include -I ./42-Libft -Wall -Wextra -Werror
 LIBFT = 42-libft
 LIBFT_A = $(LIBFT)/libft.a
 

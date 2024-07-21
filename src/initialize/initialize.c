@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:52:43 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/21 12:48:56 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 15:24:16 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,6 @@
 #include "functions.h"
 #include <stdlib.h>
 #include <stdio.h>
-
-t_env	*find_env(t_env *envs, char *wanted)
-{
-	if (!wanted)
-		return (NULL);
-	while (envs)
-	{
-		if (!ft_strncmp(envs->name, wanted, ft_strlen(wanted)) && \
-		!ft_strncmp(envs->name, wanted, ft_strlen(envs->name)))
-			return (envs);
-		envs = envs->next;
-	}
-	return (NULL);
-}
 
 int	env_len(t_main *shell)
 {

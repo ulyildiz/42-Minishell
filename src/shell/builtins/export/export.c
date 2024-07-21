@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:57:43 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/21 13:17:12 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 16:38:50 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	add_new_env(t_env **envs, char *name, char *value)
 	list_add_back(envs, tmp);
 	return (0);
 }
-#include <stdio.h>
+
 int	process_commands(t_command *cmds, t_main *shell, int i)
 {
 	char	*eq_pos;
@@ -137,7 +137,7 @@ int	export(t_command *cmds, t_main *shell)
 	if (cmds->value[1] == NULL)
 		print_export(export, cmds->fd[1]);
 	if (update_env(shell) == 0)
-			return (0);
+		return (0);
 	free_env(export);
 	return (1);
 }

@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 20:18:49 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/21 15:00:24 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:46:33 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 #include "libft.h"
+#include <stdio.h>
 
 static size_t	w_c(char **value, size_t i, size_t j, size_t len)
 {
@@ -29,8 +30,8 @@ static size_t	w_c(char **value, size_t i, size_t j, size_t len)
 			if (value[i][j])
 			{
 				len++;
-				while (value[i][j] \
-				&& (!is_whitespace(value[i][j]) || in_q[0] || in_q[1]))
+				while (value[i][j] && (!is_whitespace(value[i][j]) || in_q[0]
+						|| in_q[1]))
 					toggle_quote(value[i][j++], &in_q[0], &in_q[1]);
 			}
 		}
@@ -38,6 +39,51 @@ static size_t	w_c(char **value, size_t i, size_t j, size_t len)
 			len++;
 	}
 	return (len);
+}
+
+int	home_expend(t_main *shell, char **cmd, char *tmp, size_t i)
+{
+	tmp = ft_strdup("");
+	while ((*cmd)[i] && tmp)
+	{
+		if ((*cmd)[i] == '~' && !shell->in_s && !shell->in_d)
+		{
+			if ((i > 0 && !is_whitespace((*cmd)[i - 1]))
+				|| (!is_whitespace((*cmd)[i + 1]) && (*cmd)[i + 1] != '\0'
+					&& (*cmd)[i + 1] != '/'))
+				tmp = ft_strappend(tmp, "~", 1);
+			else
+			{
+				if (!find_env(shell->envs, "HOME"))
+					return (1);
+				tmp = ft_strappend(tmp, find_env(shell->envs, "HOME")->value,
+						ft_strlen(find_env(shell->envs, "HOME")->value));
+			}
+		}
+		else
+			tmp = ft_strappend(tmp, &(*cmd)[i], 1);
+		toggle_quote((*cmd)[i], &shell->in_s, &shell->in_d);
+		i++;
+	}
+	if (!tmp)
+		return (perror("Home expand"), 0);
+	return (free(*cmd), *cmd = tmp, 1);
+}
+
+static int	fill_tmp(char *value, size_t i, char **tmp, size_t *idx)
+{
+	while (value[i])
+	{
+		while (value[i] && is_whitespace(value[i]))
+			i++;
+		if (value[i])
+		{
+			tmp[*idx] = createword(value, &i);
+			if (!tmp[(*idx)++])
+				return (0);
+		}
+	}
+	return (1);
 }
 
 char	**recreate_cmdval(t_command *cmd)
@@ -48,11 +94,11 @@ char	**recreate_cmdval(t_command *cmd)
 	size_t	i;
 
 	idx = 0;
-	j = 0;
+	j = -1;
 	tmp = ft_calloc(w_c(cmd->value, -1, 0, 0) + 1, sizeof(char *));
 	if (!tmp)
 		return (NULL);
-	while (cmd->value[j])
+	while (cmd->value[++j])
 	{
 		i = 0;
 		if (cmd->value[j][i] == '\0')
@@ -63,18 +109,8 @@ char	**recreate_cmdval(t_command *cmd)
 			j++;
 			continue ;
 		}
-		while (cmd->value[j][i])
-		{
-			while (cmd->value[j][i] && is_whitespace(cmd->value[j][i]))
-				i++;
-			if (cmd->value[j][i])
-			{
-				tmp[idx] = createword(cmd, j, &i);
-				if (!tmp[idx++])
-					return (free_double(tmp), NULL);
-			}
-		}
-		j++;
+		if (!fill_tmp(cmd->value[j], i, tmp, &idx))
+			return (free_double(tmp), NULL);
 	}
 	return (free_double(cmd->value), tmp);
 }

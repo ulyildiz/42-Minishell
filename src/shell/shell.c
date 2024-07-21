@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:38 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/21 13:28:51 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:46:45 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,24 +58,7 @@ void	start_shell(t_main *shell)
 		else if (i == 2)
 			break ;
 		lexer(shell);
-/* 		t_tokens *tmp = shell->token;
-		while (tmp)
-		{
-			printf("token: %s\n", tmp->value);
-			tmp = tmp->next;
-		} */
-		parser(shell, shell->token, 0);
-		t_command *tmp2 = shell->cmd;
-/* 		while (tmp2)
-		{
-			int j = 0;
-			while (tmp2->rdrs[j])
-			{
-				printf("value: %s\n", tmp2->rdrs[j]);
-				j++;
-			}
-			tmp2 = tmp2->next;
-		} */
+		parser(shell, shell->token, 0, NULL);
 		expender(shell);
 		executor(shell, shell->cmd, FALSE, 0);
 		signal_reciever(1);

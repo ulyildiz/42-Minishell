@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:36 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/21 12:45:42 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 15:33:18 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static t_env *create_env(char *name, char *value)
+static t_env	*create_env(char *name, char *value)
 {
-	t_env *env;
+	t_env	*env;
 
 	env = (t_env *)malloc(sizeof(t_env));
 	if (!env)
@@ -28,7 +28,7 @@ static t_env *create_env(char *name, char *value)
 		return (free(env), NULL);
 	if (value)
 		env->value = ft_strdup(value);
-	else 
+	else
 		env->value = ft_strdup("");
 	if (!env->value)
 		return (free(env->name), free(env), NULL);
@@ -36,14 +36,14 @@ static t_env *create_env(char *name, char *value)
 	return (env);
 }
 
-static int set_env_value(t_env *env, char *value)
+static int	set_env_value(t_env *env, char *value)
 {
 	free(env->value);
 	if (value)
 	{
 		env->value = ft_strdup(value);
 		if (!env->value)
-			return -1;
+			return (-1);
 	}
 	else
 	{
@@ -54,14 +54,14 @@ static int set_env_value(t_env *env, char *value)
 	return (0);
 }
 
-t_env *update_or_create_env(t_env **envs, char *name, char *value)
+t_env	*update_or_create_env(t_env **envs, char *name, char *value)
 {
-	t_env *env;
+	t_env	*env;
 
 	if (!value)
 		return (NULL);
 	env = find_env(*envs, name);
-	if (!env) 
+	if (!env)
 	{
 		env = create_env(name, value);
 		if (!env)
@@ -76,19 +76,20 @@ t_env *update_or_create_env(t_env **envs, char *name, char *value)
 	return (env);
 }
 
-void change_directory_and_update_envs(t_main *shell, char *path, char *old_pwd_value, char *gtcwd)
+void	change_directory_and_update_envs(t_main *shell, \
+char *path, char *old_pwd_value, char *gtcwd)
 {
 	if (chdir(path) == 0)
 	{
 		gtcwd = getcwd(NULL, 0);
 		if (!gtcwd)
- 		{
+		{
 			free(path);
 			perror("getcwd");
 			shell->es = 1;
 			exit_for_fork(shell);
 		}
-		if (!update_or_create_env(&shell->envs, "OLDPWD", old_pwd_value) ||
+		if (!update_or_create_env(&shell->envs, "OLDPWD", old_pwd_value) || \
 			!update_or_create_env(&shell->envs, "PWD", gtcwd))
 		{
 			free(gtcwd);

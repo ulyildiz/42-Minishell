@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
+/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/21 10:38:32 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 16:51:07 by ysarac           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static t_command	*cmd_struct_create(t_tokens *token)
 	cmd->pid = -1;
 	cmd->here_fd = -1;
 	cmd->rdrs = NULL;
-	cmd->cmd_and_path = NULL;
 	cmd->next = NULL;
 	cmd->prev = NULL;
 	cmd->in_work = 1;
@@ -89,10 +88,8 @@ static int	handle_command(t_command **cmds, t_tokens **t, size_t *i)
 	return (1);
 }
 
-void	parser(t_main *shell, t_tokens *t, size_t i)
+void	parser(t_main *shell, t_tokens *t, size_t i, t_command *cmds)
 {
-	t_command	*cmds;
-
 	if (shell->control == 0)
 		return ;
 	cmds = cmd_struct_create(t);
