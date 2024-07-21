@@ -29,8 +29,8 @@ int	main(int ac, char **av, char **env)
 	t_main	shell;
 
 	av = (void *)av;
-	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
-	{
+	/* if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
+	{ */
 		signal_reciever(1);
 		disable_echo_control_chars();
 		if (ac >= 2)
@@ -39,11 +39,11 @@ int	main(int ac, char **av, char **env)
 			return (perror("Initialize"), 1);
 		shell_keeper(&shell);
 		start_shell(&shell);
-	}
+	/* }
 	else
-	{
-		shell.es = 25;
-		perror("ft_sh:");
-	}
+	{ */
+/* 		shell.es = 25;
+		perror("ft_sh:"); */
+	/* } */
 	return (shell.es);
 }

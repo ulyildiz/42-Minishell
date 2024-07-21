@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 14:19:53 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/16 13:42:56 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 13:37:44 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,15 @@ void	wait_forks(t_main *shell, t_command *cmd)
 {
 	int	status;
 
-	while (cmd)
+	while (cmd && cmd->next)
+		cmd = cmd->next;
+	if (cmd && cmd->in_work)
 	{
 		waitpid(cmd->pid, &status, 0);
 		if (cmd->pid != -1 && WIFEXITED(status))
 			shell->es = WEXITSTATUS(status);
 		else if (cmd->pid != -1 && WIFSIGNALED(status))
 			shell->es = 128 + WTERMSIG(status);
-		cmd = cmd->next;
 	}
 	while (wait(NULL) != -1)
 		;

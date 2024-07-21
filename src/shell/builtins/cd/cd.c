@@ -110,7 +110,7 @@ int cd(t_command *cmds, t_main *shell)
 	if (!path)
 		return (free(gtcwd), 0);
 	change_directory_and_update_envs(shell, path, pwd->value, NULL);
-	if (update_env(shell) == -1)
+	if (update_env(shell) == 0)
 		return (perror("update_env failed"), free(gtcwd), free(path),0);
-	return (free(gtcwd), free(path), shell->es = 0, 1);
+	return (free(gtcwd), free(path), 1);
 }

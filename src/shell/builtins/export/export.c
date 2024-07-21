@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:57:43 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/10 02:39:18 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 13:17:12 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	add_new_env(t_env **envs, char *name, char *value)
 	list_add_back(envs, tmp);
 	return (0);
 }
-
+#include <stdio.h>
 int	process_commands(t_command *cmds, t_main *shell, int i)
 {
 	char	*eq_pos;
@@ -55,11 +55,13 @@ int	process_commands(t_command *cmds, t_main *shell, int i)
 	while (cmds->value[++i])
 	{
 		eq_pos = ft_strchr(cmds->value[i], '=');
+		if (eq_pos == NULL)
+			eq_pos = cmds->value[i] + ft_strlen(cmds->value[i]);
 		env_var = find_env(shell->envs, cmds->value[i]);
 		if (ft_isdigit(cmds->value[i][0]) || cmds->value[i][0] == '=')
-			handle_invalid_identifier(cmds, shell, i);
+			return (handle_invalid_identifier(cmds, shell, i), 0);
 		else if (!all_alphanumeric(cmds->value[i], eq_pos - cmds->value[i]))
-			handle_invalid_identifier(cmds, shell, i);
+			return (handle_invalid_identifier(cmds, shell, i), 0);
 		else if (eq_pos != NULL)
 		{
 			if (handle_assignment(cmds, shell->envs, eq_pos, i))
@@ -71,7 +73,7 @@ int	process_commands(t_command *cmds, t_main *shell, int i)
 				return (shell->es = 1, exit_for_fork(shell), 1);
 		}
 	}
-	return (0);
+	return (shell->es = 0, 0);
 }
 
 int	copy_env(t_env **export, t_env *src)
@@ -122,7 +124,7 @@ int	export(t_command *cmds, t_main *shell)
 
 	export = NULL;
 	if (!check_for_options(cmds))
-		return (1);
+		return (shell->es = 1, 1);
 	if (process_commands(cmds, shell, 0))
 		return (0);
 	if (update_env(shell) == 0)
@@ -135,7 +137,7 @@ int	export(t_command *cmds, t_main *shell)
 	if (cmds->value[1] == NULL)
 		print_export(export, cmds->fd[1]);
 	if (update_env(shell) == 0)
-		return (0);
+			return (0);
 	free_env(export);
-	return (shell->es = 0, 1);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:36 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/10 02:38:16 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 12:45:42 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void change_directory_and_update_envs(t_main *shell, char *path, char *old_pwd_v
 	{
 		gtcwd = getcwd(NULL, 0);
 		if (!gtcwd)
-        {
+ 		{
 			free(path);
 			perror("getcwd");
 			shell->es = 1;
@@ -97,8 +97,9 @@ void change_directory_and_update_envs(t_main *shell, char *path, char *old_pwd_v
 			shell->es = 1;
 			exit_for_fork(shell);
 		}
+		shell->es = 0;
 		free(gtcwd);
 	}
 	else if (ft_strncmp(path, "", 1) != 0)
-        perror("cd");
+		return (shell->es = 1, perror("cd"));
 }

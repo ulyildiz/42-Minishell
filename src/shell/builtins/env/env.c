@@ -30,7 +30,7 @@ static void	print_env(t_env *env, int fd)
 int	env(t_command *cmds, t_main *shell)
 {
 	if (!check_for_options(cmds))
-		return (1);
+		return (shell->es = 1, 1);
 	print_env(shell->envs, cmds->fd[1]);
 	return (shell->es = 0, 1);
 }

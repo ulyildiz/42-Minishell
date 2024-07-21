@@ -60,9 +60,9 @@ int	update_or_add_env_var(t_env **envs, char *name, char *value)
 
 int	handle_invalid_identifier(t_command *cmd, t_main *shell, int i)
 {
-	ft_putstr_fd("ft_sh: export: ", cmd->fd[1]);
-	ft_putstr_fd(cmd->value[i], cmd->fd[1]);
-	ft_putendl_fd(" : not a valid identifier", cmd->fd[1]);
+	ft_putstr_fd("ft_sh: export: ", 2);
+	ft_putstr_fd(cmd->value[i], 2);
+	ft_putendl_fd(" : not a valid identifier", 2);
 	shell->es = 1;
 	return (0);
 }

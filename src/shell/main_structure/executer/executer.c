@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/16 16:42:32 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 12:44:46 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static int	redirection_touch(t_main *shell, t_command **cmd)
 		if (opens(*cmd, &i, -1) == -1)
 		{
 			(*cmd)->in_work = 0;
+			shell->es = 1;
 			*cmd = (*cmd)->next;
 			return (0);
 		}

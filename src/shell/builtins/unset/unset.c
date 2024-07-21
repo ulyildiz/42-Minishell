@@ -48,7 +48,7 @@ int	unset(t_command *cmds, t_main *shell)
 
 	i = 1;
 	if (!check_for_options(cmds))
-		return (/*shell->es = ,*/ 1);
+		return (shell->es = 1, 1);
 	while (cmds->value[i] != NULL)
 	{
 		if (deletenode(&shell->envs, cmds->value[i]) == 0)
