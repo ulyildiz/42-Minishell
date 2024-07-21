@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 20:18:49 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/19 18:48:29 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 15:00:24 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 #include "libft.h"
-#include <stdio.h>
 
 static size_t	w_c(char **value, size_t i, size_t j, size_t len)
 {
-	t_bool in_q[2];
+	t_bool	in_q[2];
 
 	while (value[++i])
 	{
@@ -30,11 +29,9 @@ static size_t	w_c(char **value, size_t i, size_t j, size_t len)
 			if (value[i][j])
 			{
 				len++;
-				while (value[i][j] && (!is_whitespace(value[i][j]) || in_q[0] || in_q[1]))
-				{
-					toggle_quote(value[i][j], &in_q[0], &in_q[1]);
-					j++;
-				}
+				while (value[i][j] \
+				&& (!is_whitespace(value[i][j]) || in_q[0] || in_q[1]))
+					toggle_quote(value[i][j++], &in_q[0], &in_q[1]);
 			}
 		}
 		if (j == 0 && value[i][j] == '\0')
@@ -64,7 +61,7 @@ char	**recreate_cmdval(t_command *cmd)
 			if (!tmp[idx++])
 				return (free_double(tmp), NULL);
 			j++;
-			continue;
+			continue ;
 		}
 		while (cmd->value[j][i])
 		{

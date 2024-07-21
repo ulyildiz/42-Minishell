@@ -45,15 +45,24 @@ size_t	rdr_count(char **str)
 
 int	is_rdr(char *strs)
 {
-	int	i;
+	int		i;
+	t_bool	in_s;
+	t_bool	in_d;
 
+	
 	i = 0;
+	in_s = FALSE;
+	in_d = FALSE;
 	while (strs[i])
 	{
-		if (strs[i] == '<')
-			return (1);
-		if (strs[i] == '>')
-			return (1);
+		toggle_quote(strs[i], &in_s, &in_d);
+		if (!in_s && !in_d)
+		{
+			if (strs[i] == '<')
+				return (1);
+			if (strs[i] == '>')
+				return (1);
+		}
 		i++;
 	}
 	return (0);

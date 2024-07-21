@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/17 22:33:14 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 15:01:21 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include <stdio.h>
 
-static int	dollar_expend(t_main *shell, char** cmd, char *tmp, size_t i)
+static int	dollar_expend(t_main *shell, char **cmd, char *tmp, size_t i)
 {
 	size_t	start;
 
@@ -39,7 +39,7 @@ static int	dollar_expend(t_main *shell, char** cmd, char *tmp, size_t i)
 	return (free(*cmd), *cmd = tmp, 1);
 }
 
-static int	home_expend(t_main *shell, char** cmd, char *tmp, size_t i)
+static int	home_expend(t_main *shell, char **cmd, char *tmp, size_t i)
 {
 	tmp = ft_strdup("");
 	while ((*cmd)[i] && tmp)
@@ -124,7 +124,7 @@ static int	expand_rdr(t_command *cmds, t_main *shell)
 		if (!tmp)
 			return (1);
 		cmds->rdrs[i + 1] = tmp;
-		i+=2;
+		i += 2;
 	}
 	return (0);
 }

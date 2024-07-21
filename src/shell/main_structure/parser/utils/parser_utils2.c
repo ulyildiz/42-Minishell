@@ -6,13 +6,13 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 19:20:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/21 13:32:57 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/21 14:40:54 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 #include "libft.h"
-
+#include <stdio.h>
 static void	fill_rdrs(t_command *cmds, char **tmp, size_t *f)
 {
 	size_t	i;
@@ -22,6 +22,7 @@ static void	fill_rdrs(t_command *cmds, char **tmp, size_t *f)
 	j = 0;
 	while (cmds->value[i])
 	{
+		
 		if (is_rdr(cmds->value[i]))
 		{
 			cmds->rdrs[j++] = cmds->value[i++];
