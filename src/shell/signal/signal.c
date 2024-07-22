@@ -39,9 +39,11 @@ void	disable_echo_control_chars(void)
 {
 	struct termios	tty;
 
-	tcgetattr(STDIN_FILENO, &tty);
-	tty.c_lflag &= ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &tty);
+	if (!tcgetattr(STDIN_FILENO, &tty))
+	{
+		tty.c_lflag &= ~ECHOCTL;
+		tcsetattr(STDIN_FILENO, TCSANOW, &tty);
+	}
 }
 
 void	heredoc_sigint(int sig)

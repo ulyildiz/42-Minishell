@@ -12,7 +12,6 @@
 
 #include "defines.h"
 #include <stdlib.h>
-#include <unistd.h>
 
 void	free_double(char **arr)
 {

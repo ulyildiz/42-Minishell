@@ -12,6 +12,7 @@
 
 #include "libft.h"
 #include "functions.h"
+#include <stdlib.h>
 
 static int	deletenode(t_env **head, char *key)
 {

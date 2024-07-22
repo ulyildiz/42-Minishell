@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 19:20:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/21 15:16:56 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/22 16:44:41 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 #include "libft.h"
-#include <stdio.h>
+#include <stdlib.h>
 
 static void	fill_rdrs(t_command *cmds, char **tmp, size_t *f)
 {

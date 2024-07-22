@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:33:34 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/21 16:51:07 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/22 16:22:09 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,24 +94,24 @@ void	parser(t_main *shell, t_tokens *t, size_t i, t_command *cmds)
 		return ;
 	cmds = cmd_struct_create(t);
 	if (!cmds)
-		return (shell->es = 1, exit_in_parser(shell, 0));
+		return (shell->es = 12, exit_in_parser(shell, 0));
 	shell->cmd = cmds;
 	while (t)
 	{
 		if (!is_token(t))
 		{
 			if (!handle_command(&cmds, &t, &i))
-				return (shell->es = 1, exit_in_parser(shell, 0));
+				return (shell->es = 12, exit_in_parser(shell, 0));
 		}
 		else
 		{
 			if (!handle_token(&cmds, &t, &i))
-				return (shell->es = 1, exit_in_parser(shell, 0));
+				return (shell->es = 12, exit_in_parser(shell, 0));
 		}
 		t = t->next;
 	}
 	if (!rdr_position(cmds))
-		return (shell->es = 1, exit_in_parser(shell, 0));
+		return (shell->es = 12, exit_in_parser(shell, 0));
 	if (!heredocs(shell, shell->cmd))
 		return (shell->control = 0, exit_in_parser(shell, 2));
 	return (cmds->next = NULL, free_tokens(shell));

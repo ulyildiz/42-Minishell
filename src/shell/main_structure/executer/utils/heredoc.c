@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 16:44:12 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/21 11:26:31 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/22 16:53:47 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <readline/readline.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <stdlib.h>
 
 static char	*heredoc_expander(char *str, t_main *shell)
 {
@@ -62,8 +63,8 @@ static void	here_in(t_main *shell, int *fd, char *delimeter)
 		line = heredoc_expander(line, shell);
 		if (!line)
 		{
-			shell->es = 1;
-			close(fd[1]); // parentanda çıkmalı mı
+			shell->es = 12;
+			close(fd[1]);
 			exit_in_parser(shell, 1);
 		}
 		ft_putendl_fd(line, fd[1]);
@@ -78,8 +79,11 @@ static int	wait_heredoc(t_main *shell, t_command *cmd)
 	waitpid(cmd->pid, &status, 0);
 	if (WIFEXITED(status))
 	{
-		if (WEXITSTATUS(status) == 1)
+		shell->es = WEXITSTATUS(status);
+		if (shell->es == 1)
 			return (shell->es = 1, SIGINT);
+		else if (shell->es == 12)
+			exit_in_parser(shell, 1);
 		else
 			shell->es = WEXITSTATUS(status);
 	}
@@ -90,6 +94,13 @@ static int	wait_heredoc(t_main *shell, t_command *cmd)
 
 static int	here_loop(t_main *shell, int *fd, t_command *cmd, char *delimeter)
 {
+	if (!delimeter)
+	{
+		shell->es = 12;
+		close(fd[0]);
+		close(fd[1]);
+		exit_in_parser(shell, 1);
+	}
 	cmd->pid = fork();
 	if (cmd->pid == -1)
 		return (shell->es = 1, exit_in_parser(shell, 0), 0);
@@ -126,13 +137,14 @@ int	heredocs(t_main *shell, t_command *cmd)
 			{
 				if (pipe(fd) == -1)
 					return (exit_in_parser(shell, 0), 0);
-				if (here_loop(shell, fd, cmd, cmd->rdrs[++i]) == SIGINT)
+				i++;
+				cmd->rdrs[i] = remove_quotes(cmd->rdrs[i], FALSE, FALSE);
+				if (here_loop(shell, fd, cmd, cmd->rdrs[i]) == SIGINT)
 					return (signal_reciever(1), 0);
 			}
 		}
 		cmd->pid = -1;
 		cmd = cmd->next;
 	}
-	signal_reciever(1);
-	return (1);
+	return (signal_reciever(1), 1);
 }

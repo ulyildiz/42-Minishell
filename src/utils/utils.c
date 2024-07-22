@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "functions.h"
+#include "defines.h"
 #include "libft.h"
 
 void	list_add_back(t_env **lst, t_env *tmp)

@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 17:30:01 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/21 18:16:22 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/22 16:48:37 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 #include "libft.h"
+#include <stdlib.h>
 
 extern int	execute_command(t_command *cmds, t_bool cmd_num, t_build *command,
 				char *tmp);
@@ -78,7 +79,7 @@ int	is_builtin(t_command *cmds, t_bool cmd_num, char *tmp, int i)
 
 	if (!tmp)
 	{
-		shell_keeper(NULL)->es = 1;
+		shell_keeper(NULL)->es = 12;
 		exit_in_exec(shell_keeper(NULL));
 		return (1);
 	}

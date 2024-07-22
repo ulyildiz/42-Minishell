@@ -79,7 +79,7 @@ size_t		length_to_token(t_tokens *lst);
 size_t		find_word_end(const char *value, size_t start, t_bool *in_d,
 				t_bool *in_s);
 char		*remove_quotes(char *str, t_bool in_s, t_bool in_d);
-char		**recreate_cmdval(t_command *cmd);
+char		**recreate_cmdval(t_command *cmd, size_t i, size_t j, size_t idx);
 
 // executer functions
 void		executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i);

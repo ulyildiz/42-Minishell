@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "functions.h"
+#include "defines.h"
 #include "libft.h"
 
 int	is_token(t_tokens *t)
@@ -41,6 +41,14 @@ size_t	rdr_count(char **str)
 	}
 	len *= 2;
 	return (len);
+}
+
+void	toggle_quote(char c, t_bool *in_s, t_bool *in_d)
+{
+	if (c == '\'' && !(*in_d))
+		*in_s = !(*in_s);
+	else if (c == '"' && !(*in_s))
+		*in_d = !(*in_d);
 }
 
 int	is_rdr(char *strs)
@@ -75,12 +83,4 @@ char	*allocate_result(const char *str)
 	len = ft_strlen(str);
 	result = (char *)ft_calloc(len + 1, sizeof(char));
 	return (result);
-}
-
-void	toggle_quote(char c, t_bool *in_s, t_bool *in_d)
-{
-	if (c == '\'' && !(*in_d))
-		*in_s = !(*in_s);
-	else if (c == '"' && !(*in_s))
-		*in_d = !(*in_d);
 }

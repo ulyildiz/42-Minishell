@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 06:52:43 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/21 15:24:16 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/22 17:08:44 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,16 +112,16 @@ int	initialize(t_main *shell, char **env)
 	shell->paths = NULL;
 	shell->envs = NULL;
 	shell->cmd_line = NULL;
-	shell->prompt = "ft_sh-> ";
+	shell->prompt = "ft_sh: ";
 	shell->paths = NULL;
 	shell->es = 0;
 	if (!init_env(shell, env))
-		return (0);
+		return (shell->es = 12, 0);
 	if (!shell_level(find_env(shell->envs, "SHLVL")))
-		return (free_env(shell->envs), 0);
+		return (free_env(shell->envs), shell->es = 12, 0);
 	shell->control = 1;
 	shell->env_for_execve_function = NULL;
 	if (!update_env(shell))
-		return (free_env(shell->envs), 0);
+		return (free_env(shell->envs), shell->es = 12, 0);
 	return (1);
 }

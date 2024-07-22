@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 18:11:51 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/21 18:17:14 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/22 16:25:23 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	handle_builtin_exit(t_bool cmd_num)
 {
-	shell_keeper(NULL)->es = 1;
+	shell_keeper(NULL)->es = 12;
 	if (cmd_num)
 		exit_for_fork(shell_keeper(NULL));
 	else

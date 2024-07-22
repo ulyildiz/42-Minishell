@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 12:49:03 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/21 12:39:56 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/22 16:48:16 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "libft.h"
 #include <unistd.h>
 #include <sys/stat.h>
+#include <stdlib.h>
 
 void	error_handler(t_command *cmds, int flag, t_main *shell)
 {
@@ -36,7 +37,7 @@ void	error_handler(t_command *cmds, int flag, t_main *shell)
 	}
 	else if (flag == 4)
 	{
-		ft_putendl_fd(": Is a directory", 2);
+		ft_putendl_fd(": is a directory", 2);
 		shell->es = 126;
 	}
 }

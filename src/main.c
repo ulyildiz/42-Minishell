@@ -12,7 +12,6 @@
 
 #include "functions.h"
 #include "libft.h"
-#include <unistd.h>
 #include <stdio.h>
 
 t_env	*find_env(t_env *envs, char *wanted)
@@ -43,21 +42,13 @@ int	main(int ac, char **av, char **env)
 	t_main	shell;
 
 	av = (void *)av;
-	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
-	{
-		signal_reciever(1);
-		disable_echo_control_chars();
-		if (ac >= 2)
-			return (ft_putendl_fd("Too much argument.", 2), 1);
-		if (!initialize(&shell, env))
-			return (perror("Initialize"), 1);
-		shell_keeper(&shell);
-		start_shell(&shell);
-	}
-	else
-	{
-		shell.es = 25;
-		perror("ft_sh:");
-	}
+	signal_reciever(1);
+	disable_echo_control_chars();
+	if (ac >= 2)
+		return (ft_putendl_fd("Too much argument.", 2), 1);
+	if (!initialize(&shell, env))
+		return (perror("Initialize"), 1);
+	shell_keeper(&shell);
+	start_shell(&shell);
 	return (shell.es);
 }

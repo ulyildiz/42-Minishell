@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "functions.h"
+#include "defines.h"
 #include "libft.h"
 
 int	check_heredoc(t_command *cmd)

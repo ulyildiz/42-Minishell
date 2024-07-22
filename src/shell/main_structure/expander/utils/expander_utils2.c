@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 20:18:49 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/21 17:46:33 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/22 17:37:05 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 #include "libft.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 static size_t	w_c(char **value, size_t i, size_t j, size_t len)
 {
@@ -86,19 +87,16 @@ static int	fill_tmp(char *value, size_t i, char **tmp, size_t *idx)
 	return (1);
 }
 
-char	**recreate_cmdval(t_command *cmd)
+char	**recreate_cmdval(t_command *cmd, size_t i, size_t j, size_t idx)
 {
-	size_t	j;
 	char	**tmp;
-	size_t	idx;
-	size_t	i;
 
-	idx = 0;
-	j = -1;
 	tmp = ft_calloc(w_c(cmd->value, -1, 0, 0) + 1, sizeof(char *));
 	if (!tmp)
 		return (NULL);
-	while (cmd->value[++j])
+	while (cmd->value[j + 1] && !cmd->value[j][0])
+		j++;
+	while (cmd->value[j])
 	{
 		i = 0;
 		if (cmd->value[j][i] == '\0')
@@ -111,6 +109,7 @@ char	**recreate_cmdval(t_command *cmd)
 		}
 		if (!fill_tmp(cmd->value[j], i, tmp, &idx))
 			return (free_double(tmp), NULL);
+		j++;
 	}
 	return (free_double(cmd->value), tmp);
 }

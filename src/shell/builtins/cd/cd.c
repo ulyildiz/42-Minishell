@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 15:25:59 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/21 16:38:26 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/22 16:59:36 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	cd(t_command *cmds, t_main *shell)
 		return (1);
 	gtcwd = getcwd(NULL, 0);
 	if (!gtcwd)
-		return (perror("getcwd failed"), shell->es = 1, 0);
+		return (perror("getcwd failed"), shell->es = 12, 0);
 	pwd = update_or_create_env(&shell->envs, "PWD", gtcwd);
 	if (!pwd)
 	{

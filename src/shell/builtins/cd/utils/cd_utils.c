@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 17:56:36 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/21 15:33:18 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/22 17:02:07 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char *path, char *old_pwd_value, char *gtcwd)
 			free(gtcwd);
 			free(path);
 			perror("update_or_create_env failed");
-			shell->es = 1;
+			shell->es = 12;
 			exit_for_fork(shell);
 		}
 		shell->es = 0;

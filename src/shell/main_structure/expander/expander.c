@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysarac <yunusemresarac@yaani.com>          +#+  +:+       +#+        */
+/*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 21:04:48 by ysarac            #+#    #+#             */
-/*   Updated: 2024/07/21 17:04:34 by ysarac           ###   ########.fr       */
+/*   Updated: 2024/07/22 17:32:14 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "functions.h"
 #include "libft.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 extern int	home_expend(t_main *shell, char **cmd, char *tmp, size_t i);
 
@@ -61,7 +62,7 @@ static int	expand_value(t_command *cmds, t_main *shell)
 				return (1);
 		}
 	}
-	cmds->value = recreate_cmdval(cmds);
+	cmds->value = recreate_cmdval(cmds, 0, 0, 0);
 	if (cmds->value == NULL)
 		return (1);
 	return (0);
@@ -129,9 +130,9 @@ void	expender(t_main *shell)
 	while (cmds)
 	{
 		if (expand_value(cmds, shell))
-			return (shell->es = 1, exit_in_expander(shell));
+			return (shell->es = 12, exit_in_expander(shell));
 		if (expand_rdr(cmds, shell))
-			return (shell->es = 1, exit_in_expander(shell));
+			return (shell->es = 12, exit_in_expander(shell));
 		cmds = cmds->next;
 	}
 }

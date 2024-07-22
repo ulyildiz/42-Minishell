@@ -12,6 +12,7 @@
 
 #include "functions.h"
 #include "libft.h"
+#include <stdlib.h>
 
 static t_token_types	identify_t(const char *arr)
 {

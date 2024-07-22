@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 14:39:17 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/07/21 12:44:46 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2024/07/22 16:52:50 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "libft.h"
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 static int	redirection_touch(t_main *shell, t_command **cmd)
 {
@@ -123,7 +124,7 @@ void	executor(t_main *shell, t_command *cmds, t_bool cmd_num, int i)
 	cmds = shell->cmd;
 	shell->paths = get_cmd(shell->envs);
 	if (!shell->paths)
-		return (shell->es = 1, exit_in_exec(shell));
+		return (shell->es = 12, exit_in_exec(shell));
 	set_fd(shell, cmds, &i);
 	if (cmds && cmds->next)
 		cmd_num = TRUE;
