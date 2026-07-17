@@ -1,30 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strndup.c                                       :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/20 20:28:42 by ysarac            #+#    #+#             */
-/*   Updated: 2024/05/21 16:32:25 by ulyildiz         ###   ########.fr       */
+/*   Created: 2024/07/03 17:55:38 by ysarac            #+#    #+#             */
+/*   Updated: 2024/07/10 02:39:34 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "functions.h"
 #include "libft.h"
-#include <stdlib.h>
 
-char	*ft_strndup(const char *str, size_t n)
+static void	print_env(t_env *env, int fd)
 {
-	size_t	len;
-	char	*copy;
+	while (env)
+	{
+		if (env->value && env->name)
+		{
+			ft_putstr_fd(env->name, fd);
+			ft_putstr_fd("=", fd);
+			ft_putendl_fd(env->value, fd);
+		}
+		env = env->next;
+	}
+}
 
-	len = 0;
-	while (len < n && str[len])
-		len++;
-	copy = malloc(len + 1);
-	if (copy == NULL)
-		return (NULL);
-	ft_memcpy(copy, str, len);
-	copy[len] = '\0';
-	return (copy);
+int	env(t_command *cmds, t_main *shell)
+{
+	if (!check_for_options(cmds))
+		return (shell->es = 1, 1);
+	print_env(shell->envs, cmds->fd[1]);
+	return (shell->es = 0, 1);
 }

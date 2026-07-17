@@ -1,4 +1,0 @@
-void	signal_reciever()
-{
-	
-}

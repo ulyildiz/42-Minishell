@@ -1,25 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   executer_utils3.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.com.t +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 16:27:28 by ulyildiz          #+#    #+#             */
-/*   Updated: 2024/05/17 11:14:35 by ulyildiz         ###   ########.fr       */
+/*   Created: 2024/07/07 12:50:27 by ulyildiz          #+#    #+#             */
+/*   Updated: 2024/07/10 02:34:05 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "defines.h"
+#include "libft.h"
 
-size_t	ft_strlen(const char *s)
+int	check_heredoc(t_command *cmd)
 {
-	size_t	len;
+	int	i;
+	int	k;
 
-	len = 0;
-	if (!s)
+	k = 0;
+	while (cmd)
+	{
+		i = -1;
+		while (cmd->rdrs && cmd->rdrs[++i])
+		{
+			if (!ft_strncmp(cmd->rdrs[i], "<<", 2))
+				k++;
+		}
+		cmd = cmd->next;
+	}
+	if (k == 0)
 		return (0);
-	while (s[len] != '\0')
-		len++;
-	return (len);
+	return (1);
 }
