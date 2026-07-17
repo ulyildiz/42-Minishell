@@ -90,6 +90,10 @@ Running the binary with any arguments is rejected (`Too much argument.`) — it'
     └── utils/                            # Syntax validation, generic helpers, cleanup/exit paths
 ```
 
+## License
+
+MIT — see [LICENSE](LICENSE).
+
 ## Contributors
 
 - [Ulaş Berke Yıldız](https://github.com/ulyildiz)
